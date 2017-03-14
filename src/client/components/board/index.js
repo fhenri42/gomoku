@@ -20,27 +20,26 @@ function createBoard() {
   }
   return board
 }
-
+// TODO a finir  !  quand hugo rentre
 function findCapture(copy,x, y, pion, pion2) {
 
-  console.log('d');
-  if (copy[x + 3][y] === pion && copy[x + 1][y] === pion2 && copy[x + 2][y] === pion2) {
-    return {x1: x+1, j,y1: y, y2: y }
+  if ( x < 19 && copy[x + 3][y] === pion && copy[x + 1][y] === pion2 && copy[x + 2][y] === pion2) {
+    return { x1: x + 1, y1: y, x2: x + 2,y2:y }
   }
-  if (copy[x - 3][y] === pion && copy[x - 1][y] === pion2 && copy[x - 2][y] === pion2) {
-    return true
+  if ( x > 0 &&  copy[x - 3][y] === pion && copy[x - 1][y] === pion2 && copy[x - 2][y] === pion2) {
+    return { x1: x - 1, y1: y, x2: x - 2, y2: y }
   }
-  if (copy[x + 3][y + 3] === pion && copy[x + 1][y + 1] === pion2 && copy[x + 2][y + 2] === pion2) {
-    return true
+  if ( x < 19 && y < 19 && copy[x + 3][y + 3] === pion && copy[x + 1][y + 1] === pion2 && copy[x + 2][y + 2] === pion2) {
+    return { x1: x + 1, y1: y + 1, x2: x + 2, y2: y + 2 }
   }
-  if (copy[x - 3][y - 3] === pion && copy[x - 1][x - 1] === pion2 && copy[x - 2][y - 2] === pion2) {
-    return true
+  if ( x > 0 && y > 0 && copy[x - 3][y - 3] === pion && copy[x - 1][x - 1] === pion2 && copy[x - 2][y - 2] === pion2) {
+    return { x1: x - 1, y1: y - 1, x2: x - 2, y2: y - 2 }
   }
-  if (copy[x][y + 3] === pion && copy[x][y + 1] === pion2 && copy[x][y + 2] === pion2) {
-    return true
+  if ( y < 19 && copy[x][y + 3] === pion && copy[x][y + 1] === pion2 && copy[x][y + 2] === pion2) {
+    return { x1: x, y1: y + 1 , x2: x, y2:y + 2 }
   }
-  if (copy[x][y - 3] === pion && copy[x][y - 1] === pion2 && copy[x][y - 2] === pion2) {
-    return true
+  if ( y > 0 && copy[x][y - 3] === pion && copy[x][y - 1] === pion2 && copy[x][y - 2] === pion2) {
+    return { x1: x, y1: y - 1, x2: x, y2: y - 2 }
   }
   return false
 }
@@ -60,12 +59,25 @@ class Board extends Component {
     let copy = this.state.board
     if (turn === true) {
       copy[x][y] = 1
-      console.log("captureMove = " + findCapture(copy,x, y, 1, 2))
+      const cord = findCapture(copy,x, y, 1, 2)
+      console.log(cord);
+      if (cord) {
+        console.log(require('util').inspect(cord, { depth: null }));
+        copy[cord.x1][cord.y1] =  0
+        copy[cord.x2][cord.y2] =  0
+      }
       this.setState({ board: copy })
       this.setState({turn: !turn})
     } else {
       copy[x][y] = 2
-      console.log("captureMove = " + findCapture(copy,x, y, 1, 2))
+      const cord = findCapture(copy,x, y, 2, 1)
+      console.log(cord);
+      if (cord) {
+        console.log(require('util').inspect(cord, { depth: null }));
+
+        copy[cord.x1][cord.y1] =  0
+        copy[cord.x2][cord.y2] =  0
+      }
       this.setState({ board: copy })
       this.setState({turn: !turn})
     }
