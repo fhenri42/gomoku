@@ -26,8 +26,25 @@ function createBoard() {
 function lastStand() {
 
 }
+//TODO manque la diagonalle
+function forbidenMove(copy, x, y, pion) {
 
-function forbidenMove(copy, x, k, pion) {
+  if (x - 2 > 0 && y + 2 < 19 && y - 2 > 0 && copy[x][y + 1] === pion &&  copy[x][y + 2] === pion && copy[x - 1][y - 1] === pion && pion[x - 2][y - 2]) {
+    return false
+  }
+
+  if (x - 2 > 0 && y + 2 < 19 && y - 2  > 0 && copy[x][y - 1] === pion &&  copy[x][y - 2] === pion && copy[x - 1][y + 1] === pion && pion[x - 2][y + 2]) {
+    return false
+  }
+
+  if ( x + 2 < 19 && y + 2 < 19 && y - 2  > 0 && copy[x][y + 1] === pion &&  copy[x][y + 2] === pion && copy[x + 1][y - 1] === pion && pion[x + 2][y - 2]) {
+    return false
+  }
+  if ( x + 2 < 19 && y + 2 < 19 && y - 2  > 0 && copy[x][y - 1] === pion &&  copy[x][y - 2] === pion && copy[x + 1][y + 1] === pion && pion[x + 2][y + 2]) {
+    return false
+  }
+
+  return true
 
 }
 
@@ -94,7 +111,7 @@ function findCapture(copy,x, y, pion, pion2) {
     return { x1: x - 1, y1: y + 1, x2: x - 2, y2: y + 2 }
   }
 
-  if ( x - 3 > 0 && y - 3 > 0 && copy[x + 3][y - 3] === pion && copy[x + 1][y - 1] === pion2 && copy[x + 2][y - 2] === pion2) {
+  if ( x + 3 < 19 && y - 3 > 0 && copy[x + 3][y - 3] === pion && copy[x + 1][y - 1] === pion2 && copy[x + 2][y - 2] === pion2) {
     return { x1: x + 1, y1: y - 1, x2: x + 2, y2: y - 2 }
   }
 
@@ -115,12 +132,14 @@ class Board extends Component {
     winLine: '',
   }
 
-
   putADot = (x, y) => {
     const { turn, player1, player2 } = this.state
     let copy = this.state.board
     if (turn === true) {
+
+      if (!forbidenMove(copy, x, y, 1)) { return }
       copy[x][y] = 1
+
       if (findLine(copy, x, y, 1)) {
         this.setState({winLine: 'player 2'})
         return;
@@ -136,6 +155,7 @@ class Board extends Component {
       this.setState({ board: copy })
       this.setState({turn: !turn})
     } else {
+      if (!forbidenMove(copy, x, y, 2)) { return }
       copy[x][y] = 2
       if (findLine(copy, x, y, 2)) {
         this.setState({winLine: 'player 1'})
