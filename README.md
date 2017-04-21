@@ -1,1 +1,1 @@
-# frenchTeacher
+# Gomoku
