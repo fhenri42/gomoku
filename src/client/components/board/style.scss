@@ -68,6 +68,11 @@
   border-radius: 20px;
 }
 
+.score {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
 .message {
   -ms-transform: rotate(-5deg); /* IE 9 */
