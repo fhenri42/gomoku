@@ -23,24 +23,25 @@ function createBoard() {
   return board
 }
 
+//TODO lastStand is not done
 function lastStand() {
 
 }
 //TODO manque la diagonalle
 function forbidenMove(copy, x, y, pion) {
 
-  if (x - 2 > 0 && y + 2 < 19 && y - 2 > 0 && copy[x][y + 1] === pion &&  copy[x][y + 2] === pion && copy[x - 1][y - 1] === pion && pion[x - 2][y - 2]) {
+  if (x - 2 > 0 && y + 2 < 19 && y - 2 > 0 && copy[x][y + 1] === pion &&  copy[x][y + 2] === pion && copy[x - 1][y - 1] === pion && copy[x - 2][y - 2] === pion) {
     return false
   }
 
-  if (x - 2 > 0 && y + 2 < 19 && y - 2  > 0 && copy[x][y - 1] === pion &&  copy[x][y - 2] === pion && copy[x - 1][y + 1] === pion && pion[x - 2][y + 2]) {
+  if (x - 2 > 0 && y + 2 < 19 && y - 2  > 0 && copy[x][y - 1] === pion &&  copy[x][y - 2] === pion && copy[x - 1][y + 1] === pion && copy[x - 2][y + 2] === pion) {
     return false
   }
 
-  if ( x + 2 < 19 && y + 2 < 19 && y - 2  > 0 && copy[x][y + 1] === pion &&  copy[x][y + 2] === pion && copy[x + 1][y - 1] === pion && pion[x + 2][y - 2]) {
+  if ( x + 2 < 19 && y + 2 < 19 && y - 2  > 0 && copy[x][y + 1] === pion &&  copy[x][y + 2] === pion && copy[x + 1][y - 1] === pion && copy[x + 2][y - 2] === pion) {
     return false
   }
-  if ( x + 2 < 19 && y + 2 < 19 && y - 2  > 0 && copy[x][y - 1] === pion &&  copy[x][y - 2] === pion && copy[x + 1][y + 1] === pion && pion[x + 2][y + 2]) {
+  if ( x + 2 < 19 && y + 2 < 19 && y - 2  > 0 && copy[x][y - 1] === pion &&  copy[x][y - 2] === pion && copy[x + 1][y + 1] === pion && copy[x + 2][y + 2] === pion) {
     return false
   }
 
@@ -78,7 +79,6 @@ function findLine(copy, x, y, pion) {
   if ( y - 4 > 0 && x + 4 < 19 && copy[x][y] === pion && copy[x + 1][y - 1] === pion && copy[x + 2][y - 2] === pion && copy[x + 3][y - 3] === pion && copy[x + 4][y - 4] === pion) {
     return true
   }
-
   false
 }
 function findCapture(copy,x, y, pion, pion2) {
@@ -132,9 +132,16 @@ class Board extends Component {
     winLine: '',
   }
 
+  newGame = () => {
+    this.setState({player1: 0})
+    this.setState({player2: 0})
+    this.setState({winLine: ''})
+    this.setState({board: createBoard()})
+  }
   putADot = (x, y) => {
-    const { turn, player1, player2 } = this.state
+    const { turn, player1, player2, winLine } = this.state
     let copy = this.state.board
+    if(player1 != 10 && player2 != 10 && !winLine)  {
     if (turn === true) {
 
       if (!forbidenMove(copy, x, y, 1)) { return }
@@ -175,6 +182,7 @@ class Board extends Component {
       this.setState({turn: !turn})
     }
   }
+  }
 
   render () {
     const { board, turn, player1, player2, winLine } = this.state
@@ -206,8 +214,10 @@ class Board extends Component {
 
           } </div>
         )})}
+        {winLine && ( <button onClick={() => this.newGame()}> { 'play again'}</button>)}
         </div>
       )
+
     }
   }
 
