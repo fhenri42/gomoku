@@ -6,8 +6,10 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { Router, Route, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import socketIoMiddleWare from './middleware/socketIoMiddleWare'
 import reducer from './reducers'
 import App from './containers/app'
+import io from 'socket.io-client'
 
 require("babel-core/register");
 require("babel-polyfill");
@@ -19,12 +21,14 @@ const configureStore = (reducer) => createStore(
   }),
   composeEnhancers(
   applyMiddleware(
+    socketIoMiddleWare(socket),
     thunk
   )),
 )
 
+const socket = io('localhost:5000')
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const store = configureStore(reducer)
+const store = configureStore(reducer, socket)
 const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDom.render((

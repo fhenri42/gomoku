@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { fromJS } from 'immutable'
+import { connect } from 'react-redux'
+import activation from '../../actions/activation.js'
 import "./style.scss"
 import { createBoard, forbidenMove, findLine, findCapture } from '../utils.js'
 /*
@@ -12,9 +14,14 @@ win if 10 are remove from the board.
 //forbiden
 */
 
-class Board extends Component {
+@connect(state => ({}), {
+  activation,
+})
+class BoardAi extends Component {
 
-  static propTypes = {}
+  static propTypes = {
+    activation: PropTypes.func,
+  }
 
   state = {
     turn :  false,
@@ -45,8 +52,6 @@ class Board extends Component {
       }
       const cord = findCapture(copy,x, y, 1, 2)
       if (cord) {
-        console.log('blackDot');
-        console.log(require('util').inspect(cord, { depth: null }));
         copy[cord.x1][cord.y1] =  0
         copy[cord.x2][cord.y2] =  0
         this.setState({ player2: player2 + 1 })
@@ -54,28 +59,27 @@ class Board extends Component {
       this.setState({ board: copy })
       this.setState({turn: !turn})
     } else {
-      if (!forbidenMove(copy, x, y, 2)) { return }
-      copy[x][y] = 2
-      if (findLine(copy, x, y, 2)) {
-        this.setState({winLine: 'player 1'})
-        return;
-      }
-      const cord = findCapture(copy,x, y, 2, 1)
-      console.log(cord);
-      if (cord) {
-
-        console.log(require('util').inspect(cord, { depth: null }))
-        copy[cord.x1][cord.y1] =  0
-        copy[cord.x2][cord.y2] =  0
-        this.setState({ player1: player1 + 1 })
-
-      }
-      this.setState({ board: copy })
-      this.setState({turn: !turn})
+    //FAire le tour de lai
+      console.log('WECHHHH');
+      this.props.activation()
+      // if (!forbidenMove(copy, x, y, 2)) { return }
+      // copy[x][y] = 2
+      // if (findLine(copy, x, y, 2)) {
+      //   this.setState({winLine: 'player 1'})
+      //   return;
+      // }
+      // const cord = findCapture(copy,x, y, 2, 1)
+      // if (cord) {
+      //   copy[cord.x1][cord.y1] =  0
+      //   copy[cord.x2][cord.y2] =  0
+      //   this.setState({ player1: player1 + 1 })
+      //
+      // }
+      // this.setState({ board: copy })
+      // this.setState({turn: !turn})
     }
   }
   }
-
   render () {
     const { board, turn, player1, player2, winLine } = this.state
     return (
@@ -108,8 +112,5 @@ class Board extends Component {
         {winLine && ( <button onClick={() => this.newGame()}> { 'play again'}</button>)}
         </div>
       )
-
     }
   }
-
-  export default Board

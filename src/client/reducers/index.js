@@ -5,7 +5,14 @@ const intialState = {
 }
 
 const reducer = (state = fromJS(intialState) , action) => {
-      return state
+  switch(action.type) {
+      case 'START_GAME':
+        return state.setIn(['room'], fromJS(action.data)).setIn(['currentPiece'], state.getIn(['room', 'pieces', 0]))
+      case 'NEXT_TURN' :
+        return state.setIn(['room'], fromJS(action.data)).setIn(['currentPiece'], state.getIn(['room', 'pieces', 0]))
+      default:
+        return state
+    }
   }
 
 
