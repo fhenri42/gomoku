@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import activation from '../../actions/activation.js'
 import "./style.scss"
 import { createBoard, forbidenMove, findLine, findCapture } from '../utils.js'
+
 /*
 RULE: http://jeuxdesociete.free.fr/jeux/jeu-gomoku.html
 Capture: Captures are made by flanking a pair of the opponent’s stones
@@ -14,10 +15,16 @@ win if 10 are remove from the board.
 //forbiden
 */
 
-@connect(state => ({}), {
-  activation,
-})
-class BoardAi extends Component {
+function mapDispatchToProps(dispatch) {
+  return {
+    activation: (data) => dispatch(activation(data)),
+  }
+}
+  function  mapStateToProps(state) {
+  return {}
+}
+
+export class BoardAi extends Component {
 
   static propTypes = {
     activation: PropTypes.func,
@@ -32,16 +39,16 @@ class BoardAi extends Component {
   }
 
   newGame = () => {
-    this.setState({player1: 0})
-    this.setState({player2: 0})
-    this.setState({winLine: ''})
-    this.setState({board: createBoard()})
+    this.setState({ player1: 0 })
+    this.setState({ player2: 0 })
+    this.setState({ winLine: '' })
+    this.setState({ board: createBoard() })
   }
   putADot = (x, y) => {
-    const { turn, player1, player2, winLine } = this.state
-    let copy = this.state.board
+    const { activation } = this.props
+    const { turn, player1, player2, winLine, board} = this.state
+    let copy = board
     if(player1 != 10 && player2 != 10 && !winLine)  {
-    if (turn === true) {
 
       if (!forbidenMove(copy, x, y, 1)) { return }
       copy[x][y] = 1
@@ -58,26 +65,12 @@ class BoardAi extends Component {
       }
       this.setState({ board: copy })
       this.setState({turn: !turn})
-    } else {
-    //FAire le tour de lai
+
+
+      //faire le tour de AI
       console.log('WECHHHH');
-      this.props.activation()
-      // if (!forbidenMove(copy, x, y, 2)) { return }
-      // copy[x][y] = 2
-      // if (findLine(copy, x, y, 2)) {
-      //   this.setState({winLine: 'player 1'})
-      //   return;
-      // }
-      // const cord = findCapture(copy,x, y, 2, 1)
-      // if (cord) {
-      //   copy[cord.x1][cord.y1] =  0
-      //   copy[cord.x2][cord.y2] =  0
-      //   this.setState({ player1: player1 + 1 })
-      //
-      // }
-      // this.setState({ board: copy })
-      // this.setState({turn: !turn})
-    }
+      activation({board: copy})
+
   }
   }
   render () {
@@ -114,3 +107,5 @@ class BoardAi extends Component {
       )
     }
   }
+
+export default connect(mapStateToProps, mapDispatchToProps)(BoardAi)

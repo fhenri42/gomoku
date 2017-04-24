@@ -1,6 +1,7 @@
-export default function activation() {
+export default function activation(data) {
   console.log('lelel');
   return {
     type: 'server/activation',
+    data,
   }
 }
