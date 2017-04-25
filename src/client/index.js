@@ -26,9 +26,9 @@ const configureStore = (reducer) => createStore(
   )),
 )
 
-var host = "ws://localhost:5000/ws";
-var socket = new WebSocket(host);
-//const socket = io('localhost:5000')
+// var host = "ws://localhost:5000/ws";
+// var socket = new WebSocket(host);
+const socket = io('localhost:5000')
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = configureStore(reducer, socket)
 const history = syncHistoryWithStore(browserHistory, store)
