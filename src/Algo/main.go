@@ -1,29 +1,57 @@
 package main
 
 import (
-"fmt"
-"github.com/gopherjs/gopherjs/js"
+  "fmt"
+  "os"
+  "strings"
+  "strconv"
 )
 
-type Pet struct {
-  name string
-}
+func sendBack(newTab [20][20]int, tab []string)  {
 
-func New(name string) *js.Object {
-  fmt.Printf("oeuoeu")
-  return js.MakeWrapper(&Pet{name})
+  var x = 0
+  var b = 0
+  for x < 19 {
+    var y = 0
+    for y < 19 {
+      tab[b] = strconv.Itoa(newTab[x][y])
+      y++
+      b++
+    }
+    x++
+  }
+  file, err := os.Create("tabToSend")
+  if err != nil {
+    fmt.Print(err)
+  }
+  file.WriteString(strings.Join(tab,""))
+return
 }
+func main () {
+  newTab := [20][20]int{}
+  if 2 == len(os.Args) {
+    fmt.Print("in the if")
+    tab := strings.Split(os.Args[1],",")
+    tab[30] = "2"
+    tab[31] = "2"
+    tab[32] = "2"
+    tab[33] = "2"
+    var x = 0
+    var b = 0
+    for x < 19 {
+      var y = 0
+      for y < 19 {
+        newTab[x][y], _= strconv.Atoi(tab[b])
+        y++
+        b++
+      }
+      x++
+    }
+    sendBack(newTab, tab)
+   return
+ }
 
-func (p *Pet) Name() string {
-  return p.name
-}
 
-func (p *Pet) SetName(name string) {
-  p.name = name
-}
-
-func main() {
-  js.Module.Get("exports").Set("pet", map[string]interface{}{
-    "New": New,
-  })
+  fmt.Printf("hello")
+  return
 }
