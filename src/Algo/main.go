@@ -1,52 +1,60 @@
 package main
+//
 
 import (
-  "fmt"
-  "os"
-  "strings"
-  "strconv"
+	"fmt"
+	"log"
+	"net/http"
+	"io/ioutil"
+	"encoding/json"
+  "github.com/parnurzeal/gorequest"
 )
 
-func sendBack(newTab [20][20]int, tab []string)  {
-  var x = 0
-  var b = 0
-  for x < 19 {
-    var y = 0
-    for y < 19 {
-      tab[b] = strconv.Itoa(newTab[x][y])
-      y++
-      b++
-    }
-    x++
-  }
-  file, err := os.Create("tabToSend")
-  if err != nil {
-    fmt.Print(err)
-  }
-  file.WriteString(strings.Join(tab,""))
-return
+type sendBackStruct struct {
+	board [20][20]int `json:"board"`
+  isWin bool   `json:"isWin,string"`
 }
 
-func main () {
+func sendBack(tab [20][20]int, isWin bool) {
 
-  newTab := [20][20]int{}
-  var x = 0
-  var b = 0
+	request := gorequest.New()
+  var sendTab sendBackStruct
+  sendTab.board = tab
+  sendTab.isWin = isWin
+	_,_,err := request.Post("https://localhost:8080").Send(sendTab).End()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+  fmt.Print("all good")
+	// log.Println("\nrep = ", rep)
+	// log.Println("\nbody = ", body)
 
-  if 2 == len(os.Args) {
-    tab := strings.Split(os.Args[1],",")
-    for x < 19 {
-      var y = 0
-      for y < 19 {
-        newTab[x][y], _= strconv.Atoi(tab[b])
-        y++
-        b++
-      }
-      x++
-    }
-    newTab = algo(newTab)
-    sendBack(newTab, tab)
-   return
- }
-  return
+}
+
+func parse(w http.ResponseWriter, req *http.Request) {
+
+		fmt.Printf("in the post\n")
+		fmt.Printf("%s\n", req)
+		body, err := ioutil.ReadAll(req.Body)
+    fmt.Print(body)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		var data sendBackStruct
+		err = json.Unmarshal(body, &data)
+		if err != nil {
+			log.Println("err",err)
+			return
+		}
+		sendBack(data.board, false)
+
+	w.WriteHeader(200)
+}
+
+func main() {
+
+	http.HandleFunc("/aiturn", parse)
+	http.ListenAndServe(":5000", nil)
 }
