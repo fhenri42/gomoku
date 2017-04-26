@@ -42,9 +42,11 @@ class Board extends Component {
   }
 
   newGame = () => {
+    const { boardSet } = this.props
     this.setState({player1: 0})
     this.setState({player2: 0})
     this.setState({winLine: ''})
+    boardSet(createBoard())
   }
 
   putADot = (x, y) => {
