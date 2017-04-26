@@ -2,7 +2,8 @@ import { fromJS } from 'immutable'
 import { createBoard } from '../components/utils.js'
 const intialState = {
   name: null,
-  board: createBoard()
+  board: createBoard(),
+  isEatable: 0
 }
 
 const formatTAb = (tab) => {
@@ -20,7 +21,7 @@ const formatTAb = (tab) => {
   return newTab
 }
 const reducer = (state = fromJS(intialState) , action) => {
-
+console.log("ACTION:  ", action);
   switch(action.type) {
       case 'START_GAME':
         return state.setIn(['room'], fromJS(action.data)).setIn(['currentPiece'], state.getIn(['room', 'pieces', 0]))
@@ -28,8 +29,10 @@ const reducer = (state = fromJS(intialState) , action) => {
         return state.setIn(['room'], fromJS(action.data)).setIn(['currentPiece'], state.getIn(['room', 'pieces', 0]))
       case 'AITURN':
         return state.setIn(['board'],fromJS(formatTAb(action.data)))
-        case 'client/boardSet':
-          return state.setIn(['board'],fromJS(action.data))
+      case 'client/boardSet':
+        return state.setIn(['board'],fromJS(action.data))
+      case 'client/isEatable':
+        return state.setIn(['isEatable'],fromJS(action.data))
       default:
         return state
     }

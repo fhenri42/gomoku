@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { fromJS } from 'immutable'
 import { connect } from 'react-redux'
 import boardSet from '../../actions/boardSet.js'
+import SetisEatable from '../../actions/eatable.js'
+
 import "./style.scss"
 import { createBoard, forbidenMove, findLine, findCapture, lastStand } from '../utils.js'
 /*
@@ -17,12 +19,15 @@ win if 10 are remove from the board.
 function mapDispatchToProps(dispatch) {
   return {
     boardSet: (data) => dispatch(boardSet(data)),
+    SetisEatable: (data) => dispatch(SetisEatable(data)),
   }
 }
   function  mapStateToProps(state) {
     const board = state.game.getIn(['board']).toJS()
+    const isEatable = state.game.getIn(['isEatable'])
   return {
-    board
+    board,
+    isEatable
   }
 }
 
@@ -32,6 +37,7 @@ class Board extends Component {
   static propTypes = {
     boardSet: PropTypes.func,
     board: PropTypes.Array,
+    isEatable: PropTypes.Number,
   }
 
   state = {
@@ -50,17 +56,16 @@ class Board extends Component {
   }
 
   putADot = (x, y) => {
-      console.log(this.state.board);
     const { turn, player1, player2, winLine } = this.state
     let copy = this.props.board
-    const { boardSet } = this.props
+    const { boardSet, SetisEatable, isEatable } = this.props
     if(player1 != 10 && player2 != 10 && !winLine)  {
     if (turn === true) {
 
       if (!forbidenMove(copy, x, y, 1)) { return }
       copy[x][y] = 1
 
-      if (findLine(copy, x, y, 1)) {
+      if (findLine(copy, 1, SetisEatable, isEatable)) {
         console.log("LA");
           this.setState({winLine: 'player 2'})
           return;
@@ -77,7 +82,7 @@ class Board extends Component {
       if (!forbidenMove(copy, x, y, 2)) { return }
       copy[x][y] = 2
 
-      if (findLine(copy, x, y, 2)) {
+      if (findLine(copy, 2, SetisEatable, isEatable)) {
         this.setState({winLine: 'player 1'})
         return;
       }
