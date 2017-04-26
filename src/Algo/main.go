@@ -8,7 +8,6 @@ import (
 )
 
 func sendBack(newTab [20][20]int, tab []string)  {
-
   var x = 0
   var b = 0
   for x < 19 {
@@ -27,17 +26,15 @@ func sendBack(newTab [20][20]int, tab []string)  {
   file.WriteString(strings.Join(tab,""))
 return
 }
+
 func main () {
+
   newTab := [20][20]int{}
+  var x = 0
+  var b = 0
+
   if 2 == len(os.Args) {
-    fmt.Print("in the if")
     tab := strings.Split(os.Args[1],",")
-    tab[30] = "2"
-    tab[31] = "2"
-    tab[32] = "2"
-    tab[33] = "2"
-    var x = 0
-    var b = 0
     for x < 19 {
       var y = 0
       for y < 19 {
@@ -47,11 +44,9 @@ func main () {
       }
       x++
     }
+    newTab = algo(newTab)
     sendBack(newTab, tab)
    return
  }
-
-
-  fmt.Printf("hello")
   return
 }

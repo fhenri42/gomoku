@@ -11,7 +11,11 @@
     "srv-dev": "cross-env NODE_ENV=development nodemon src/server/main.js --exec babel-node",
     "srv-dist": "babel src --out-dir dist",
     "test": "mocha --compilers js:./test/compiler.js --require babel-core/register --reporter spec",
-    "coverage": "NODE_ENV=test nyc --include src  --all -r text -r lcov -r text --require babel-core/register mocha --compilers js:./test/compiler.js"
+    "coverage": "NODE_ENV=test nyc --include src  --all -r text -r lcov -r text --require babel-core/register mocha --compilers js:./test/compiler.js",
+    "make":"cd src/algo  && make && cd .. cd ..",
+    "make-re":"cd src/algo  && make re && cd .. cd ..",
+    "make-clean":"cd src/algo  && make clean && cd .. cd ..",
+    "make-fclean":"cd src/algo  && make fclean && cd .. cd .."
   },
   "dependencies": {
     "autoprefixer-loader": "^3.2.0",
