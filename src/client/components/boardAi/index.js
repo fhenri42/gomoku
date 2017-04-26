@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 import { connect } from 'react-redux'
 import activation from '../../actions/activation.js'
 import "./style.scss"
-import { createBoard, forbidenMove, findLine, findCapture } from '../utils.js'
+import { createBoard, forbidenMove, findLine, findCapture } from '../../utils.js'
 
 /*
 RULE: http://jeuxdesociete.free.fr/jeux/jeu-gomoku.html
