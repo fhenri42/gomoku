@@ -1,6 +1,6 @@
 NAME= algoGomokou
-SRC =  main.go\
-			 algo.go
+SRC =  server.go\
+			 resolution.go
 
 all: $(NAME)
 
