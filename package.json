@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "author": "Henri Floren",
   "license": "MIT",
-  "main": "dist/server/main.js",
   "scripts": {
     "eslint": "eslint src",
     "start-cli": "webpack-dev-server --colors --hot --inline --host 0.0.0.0 --port 8080",
@@ -17,7 +16,6 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "lodash": "^4.17.4",
     "node-sass": "^4.5.0",
-    "nodemon": "^1.11.0",
     "react": "^15.4.2",
     "react-dom": "^15.0.2",
     "recursive-readdir": "^2.1.0",

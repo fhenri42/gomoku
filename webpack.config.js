@@ -19,11 +19,11 @@ module.exports = {
           plugins: ['transform-decorators-legacy'],
         presets: ["es2015", "react", "stage-0"]
       }
-    }, {
+    },
+    {
       test: /\.scss$/,
-loaders: ['style-loader', 'css-loader', 'sass-loader', 'autoprefixer-loader'],
-include: src,
-
+      loaders: ['style-loader', 'css-loader', 'sass-loader', 'autoprefixer-loader'],
+      include: src,
     }]
   }
 
