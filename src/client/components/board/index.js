@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { fromJS } from 'immutable'
 import "./style.scss"
-import { createBoard, forbidenMove, findLine, findCapture } from '../utils.js'
+import { createBoard, forbidenMove, findLine, findCapture, lastStand } from '../utils.js'
 /*
 RULE: http://jeuxdesociete.free.fr/jeux/jeu-gomoku.html
 Capture: Captures are made by flanking a pair of the opponent’s stones
@@ -30,7 +30,9 @@ class Board extends Component {
     this.setState({winLine: ''})
     this.setState({board: createBoard()})
   }
+
   putADot = (x, y) => {
+      console.log(this.state.board);
     const { turn, player1, player2, winLine } = this.state
     let copy = this.state.board
     if(player1 != 10 && player2 != 10 && !winLine)  {
@@ -40,8 +42,9 @@ class Board extends Component {
       copy[x][y] = 1
 
       if (findLine(copy, x, y, 1)) {
-        this.setState({winLine: 'player 2'})
-        return;
+        console.log("LA");
+          this.setState({winLine: 'player 2'})
+          return;
       }
       const cord = findCapture(copy,x, y, 1, 2)
       if (cord) {
