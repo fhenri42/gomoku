@@ -21,18 +21,21 @@ function mapDispatchToProps(dispatch) {
   }
 }
   function  mapStateToProps(state) {
-  return {}
+    const board = state.game.getIn(['board']).toJS()
+  return {
+    board
+  }
 }
 
 export class BoardAi extends Component {
 
   static propTypes = {
     activation: PropTypes.func,
+    board: PropTypes.Array,
   }
 
   state = {
     turn :  false,
-    board: createBoard(),
     player1: 0,
     player2: 0,
     winLine: '',
@@ -44,9 +47,10 @@ export class BoardAi extends Component {
     this.setState({ winLine: '' })
     this.setState({ board: createBoard() })
   }
+
   putADot = (x, y) => {
-    const { activation } = this.props
-    const { turn, player1, player2, winLine, board} = this.state
+    const { activation, board } = this.props
+    const { turn, player1, player2, winLine,  } = this.state
     let copy = board
     if(player1 != 10 && player2 != 10 && !winLine)  {
 
@@ -66,15 +70,12 @@ export class BoardAi extends Component {
       this.setState({ board: copy })
       this.setState({turn: !turn})
 
-
-      //faire le tour de AI
-      console.log('WECHHHH');
       activation({board: copy})
-
   }
   }
   render () {
-    const { board, turn, player1, player2, winLine } = this.state
+    const { turn, player1, player2, winLine,  } = this.state
+    const { board } = this.props
     return (
       <div className="game">
       <h1 className="h1">

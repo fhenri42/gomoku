@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { fromJS } from 'immutable'
+import { connect } from 'react-redux'
+import boardSet from '../../actions/boardSet.js'
 import "./style.scss"
 import { createBoard, forbidenMove, findLine, findCapture, lastStand } from '../utils.js'
 /*
@@ -12,13 +14,28 @@ win if 10 are remove from the board.
 //forbiden
 */
 
+function mapDispatchToProps(dispatch) {
+  return {
+    boardSet: (data) => dispatch(boardSet(data)),
+  }
+}
+  function  mapStateToProps(state) {
+    const board = state.game.getIn(['board']).toJS()
+  return {
+    board
+  }
+}
+
+
 class Board extends Component {
 
-  static propTypes = {}
+  static propTypes = {
+    boardSet: PropTypes.func,
+    board: PropTypes.Array,
+  }
 
   state = {
     turn :  false,
-    board: createBoard(),
     player1: 0,
     player2: 0,
     winLine: '',
@@ -28,13 +45,13 @@ class Board extends Component {
     this.setState({player1: 0})
     this.setState({player2: 0})
     this.setState({winLine: ''})
-    this.setState({board: createBoard()})
   }
 
   putADot = (x, y) => {
       console.log(this.state.board);
     const { turn, player1, player2, winLine } = this.state
-    let copy = this.state.board
+    let copy = this.props.board
+    const { boardSet } = this.props
     if(player1 != 10 && player2 != 10 && !winLine)  {
     if (turn === true) {
 
@@ -48,39 +65,37 @@ class Board extends Component {
       }
       const cord = findCapture(copy,x, y, 1, 2)
       if (cord) {
-        console.log('blackDot');
-        console.log(require('util').inspect(cord, { depth: null }));
         copy[cord.x1][cord.y1] =  0
         copy[cord.x2][cord.y2] =  0
         this.setState({ player2: player2 + 1 })
       }
-      this.setState({ board: copy })
       this.setState({turn: !turn})
+      boardSet(copy)
     } else {
       if (!forbidenMove(copy, x, y, 2)) { return }
       copy[x][y] = 2
+
       if (findLine(copy, x, y, 2)) {
         this.setState({winLine: 'player 1'})
         return;
       }
       const cord = findCapture(copy,x, y, 2, 1)
-      console.log(cord);
       if (cord) {
-
-        console.log(require('util').inspect(cord, { depth: null }))
         copy[cord.x1][cord.y1] =  0
         copy[cord.x2][cord.y2] =  0
         this.setState({ player1: player1 + 1 })
 
       }
-      this.setState({ board: copy })
       this.setState({turn: !turn})
+      boardSet(copy)
     }
   }
   }
 
   render () {
-    const { board, turn, player1, player2, winLine } = this.state
+    const { turn, player1, player2, winLine } = this.state
+    const { board } = this.props
+
     return (
       <div className="game">
       <h1 className="h1">
@@ -115,4 +130,4 @@ class Board extends Component {
     }
   }
 
-  export default Board
+  export default connect(mapStateToProps, mapDispatchToProps)(Board)

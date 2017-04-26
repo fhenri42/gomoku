@@ -9,7 +9,6 @@ const parseUrl = (data) => {
 }
 
 const socketIoMiddleWare = socket => ({ dispatch, getState }) => {
-
   if (socket) socket.on('action', dispatch)
   return next => action => {
     if (action.type == '@@router/LOCATION_CHANGE') {
