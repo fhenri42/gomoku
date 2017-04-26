@@ -1,0 +1,19 @@
+.score {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.message {
+  -ms-transform: rotate(-5deg); /* IE 9 */
+-webkit-transform: rotate(-5deg); /* Safari */
+transform: rotate(-5deg);
+  font-size: 8vh;
+  font-weight: bold;
+  color: #8B0000;
+  margin: 20px 0px;
+  position: absolute;
+  padding: 15px 20px;
+  border: double 10px #8B0000;
+  border-radius: 5px;
+}

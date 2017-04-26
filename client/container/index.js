@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Board from '../components/board'
-import BoardAi from '../components/boardAi'
+import Game from '../components/Game'
+
 import './style.scss'
 
 class App extends Component {
@@ -26,8 +26,7 @@ class App extends Component {
           </div>
         )}
 
-        {(chose && numberPlayer === 2) && (<Board/>)}
-        {(chose && numberPlayer === 1) && (<BoardAi/>)}
+        { chose && (<Game nbPlayer={numberPlayer}/>) }
         </div>
       </div>
     )
