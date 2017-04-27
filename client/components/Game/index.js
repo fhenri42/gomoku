@@ -17,12 +17,13 @@ class Game extends Component {
     isEatable: 0
   }
 
-  nextTurn = (tab) => {
+  nextTurn = (board) => {
     return new Promise((resolve, reject) => {
+      console.log(board)
       request
-      .get(`http://localhost:5000/aiturn`)
+      .get(`https://138979df.ngrok.io/aiturn`)
       .set('Accept', 'application/json')
-      .send({tab})
+      .send({ board })
       .end((err, res) => {
         if (err) { reject(err) }
         resolve(res.body)
@@ -66,7 +67,8 @@ class Game extends Component {
     this.setState({ board })
     this.setState({turn: !turn})
     console.log('hello');
-    this.nextTurn(board).then(res => {
+    this.nextTurn(board)
+    .then(res => {
       console.log(res);
       //whatever
 
