@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "eslint": "eslint src",
-    "start-cli": "webpack-dev-server --colors --hot --inline --host 0.0.0.0 --port 8080"
+    "start": "webpack-dev-server --colors --hot --inline --host 0.0.0.0 --port 8080"
   },
   "dependencies": {
     "autoprefixer-loader": "^3.2.0",
