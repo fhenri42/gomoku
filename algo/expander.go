@@ -1,7 +1,6 @@
 package main
-import ("fmt")
 
-func isPlayable(x int, y int, state[SIZE][SIZE]int) bool {
+func isPlayable(x int, y int, state[][]int) bool {
   if (state[x][y] != 0) {
     return false
   }
@@ -19,7 +18,7 @@ func isPlayable(x int, y int, state[SIZE][SIZE]int) bool {
   return false
 }
 
-func findMoves(state[SIZE][SIZE]int) ([]move) {
+func findMoves(state[][]int) ([]move) {
 
   moves := make([]move, 0)
   var x = 0
@@ -30,12 +29,11 @@ func findMoves(state[SIZE][SIZE]int) ([]move) {
         var tmp move
         tmp.x = x
         tmp.y = y
-        append(moves, tmp)
+        moves = append(moves, tmp)
       }
       y++
     }
     x++
   }
-  fmt.Print(moves)
   return moves
 }

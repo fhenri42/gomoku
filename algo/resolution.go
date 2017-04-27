@@ -8,49 +8,63 @@ const EQUAL = 0
 const MIN_BASE = 1000000
 const MAX_BASE = -1000000
 const AMP = 2
-const SIZE = SIZE
+const SIZE = 19
 
 type move struct {
   x int
   y int
 }
 
-func getBestState(state [SIZE][SIZE]int) [SIZE][SIZE]int {
-  fmt.Printf("in the resolution:")
+func getBestState(state [][]int) [][]int {
+  fmt.Print("in the resolution:")
 
   coups := findMoves(state) // REMPLI UN ARRAY AVEC LES COUPS POTENTIELS
-  var bestCoup *moveNode = nil
+  var bestCoup *move = nil
   var max = 0
+  fmt.Print("\n-------------\n")
+  fmt.Print(coups)
+  fmt.Print("\n-------------\n")
 
   for _,coup := range coups { // PARCOURS LES COUPS
     newState := getNewState(state, coup, PLAYER2) // SIMULE LE COUP DANS UNE GRILLE
+    fmt.Print("\n-------------\n")
+    fmt.Print(newState)
+    fmt.Print("\n-------------\n")
     poid := calcValue(newState, 1) // CALCULE LE POID DE CE COUP
+    fmt.Print("\n-------------\n")
+    fmt.Print(poid)
+    fmt.Print("\n-------------\n")
+
     if (bestCoup == nil || poid > max) {
       max = poid
-      bestCoup = coup // MET A JOUR LE MEILLEUR COUP A JOUER (MAX)
+      bestCoup = &coup // MET A JOUR LE MEILLEUR COUP A JOUER (MAX)
     }
   }
-  return getNewState(state, bestCoup, PLAYER2) // RETURN LA GRILLE ASSOCIEE A CE COUP
+  return getNewState(state, *bestCoup, PLAYER2) // RETURN LA GRILLE ASSOCIEE A CE COUP
 }
 
-func getNewState(state [SIZE][SIZE]int, move moveNode, player int) [SIZE][SIZE]int {
-  var newState [SIZE][SIZE]int
+func getNewState(state [][]int, coup move, player int) [][]int {
+  newState := make([][]int, SIZE)
 
-  for i, line := range state {
-    var newLine [SIZE]int
-    for j, pion := range line {
+  var i = 0
+  for i < SIZE {
+    newLine := make([]int, SIZE)
+    var j = 0
+    for j < SIZE {
       if (i == coup.x && j == coup.y) {
         newLine[j] = player
       } else {
-        newLine[j] = pion
+        newLine[j] = state[i][j]
       }
+      j++
     }
     newState[i] = newLine
+    i++
   }
   return newState
 }
 
-func calcValue(state [SIZE][SIZE]int, depth int) int {
+func calcValue(state [][]int, depth int) int {
   end, winner := endGame(state) // OBSERVE LA GRILLE POUR SAVOIR SI C'EST LA FIN
   var player = 0
   var max = MAX_BASE
@@ -92,30 +106,25 @@ func calcValue(state [SIZE][SIZE]int, depth int) int {
   }
 }
 
-func endGame(state [SIZE][SIZE]int) (bool, int) {
+func endGame(state [][]int) (bool, int) {
   for i, line := range state {
     for j, pion := range line {
       if (isUnbreakableLine(i, j, state)) {
-        return (true, pion)
+        return true, pion
       }
     }
   }
   return false, 0
 }
 
-func isUnbreakableLine(x int, y int, state [SIZE][SIZE]int) bool {
-  var pion = state[x][y]
+func isUnbreakableLine(i int, j int, state [][]int) bool {
+  var pion = state[i][j]
 
   if (pion == 0) {
     return false
   }
 
-  if (i + 4 <= SIZE
-    && state[i][j] === pion
-    && state[i + 1][j] === pion
-    && state[i + 2][j] === pion
-    && state[i + 3][j] === pion
-    && state[i + 4][j] === pion) {
+  if i + 4 <= SIZE && state[i][j] == pion && state[i + 1][j] == pion && state[i + 2][j] == pion && state[i + 3][j] == pion && state[i + 4][j] == pion {
     // && !eatable(state, i, j)
     // && !eatable(state, i + 1, j)
     // && !eatable(state, i + 2, j)
@@ -123,12 +132,7 @@ func isUnbreakableLine(x int, y int, state [SIZE][SIZE]int) bool {
     // && !eatable(state, i + 4, j)) {
     return true
 
-  } else if (j + 4 <= SIZE
-    && state[i][j] === pion
-    && state[i][j + 1] === pion
-    && state[i][j + 2] === pion
-    && state[i][j + 3] === pion
-    && state[i][j + 4] === pion) {
+  } else if j + 4 <= SIZE && state[i][j] == pion && state[i][j + 1] == pion && state[i][j + 2] == pion && state[i][j + 3] == pion && state[i][j + 4] == pion {
     // && !eatable(state, i, j + 1)
     // && !eatable(state, i, j + 2)
     // && !eatable(state, i, j + 3)
@@ -136,14 +140,7 @@ func isUnbreakableLine(x int, y int, state [SIZE][SIZE]int) bool {
     // && !eatable(state, i, j + 5)) {
     return true
 
-  } else if (
-    j + 4 <= SIZE
-    && i + 4 <= SIZE
-    && state[i][j] === pion
-    && state[i + 1][j + 1] === pion
-    && state[i + 2][j + 2] === pion
-    && state[i + 3][j + 3] === pion
-    && state[i + 4][j + 4] === pion) {
+  } else if j + 4 <= SIZE && i + 4 <= SIZE && state[i][j] == pion && state[i + 1][j + 1] == pion && state[i + 2][j + 2] == pion && state[i + 3][j + 3] == pion && state[i + 4][j + 4] == pion {
     // && !eatable(state, i, j)
     // && !eatable(state, i + 1, j + 1)
     // && !eatable(state, i + 2, j + 2)
@@ -151,13 +148,7 @@ func isUnbreakableLine(x int, y int, state [SIZE][SIZE]int) bool {
     // && !eatable(state, i + 4, j + 4)) {
     return true
 
-  } else if (j - 4 >= 0
-    && i + 4 <= SIZE
-    && state[i][j] === pion
-    && state[i + 1][j - 1] === pion
-    && state[i + 2][j - 2] === pion
-    && state[i + 3][j - 3] === pion
-    && state[i + 4][j - 4] === pion) {
+  } else if j - 4 >= 0 && i + 4 <= SIZE && state[i][j] == pion && state[i + 1][j - 1] == pion && state[i + 2][j - 2] == pion && state[i + 3][j - 3] == pion && state[i + 4][j - 4] == pion {
     // && !eatable(state, i, j)
     // && !eatable(state, i + 1, j - 1)
     // && !eatable(state, i + 2, j - 2)
@@ -172,6 +163,6 @@ func isUnbreakableLine(x int, y int, state [SIZE][SIZE]int) bool {
 //
 // }
 
-func evaluate(state [SIZE][SIZE]int) int {
+func evaluate(state [][]int) int {
   return 10
 }
