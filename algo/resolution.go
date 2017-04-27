@@ -1,11 +1,9 @@
 package main
-import (
-"fmt"
-)
+import ("fmt")
 
-func resolution(newTab[20][20]int) ([20][20]int, bool) {
+func resolution(newTab[20][20]int) ([20][20]int) {
   fmt.Printf("in the resolution:")
   fmt.Print(newTab)
   fmt.Print("\n")
-  return newTab, false
+  return newTab
 }
