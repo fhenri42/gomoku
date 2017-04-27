@@ -18,6 +18,7 @@ class Game extends Component {
 
   nextTurn = (board) => {
     return new Promise((resolve, reject) => {
+
       console.log(board)
       request
       .post(`http://localhost:5000/aiturn`)

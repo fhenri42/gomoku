@@ -1,10 +1,10 @@
 package main
-//import ("fmt")
+import ("fmt")
 
-func resolution(newTab[20][20]int) ([20][20]int) {
+func resolution(newTab[][]int) ([][]int) {
   //fmt.Printf("in the resolution:")
-  //fmt.Print(newTab)
+  fmt.Print(newTab)
   //fmt.Print("\n")
-  findMove(newTab)
+//  findMoves(newTab)
   return newTab
 }
