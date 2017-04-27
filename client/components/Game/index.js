@@ -70,10 +70,10 @@ class Game extends Component {
 
   putADotMulti = (x, y) => {
     console.log('Multi')
-    const { board, turn } = this.state
-    board[x][y] = 2
-    this.setState({ board })
-    this.setState({turn: !turn})
+    // const { board, turn } = this.state
+    // board[x][y] = 2
+    // this.setState({ board })
+    // this.setState({turn: !turn})
   //   const { turn, player1, player2, winLine } = this.state
   //   let copy = this.props.board
   //   const { boardSet, SetisEatable, isEatable } = this.props
@@ -124,9 +124,26 @@ class Game extends Component {
 
     return (
       <div className="game">
-        <Score player1={player1} player2={player2} winLine={winLine} turn={turn}/>
+
+        <h1 className="playertitle">
+          { turn === true ? "Player 1" : "Player 2" }
+        </h1>
+
         <Board board={board} putADot={nbPlayer == 1 ? this.putADotSolo : this.putADotMulti} />
+
+        {(player1 === 10 || player2 === 10 || winLine) && (
+          <div className="message">
+            { (player1 === 10 || winLine === 'player 1') ? "Player 1 Win" : "Player 2 win" }
+          </div>
+        )}
+
+        <div className='score'>
+          <p> {`Player 1 - ${player1}`} </p>
+          <p> {` Player 2 - ${player2}`} </p>
+        </div>
+
         { winLine && (<button onClick={() => this.newGame()}>{ 'play again' }</button>) }
+
       </div>
     )
   }

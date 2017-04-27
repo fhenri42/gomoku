@@ -1,18 +1,34 @@
-.board {
+.playertitle {
+  color: #c68c53;
+  margin: 2vh;
+}
+
+.game {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-top: solid 0.1vh #ddd;
-  border-left: solid 0.1vh #ddd;
-  outline-color: #DAA520;
 }
 
-.game {
-  margin-top: 200px;
+.score {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  width: 45vh;
+  margin: 2vh;
+  width: 40%;
+}
+
+.message {
+  -ms-transform: rotate(-5deg); /* IE 9 */
+-webkit-transform: rotate(-5deg); /* Safari */
+transform: rotate(-5deg);
+  font-size: 8vh;
+  font-weight: bold;
+  color: #d2a679;
+  margin: 20px 0px;
+  position: absolute;
+  padding: 15px 20px;
+  border: double 10px #d2a679;
+  border-radius: 5px;
 }
