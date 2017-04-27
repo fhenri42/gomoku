@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { createBoard, forbidenMove, findLine, findCapture, lastStand } from '../../utils/index.js'
-
+import request from 'superagent'
 import Score from '../Score'
 import Board from '../Board'
 
@@ -15,6 +15,19 @@ class Game extends Component {
     winLine: '',
     board: createBoard(),
     isEatable: 0
+  }
+
+  nextTurn = (tab) => {
+    return new Promise((resolve, reject) => {
+      request
+      .get(`http://localhost:5000/aiturn`)
+      .set('Accept', 'application/json')
+      .send({tab})
+      .end((err, res) => {
+        if (err) { reject(err) }
+        resolve(res.body)
+      })
+    })
   }
 
   newGame = () => {
@@ -52,6 +65,12 @@ class Game extends Component {
     board[x][y] = 2
     this.setState({ board })
     this.setState({turn: !turn})
+    console.log('hello');
+    this.nextTurn(board).then(res => {
+      console.log(res);
+      //whatever
+
+    })
   //   const { turn, player1, player2, winLine } = this.state
   //   let copy = this.props.board
   //   const { boardSet, SetisEatable, isEatable } = this.props
@@ -93,6 +112,7 @@ class Game extends Component {
   //     boardSet(copy)
   //   }
   // }
+
   }
 
   render () {
@@ -102,7 +122,7 @@ class Game extends Component {
     return (
       <div className="game">
         <Score player1={player1} player2={player2} winLine={winLine} turn={turn}/>
-        <Board board={board} putADot={nbPlayer == 1 ? this.putADotSolo : this.putADotMulti} />
+        <Board board={board} putADot={nbPlayer == 1 ? this.putADotMulti : this.putADotSolo} />
         { winLine && (<button onClick={() => this.newGame()}>{ 'play again' }</button>) }
       </div>
     )
