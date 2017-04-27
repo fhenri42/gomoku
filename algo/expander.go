@@ -2,6 +2,9 @@ package main
 import ("fmt")
 
 func isPlayable(x int, y int, state[SIZE][SIZE]int) bool {
+  if (state[x][y] != 0) {
+    return false
+  }
   var i = -AMP
   for i <= AMP {
     var j = -AMP

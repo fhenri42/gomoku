@@ -8,7 +8,7 @@ const EQUAL = 0
 const MIN_BASE = 1000000
 const MAX_BASE = -1000000
 const AMP = 2
-const SIZE = 19
+const SIZE = SIZE
 
 type move struct {
   x int
@@ -38,11 +38,11 @@ func getNewState(state [SIZE][SIZE]int, move moveNode, player int) [SIZE][SIZE]i
 
   for i, line := range state {
     var newLine [SIZE]int
-    for j, bloc := range line {
+    for j, pion := range line {
       if (i == coup.x && j == coup.y) {
         newLine[j] = player
       } else {
-        newLine[j] = bloc
+        newLine[j] = pion
       }
     }
     newState[i] = newLine
@@ -93,8 +93,84 @@ func calcValue(state [SIZE][SIZE]int, depth int) int {
 }
 
 func endGame(state [SIZE][SIZE]int) (bool, int) {
-  return false, 1
+  for i, line := range state {
+    for j, pion := range line {
+      if (isUnbreakableLine(i, j, state)) {
+        return (true, pion)
+      }
+    }
+  }
+  return false, 0
 }
+
+func isUnbreakableLine(x int, y int, state [SIZE][SIZE]int) bool {
+  var pion = state[x][y]
+
+  if (pion == 0) {
+    return false
+  }
+
+  if (i + 4 <= SIZE
+    && state[i][j] === pion
+    && state[i + 1][j] === pion
+    && state[i + 2][j] === pion
+    && state[i + 3][j] === pion
+    && state[i + 4][j] === pion) {
+    // && !eatable(state, i, j)
+    // && !eatable(state, i + 1, j)
+    // && !eatable(state, i + 2, j)
+    // && !eatable(state, i + 3, j)
+    // && !eatable(state, i + 4, j)) {
+    return true
+
+  } else if (j + 4 <= SIZE
+    && state[i][j] === pion
+    && state[i][j + 1] === pion
+    && state[i][j + 2] === pion
+    && state[i][j + 3] === pion
+    && state[i][j + 4] === pion) {
+    // && !eatable(state, i, j + 1)
+    // && !eatable(state, i, j + 2)
+    // && !eatable(state, i, j + 3)
+    // && !eatable(state, i, j + 4)
+    // && !eatable(state, i, j + 5)) {
+    return true
+
+  } else if (
+    j + 4 <= SIZE
+    && i + 4 <= SIZE
+    && state[i][j] === pion
+    && state[i + 1][j + 1] === pion
+    && state[i + 2][j + 2] === pion
+    && state[i + 3][j + 3] === pion
+    && state[i + 4][j + 4] === pion) {
+    // && !eatable(state, i, j)
+    // && !eatable(state, i + 1, j + 1)
+    // && !eatable(state, i + 2, j + 2)
+    // && !eatable(state, i + 3, j + 3)
+    // && !eatable(state, i + 4, j + 4)) {
+    return true
+
+  } else if (j - 4 >= 0
+    && i + 4 <= SIZE
+    && state[i][j] === pion
+    && state[i + 1][j - 1] === pion
+    && state[i + 2][j - 2] === pion
+    && state[i + 3][j - 3] === pion
+    && state[i + 4][j - 4] === pion) {
+    // && !eatable(state, i, j)
+    // && !eatable(state, i + 1, j - 1)
+    // && !eatable(state, i + 2, j - 2)
+    // && !eatable(state, i + 3, j - 3)
+    // && !eatable(state, i + 4, j - 4)) {
+    return true
+  }
+  return false
+}
+
+// func eatable() bool {
+//
+// }
 
 func evaluate(state [SIZE][SIZE]int) int {
   return 10
