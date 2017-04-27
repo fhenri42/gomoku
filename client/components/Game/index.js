@@ -17,12 +17,13 @@ class Game extends Component {
     isEatable: 0
   }
 
-  nextTurn = (tab) => {
+  nextTurn = (board) => {
     return new Promise((resolve, reject) => {
+      console.log(board)
       request
       .post(`http://localhost:5000/aiturn`)
       .set('Accept', 'application/json')
-      .send({board})
+      .send({ board })
       .end((err, res) => {
         if (err) { reject(err) }
         resolve(res.body)
@@ -39,6 +40,7 @@ class Game extends Component {
   }
 
   putADotSolo = (x, y) => {
+    console.log('Solo')
     const { turn, player1, player2, winLine, board } = this.state
     if (player1 != 10 && player2 != 10 && !winLine) {
 
@@ -58,19 +60,20 @@ class Game extends Component {
       this.setState({ board })
       this.setState({ turn: !turn })
     }
-  }
-
-  putADotMulti = (x, y) => {
-    const { board, turn } = this.state
-    board[x][y] = 2
-    this.setState({ board })
-    this.setState({turn: !turn})
-    console.log('hello');
-    this.nextTurn(board).then(res => {
+    this.nextTurn(board)
+    .then(res => {
       console.log(res);
       //whatever
 
     })
+  }
+
+  putADotMulti = (x, y) => {
+    console.log('Multi')
+    const { board, turn } = this.state
+    board[x][y] = 2
+    this.setState({ board })
+    this.setState({turn: !turn})
   //   const { turn, player1, player2, winLine } = this.state
   //   let copy = this.props.board
   //   const { boardSet, SetisEatable, isEatable } = this.props
@@ -122,7 +125,7 @@ class Game extends Component {
     return (
       <div className="game">
         <Score player1={player1} player2={player2} winLine={winLine} turn={turn}/>
-        <Board board={board} putADot={nbPlayer == 1 ? this.putADotMulti : this.putADotSolo} />
+        <Board board={board} putADot={nbPlayer == 1 ? this.putADotSolo : this.putADotMulti} />
         { winLine && (<button onClick={() => this.newGame()}>{ 'play again' }</button>) }
       </div>
     )
