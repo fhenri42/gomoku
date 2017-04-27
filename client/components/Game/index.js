@@ -21,7 +21,7 @@ class Game extends Component {
     return new Promise((resolve, reject) => {
       console.log(board)
       request
-      .get(`https://138979df.ngrok.io/aiturn`)
+      .post(`http://localhost:5000/aiturn`)
       .set('Accept', 'application/json')
       .send({ board })
       .end((err, res) => {
@@ -62,7 +62,7 @@ class Game extends Component {
     }
     this.nextTurn(board)
     .then(res => {
-      console.log(res);
+      console.log('res =',res);
       //whatever
 
     })
