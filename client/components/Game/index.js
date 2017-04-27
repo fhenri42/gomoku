@@ -20,9 +20,9 @@ class Game extends Component {
   nextTurn = (tab) => {
     return new Promise((resolve, reject) => {
       request
-      .get(`http://localhost:5000/aiturn`)
+      .post(`http://localhost:5000/aiturn`)
       .set('Accept', 'application/json')
-      .send({tab})
+      .send({board})
       .end((err, res) => {
         if (err) { reject(err) }
         resolve(res.body)
