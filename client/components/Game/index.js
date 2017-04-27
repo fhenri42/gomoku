@@ -62,7 +62,7 @@ class Game extends Component {
     }
     this.nextTurn(board)
     .then(res => {
-      console.log(res);
+      console.log('res =',res);
       //whatever
 
     })
