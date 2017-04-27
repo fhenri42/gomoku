@@ -1,9 +1,10 @@
 package main
-import ("fmt")
+//import ("fmt")
 
 func resolution(newTab[20][20]int) ([20][20]int) {
-  fmt.Printf("in the resolution:")
-  fmt.Print(newTab)
-  fmt.Print("\n")
+  //fmt.Printf("in the resolution:")
+  //fmt.Print(newTab)
+  //fmt.Print("\n")
+  findMove(newTab)
   return newTab
 }

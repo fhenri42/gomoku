@@ -37,8 +37,8 @@ func parse(w http.ResponseWriter, req *http.Request) {
 			log.Println("err Unmrshall",err)
 			return
 		}
-
-		//data.board = resolution(data.board)
+		fmt.Print(data)
+		data.board = resolution(data.board)
 
 		jData, err := json.Marshal(data.board)
 		if err != nil {

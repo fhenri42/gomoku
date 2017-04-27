@@ -21,8 +21,8 @@ class Game extends Component {
       console.log(board)
       request
       .post(`http://localhost:5000/aiturn`)
+      .send({ board: board })
       .set('Accept', 'application/json')
-      .send({ board })
       .end((err, res) => {
         if (err) { reject(err) }
         resolve(res.body)
