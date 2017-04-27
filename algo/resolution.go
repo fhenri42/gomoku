@@ -1,5 +1,5 @@
 package main
-//import ("fmt")
+import ("fmt")
 
 const PLAYER1 = 1
 const PLAYER2 = 2
@@ -7,8 +7,15 @@ const DEPTH_MAX = 4
 const EQUAL = 0
 const MIN_BASE = 1000000
 const MAX_BASE = -1000000
+const AMP = 2
+const SIZE = 19
 
-func getBestState(state [20][20]int) [20][20]int {
+type move struct {
+  x int
+  y int
+}
+
+func getBestState(state [SIZE][SIZE]int) [SIZE][SIZE]int {
   fmt.Printf("in the resolution:")
 
   coups := findMoves(state) // REMPLI UN ARRAY AVEC LES COUPS POTENTIELS
@@ -26,11 +33,11 @@ func getBestState(state [20][20]int) [20][20]int {
   return getNewState(state, bestCoup, PLAYER2) // RETURN LA GRILLE ASSOCIEE A CE COUP
 }
 
-func getNewState(state [20][20]int, move moveNode, player int) [20][20]int {
-  var newState [20][20]int
+func getNewState(state [SIZE][SIZE]int, move moveNode, player int) [SIZE][SIZE]int {
+  var newState [SIZE][SIZE]int
 
   for i, line := range state {
-    var newLine [20]int
+    var newLine [SIZE]int
     for j, bloc := range line {
       if (i == coup.x && j == coup.y) {
         newLine[j] = player
@@ -43,7 +50,7 @@ func getNewState(state [20][20]int, move moveNode, player int) [20][20]int {
   return newState
 }
 
-func calcValue(state [20][20]int, depth int) int {
+func calcValue(state [SIZE][SIZE]int, depth int) int {
   end, winner := endGame(state) // OBSERVE LA GRILLE POUR SAVOIR SI C'EST LA FIN
   var player = 0
   var max = MAX_BASE
@@ -85,10 +92,10 @@ func calcValue(state [20][20]int, depth int) int {
   }
 }
 
-func endGame(state [20][20]int) (bool, int) {
+func endGame(state [SIZE][SIZE]int) (bool, int) {
   return false, 1
 }
 
-func evaluate(state [20][20]int) int {
+func evaluate(state [SIZE][SIZE]int) int {
   return 10
 }
