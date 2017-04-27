@@ -3,13 +3,13 @@ import ("fmt")
 
 
 const AMPCHOSSE = 2
-type moveNoeu struct {
+type moveNoeued struct {
   x int
   y int
 }
 
-func expand(x int, y int, newTab[20][20]int, moves *[]moveNoeu) {
-  var tmp moveNoeu
+func expand(x int, y int, newTab[20][20]int, moves *[]moveNoeued) {
+  var tmp moveNoeued
   fmt.Print("oeuo")
   var amp = 1
   for amp <= AMPCHOSSE {
@@ -27,9 +27,9 @@ func expand(x int, y int, newTab[20][20]int, moves *[]moveNoeu) {
 
 }
 
-func findMove(newTab[20][20]int) ([]moveNoeu) {
+func findMoves(newTab[20][20]int) ([]moveNoeued) {
 
-  moves := make([]moveNoeu, 1)
+  moves := make([]moveNoeued, 1)
   var x = 0
   for x < 20 {
     var y = 0
