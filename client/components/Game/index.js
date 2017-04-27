@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { createBoard, forbidenMove, findLine, findCapture, lastStand } from '../../utils/index.js'
 import request from 'superagent'
-import Score from '../Score'
 import Board from '../Board'
 
 import "./style.scss"
