@@ -38,7 +38,7 @@ func parse(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		fmt.Print(data)
-		data.board = resolution(data.board)
+		//data.board = getBestState(data.board)
 
 		jData, err := json.Marshal(data.board)
 		if err != nil {

@@ -61,9 +61,9 @@ class Game extends Component {
     }
     this.nextTurn(board)
     .then(res => {
-      console.log('res =',res);
-      //whatever
-
+      console.log('res =',res)
+      this.setState({ board: res })
+      this.setState({ turn: !turn })
     })
   }
 
