@@ -1,7 +1,7 @@
 NAME= algoGomokou
 SRC =  server.go\
 			 resolution.go\
-			 findMove.go
+			 expander.go
 
 all: $(NAME)
 
