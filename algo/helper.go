@@ -1,6 +1,5 @@
 package main
 
-
 func minCoup(coups []move) *move {
   var min = MIN_BASE
   var minCoup *move
@@ -18,10 +17,10 @@ func maxCoup(coups []move) *move {
   var max = MAX_BASE
   var maxCoup *move
 
-  for _,coup := range coups {
+  for index,coup := range coups {
     if (coup.poid > max) {
-      max = coup.poid
-      maxCoup = &coup
+      max = coups[index].poid
+      maxCoup = &coups[index]
     }
   }
   return maxCoup

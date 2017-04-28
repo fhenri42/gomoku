@@ -8,7 +8,7 @@ func isPlayable(x int, y int, state[][]int) bool {
   for i <= AMP {
     var j = -AMP
     for j <= AMP {
-      if (x + i > 0 && x + i < SIZE && y + j > 0 && y + j < SIZE && state[x + i][y + j] != 0) {
+      if (x + i > 0 && x + i < SIZE - 1 && y + j > 0 && y + j < SIZE - 1 && state[x + i][y + j] != 0) {
         return true
       }
       j++
@@ -22,9 +22,9 @@ func findMoves(state[][]int) ([]move) {
 
   moves := make([]move, 0)
   var x = 0
-  for x < SIZE {
+  for x < SIZE - 1 {
     var y = 0
-    for y < SIZE {
+    for y < SIZE - 1 {
       if (isPlayable(x, y, state)) {
         var tmp move
         tmp.x = x

@@ -18,7 +18,7 @@ class Board extends Component {
             <div className='line'>
               { line.map((bloc, y) => {
 
-                  if (bloc === 0) { return(<div className='bloc'> { (x != 0 && y != 0 && x != 19 && y != 19) && (<div className='noDot' onClick={()=> putADot(x,y)}/>) } </div>) }
+                  if (bloc === 0) { return(<div className='bloc'> { (x != 18 && y != 18) && (<div className='noDot' onClick={()=> putADot(x,y)}/>) } </div>) }
 
                   else if (bloc === 1) { return(< div className='bloc'> <div className='blackDot'/> </div>) }
 

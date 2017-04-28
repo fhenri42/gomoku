@@ -42,14 +42,15 @@ class Game extends Component {
   putADotSolo = (x, y) => {
     console.log('Solo')
     const { turn, player1, player2, winLine, board } = this.state
+    console.log(this.state)
     if (!turn) {
       if (player1 != 10 && player2 != 10 && !winLine) {
         if (!forbidenMove(board, x, y, 1)) { return }
         board[x][y] = 1
-        if (findLine(board, x, y, 1)) {
-          this.setState({ winLine: 'player 2' })
-          return;
-        }
+        // if (findLine(board, x, y, 1)) {
+        //   this.setState({ winLine: 'player 2' })
+        //   return;
+        // }
         const coord = findCapture(board, x, y, 1, 2)
         if (coord) {
           board[coord.x1][coord.y1] = 0
@@ -61,7 +62,9 @@ class Game extends Component {
       }
       this.nextTurn({board, AiScore: player2, PlayerScore: player1 }).then(res => {
         console.log('res = ', res)
-        this.setState({ board: res })
+        this.setState({ board: res.board })
+        this.setState({ player1: res.playerScore })
+        this.setState({ player2: res.aiScore })
         this.setState({ turn: false })
       })
     }

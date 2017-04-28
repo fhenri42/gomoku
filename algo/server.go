@@ -9,8 +9,8 @@ import (
 
 type Data struct {
 	Board [][]int `json:"board"`
-	PlayerScore int
-	AiScore int
+	PlayerScore int `json:"playerScore"`
+	AiScore int `json:"aiScore"`
 }
 
 func parse(w http.ResponseWriter, req *http.Request) {
@@ -37,10 +37,12 @@ func parse(w http.ResponseWriter, req *http.Request) {
 	}
 	log.Println(data.AiScore)
 
-	if len(data.Board) == 20 {
-		tabToSend := getBestState(data.Board, data.AiScore, data.PlayerScore)
+	log.Println(data)
+	if len(data.Board) == 19 {
+		var response Data
+		response.Board, response.AiScore, response.PlayerScore = getBestState(data.Board, data.AiScore, data.PlayerScore)
 
-		jData, err := json.Marshal(tabToSend)
+		jData, err := json.Marshal(response)
 
 		if err != nil {
 			log.Println("err  Marshal",err)
