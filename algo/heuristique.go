@@ -5,13 +5,14 @@ import ("fmt")
 
 func findScoreLine(state[][]int, numberAligne int ,pion int) {
 var y = 0
+
 for y < SIZE {
   var x = 0
     for x < SIZE {
       var t = 0
       var continu = true
       for t <= numberAligne  && continu {
-        if y + numberAligne <= SIZE &&  state[y + t][x] === pion {
+        if y + numberAligne <= SIZE && state[y][x] === pion && state[y + t][x] === pion {
           t++
           } else {
             continu = false
@@ -23,7 +24,7 @@ for y < SIZE {
       t = 0
       continu = true
       for t <= numberAligne  && continu {
-        if (x + 4 <= SIZE && state[y][x] === pion && state[y][x + 1] === pion && state[y][x + 2] === pion && state[y][x + 3] === pion && state[y][x + 4] === pion) {
+        if (x + 4 <= SIZE && state[y][x] === pion  && state[y][x + t] === pion) {
           t++
           } else {
             continu = false
@@ -33,21 +34,16 @@ for y < SIZE {
         }
       }
 
-
-
-
-
-
-
-      if (x + 4 <= SIZE && state[y][x] === pion && state[y][x + 1] === pion && state[y][x + 2] === pion && state[y][x + 3] === pion && state[y][x + 4] === pion) {
-        return true
-      }
-      if (x + 4 <= 19 && y + 4 <= 19 && state[y][x] === pion && state[y + 1][x + 1] === pion && state[y + 2][x + 2] === pion && state[y + 3][x + 3] === pion && state[y + 4][x + 4] === pion) {
-        return true
-      }
-      if ( x - 4 >= 0 && y + 4 <= 19 && state[y][x] === pion && state[y + 1][x - 1] === pion && state[y + 2][x - 2] === pion && state[y + 3][x - 3] === pion && state[y + 4][x - 4] === pion)  {
-        return true
-      }
+      //
+      // if (x + 4 <= SIZE && state[y][x] === pion && state[y][x + 1] === pion && state[y][x + 2] === pion && state[y][x + 3] === pion && state[y][x + 4] === pion) {
+      //   return true
+      // }
+      // if (x + 4 <= 19 && y + 4 <= 19 && state[y][x] === pion && state[y + 1][x + 1] === pion && state[y + 2][x + 2] === pion && state[y + 3][x + 3] === pion && state[y + 4][x + 4] === pion) {
+      //   return true
+      // }
+      // if ( x - 4 >= 0 && y + 4 <= 19 && state[y][x] === pion && state[y + 1][x - 1] === pion && state[y + 2][x - 2] === pion && state[y + 3][x - 3] === pion && state[y + 4][x - 4] === pion)  {
+      //   return true
+      // }
     }
   }
 }
