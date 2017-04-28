@@ -3,7 +3,7 @@ import ("fmt")
 
 const PLAYER1 = 1
 const PLAYER2 = 2
-const DEPTH_MAX = 4
+const DEPTH_MAX = 1
 const EQUAL = 0
 const MIN_BASE = 1000000
 const MAX_BASE = -1000000
@@ -15,20 +15,20 @@ type move struct {
   y int
 }
 
-func getBestState(state [][]int) [][]int {
+func getBestState(state [][]int, AiScore int, PlayerScore int) [][]int {
   fmt.Print("in the resolution:")
 
   coups := findMoves(state) // REMPLI UN ARRAY AVEC LES COUPS POTENTIELS
   var bestCoup *move = nil
   var max = 0
-  fmt.Print("\n-------------\n")
-  fmt.Print(coups)
-  fmt.Print("\n-------------\n")
+  // fmt.Print("\n-------------\n")
+  // //fmt.Print(coups)
+  // fmt.Print("\n-------------\n")
 
   for _,coup := range coups { // PARCOURS LES COUPS
 
-    state[coup.x][coup.y] = PLAYER1
-    poid := calcValue(state, 1) // CALCULE LE POID DE CE COUP
+    state[coup.x][coup.y] = PLAYER2
+    poid := calcValue(state, 1, AiScore, PlayerScore) // CALCULE LE POID DE CE COUP
     state[coup.x][coup.y] = 0
 
     if (bestCoup == nil || poid > max) {
@@ -36,10 +36,11 @@ func getBestState(state [][]int) [][]int {
       bestCoup = &coup // MET A JOUR LE MEILLEUR COUP A JOUER (MAX)
     }
   }
-  return getNewState(state, *bestCoup, PLAYER2) // RETURN LA GRILLE ASSOCIEE A CE COUP
+  state[bestCoup.x][bestCoup.y] = PLAYER2
+  return state // RETURN LA GRILLE ASSOCIEE A CE COUP
 }
 
-func calcValue(state [][]int, depth int) int {
+func calcValue(state [][]int, depth int, AiScore int, PlayerScore int) int {
   end, winner := endGame(state) // OBSERVE LA GRILLE POUR SAVOIR SI C'EST LA FIN
   var player = 0
   var max = MAX_BASE
@@ -54,7 +55,7 @@ func calcValue(state [][]int, depth int) int {
       return MAX_BASE + depth
     }
   } else if (depth == DEPTH_MAX) { // SINON SI ON EST ARRIVEE A LA PROFONDEUR MAX
-    return evaluate(state) // ON EVALUE LES NOEUDS FINAUX GRACE A UNE HEURISTIQUE
+    return evaluate(state, AiScore, PlayerScore) // ON EVALUE LES NOEUDS FINAUX GRACE A UNE HEURISTIQUE
   } else { // SINON ON CALCULE EN ALTERNANCE MIN/MAX PAR RAPPORT AUX EVALUATIONS DES NOEUD FINAUX EN REMONTANT JUSQUA PROFONDEUR 0
     if (depth % 2 == 1) {
       player = PLAYER1
@@ -64,8 +65,11 @@ func calcValue(state [][]int, depth int) int {
 
     coups := findMoves(state)
     for _,coup := range coups {
-      newState := getNewState(state, coup, player)
-      poid := calcValue(newState, depth + 1)
+
+      state[coup.x][coup.y] = player
+      poid := calcValue(state, depth + 1, AiScore, PlayerScore)
+      state[coup.x][coup.y] = 0
+
       if (poid > max) {
         max = poid
       }
@@ -87,7 +91,7 @@ func endGame(state [][]int) (bool, int) {
     var y = 0
     for y < SIZE {
       if (isUnbreakableLine(x, y, state)) {
-        return true, pion
+        return true, state[x][y]
       }
       y++
     }
@@ -142,6 +146,7 @@ func isUnbreakableLine(i int, j int, state [][]int) bool {
 //
 // }
 
-func evaluate(state [][]int) int {
+func evaluate(state [][]int, AiScore int, PlayerScore int) int {
+//  findWeight(state)
   return 10
 }

@@ -1,7 +1,8 @@
 NAME= algoGomokou
 SRC =  server.go\
 			 resolution.go\
-			 expander.go
+			 expander.go\
+			#heuristique.go\
 
 all: $(NAME)
 

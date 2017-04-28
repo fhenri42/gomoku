@@ -16,13 +16,13 @@ class Game extends Component {
     isEatable: 0
   }
 
-  nextTurn = (board) => {
+  nextTurn = (info) => {
     return new Promise((resolve, reject) => {
 
-      console.log(board)
+      //console.log(board)
       request
       .post(`http://localhost:5000/aiturn`)
-      .send({ board: board })
+      .send(info)
       .set('Accept', 'application/json')
       .end((err, res) => {
         if (err) { reject(err) }
@@ -59,7 +59,7 @@ class Game extends Component {
         this.setState({ board })
         this.setState({ turn: !turn })
       }
-      this.nextTurn(board).then(res => {
+      this.nextTurn({board, AiScore: player2, PlayerScore: player1 }).then(res => {
         console.log('res = ', res)
         this.setState({ board: res })
         this.setState({ turn: false })
