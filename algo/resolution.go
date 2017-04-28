@@ -13,29 +13,23 @@ const SIZE = 19
 type move struct {
   x int
   y int
+  poid int
 }
 
 func getBestState(state [][]int, AiScore int, PlayerScore int) [][]int {
   fmt.Print("in the resolution:")
 
   coups := findMoves(state) // REMPLI UN ARRAY AVEC LES COUPS POTENTIELS
-  var bestCoup *move = nil
-  var max = 0
-  // fmt.Print("\n-------------\n")
-  // //fmt.Print(coups)
-  // fmt.Print("\n-------------\n")
+  var bestCoup *move
 
   for _,coup := range coups { // PARCOURS LES COUPS
 
     state[coup.x][coup.y] = PLAYER2
-    poid := calcValue(state, 1, AiScore, PlayerScore) // CALCULE LE POID DE CE COUP
+    coup.poid = calcValue(state, 1, AiScore, PlayerScore) // CALCULE LE POID DE CE COUP
     state[coup.x][coup.y] = 0
-
-    if (bestCoup == nil || poid > max) {
-      max = poid
-      bestCoup = &coup // MET A JOUR LE MEILLEUR COUP A JOUER (MAX)
-    }
   }
+
+  bestCoup = maxCoup(coups)
   state[bestCoup.x][bestCoup.y] = PLAYER2
   return state // RETURN LA GRILLE ASSOCIEE A CE COUP
 }
@@ -43,8 +37,6 @@ func getBestState(state [][]int, AiScore int, PlayerScore int) [][]int {
 func calcValue(state [][]int, depth int, AiScore int, PlayerScore int) int {
   end, winner := endGame(state) // OBSERVE LA GRILLE POUR SAVOIR SI C'EST LA FIN
   var player = 0
-  var max = MAX_BASE
-  var min = MIN_BASE
 
   if (end) { // SI FIN DU GAME
     if (winner == EQUAL) { // SI MATCH NUL
@@ -67,84 +59,18 @@ func calcValue(state [][]int, depth int, AiScore int, PlayerScore int) int {
     for _,coup := range coups {
 
       state[coup.x][coup.y] = player
-      poid := calcValue(state, depth + 1, AiScore, PlayerScore)
+      coup.poid = calcValue(state, depth + 1, AiScore, PlayerScore)
       state[coup.x][coup.y] = 0
+    }
 
-      if (poid > max) {
-        max = poid
-      }
-      if (poid < min) {
-        min = poid
-      }
+    if (depth % 2 == 1) {
+      return minCoup(coups).poid
+    } else {
+      return maxCoup(coups).poid
     }
   }
-  if (depth % 2 == 1) {
-    return min
-  } else {
-    return max
-  }
+  return 0
 }
-
-func endGame(state [][]int) (bool, int) {
-  var x = 0
-  for x < SIZE {
-    var y = 0
-    for y < SIZE {
-      if (isUnbreakableLine(x, y, state)) {
-        return true, state[x][y]
-      }
-      y++
-    }
-    x++
-  }
-  return false, 0
-}
-
-func isUnbreakableLine(i int, j int, state [][]int) bool {
-  var pion = state[i][j]
-
-  if (pion == 0) {
-    return false
-  }
-
-  if i + 4 <= SIZE && state[i][j] == pion && state[i + 1][j] == pion && state[i + 2][j] == pion && state[i + 3][j] == pion && state[i + 4][j] == pion {
-    // && !eatable(state, i, j)
-    // && !eatable(state, i + 1, j)
-    // && !eatable(state, i + 2, j)
-    // && !eatable(state, i + 3, j)
-    // && !eatable(state, i + 4, j)) {
-    return true
-
-  } else if j + 4 <= SIZE && state[i][j] == pion && state[i][j + 1] == pion && state[i][j + 2] == pion && state[i][j + 3] == pion && state[i][j + 4] == pion {
-    // && !eatable(state, i, j + 1)
-    // && !eatable(state, i, j + 2)
-    // && !eatable(state, i, j + 3)
-    // && !eatable(state, i, j + 4)
-    // && !eatable(state, i, j + 5)) {
-    return true
-
-  } else if j + 4 <= SIZE && i + 4 <= SIZE && state[i][j] == pion && state[i + 1][j + 1] == pion && state[i + 2][j + 2] == pion && state[i + 3][j + 3] == pion && state[i + 4][j + 4] == pion {
-    // && !eatable(state, i, j)
-    // && !eatable(state, i + 1, j + 1)
-    // && !eatable(state, i + 2, j + 2)
-    // && !eatable(state, i + 3, j + 3)
-    // && !eatable(state, i + 4, j + 4)) {
-    return true
-
-  } else if j - 4 >= 0 && i + 4 <= SIZE && state[i][j] == pion && state[i + 1][j - 1] == pion && state[i + 2][j - 2] == pion && state[i + 3][j - 3] == pion && state[i + 4][j - 4] == pion {
-    // && !eatable(state, i, j)
-    // && !eatable(state, i + 1, j - 1)
-    // && !eatable(state, i + 2, j - 2)
-    // && !eatable(state, i + 3, j - 3)
-    // && !eatable(state, i + 4, j - 4)) {
-    return true
-  }
-  return false
-}
-
-// func eatable() bool {
-//
-// }
 
 func evaluate(state [][]int, AiScore int, PlayerScore int) int {
 //  findWeight(state)
