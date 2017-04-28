@@ -2,24 +2,84 @@ package main
 
 import ("fmt")
 
-func findWeight(state [][]int, noeuds []move ) int {
 
-  for _,noeud := range noeuds {
-    findWInByValue(noeud)
-    findWInByLine(noeud)
-    findCounterWin(noeud)
-    findEatMove(noeud)
+func findScoreLine(state[][]int, numberAligne int ,pion int) {
+var y = 0
+for y < SIZE {
+  var x = 0
+    for x < SIZE {
+      var t = 0
+      var continu = true
+      for t <= numberAligne  && continu {
+        if y + numberAligne <= SIZE &&  state[y + t][x] === pion {
+          t++
+          } else {
+            continu = false
+          }
+        if t == numberAligne {
+          return numberAligne * 100
+        }
+      }
+      t = 0
+      continu = true
+      for t <= numberAligne  && continu {
+        if (x + 4 <= SIZE && state[y][x] === pion && state[y][x + 1] === pion && state[y][x + 2] === pion && state[y][x + 3] === pion && state[y][x + 4] === pion) {
+          t++
+          } else {
+            continu = false
+          }
+        if t == numberAligne {
+          return numberAligne * 100
+        }
+      }
+
+
+
+
+
+
+
+      if (x + 4 <= SIZE && state[y][x] === pion && state[y][x + 1] === pion && state[y][x + 2] === pion && state[y][x + 3] === pion && state[y][x + 4] === pion) {
+        return true
+      }
+      if (x + 4 <= 19 && y + 4 <= 19 && state[y][x] === pion && state[y + 1][x + 1] === pion && state[y + 2][x + 2] === pion && state[y + 3][x + 3] === pion && state[y + 4][x + 4] === pion) {
+        return true
+      }
+      if ( x - 4 >= 0 && y + 4 <= 19 && state[y][x] === pion && state[y + 1][x - 1] === pion && state[y + 2][x - 2] === pion && state[y + 3][x - 3] === pion && state[y + 4][x - 4] === pion)  {
+        return true
+      }
+    }
   }
-  fmt.Print(state)
+}
 
-  return 9
+func findEatMove(state [][]) {
+
+}
+func findWeight(state [][]int, aiScore int, playerScore int) int {
+
+    if aiScore == 10 {
+      return 2000
+    }
+    if playerScore == 10 {
+      return -2000
+    }
+    if findScoreLine(state, numberAligne, 2) {
+      return 1800
+    }
+    if findScoreLine(state, 1) {
+      return -1800
+    }
+    if findEatMove(state) {
+      return 1700
+    }
+    return 10
 }
 
 
 
 /*
 1) cherher a manger un pyon si on est a 9 sur 10                    Poids: 2000
-2) cherher un allignmen de 5 sans possibiliter detre contrue        Poids: 1900
+2) cherher un allignmen de 5 sans possibiliter detre contrer        Poids: 1900
 3) cherher a contrer un alignments de 5 du joueur                   Poids: 1800
 4) cherher a manger un pion                                         Poids: 1700
 a ajouter
