@@ -26,14 +26,10 @@ func getBestState(state [][]int) [][]int {
   fmt.Print("\n-------------\n")
 
   for _,coup := range coups { // PARCOURS LES COUPS
-    newState := getNewState(state, coup, PLAYER2) // SIMULE LE COUP DANS UNE GRILLE
-    fmt.Print("\n-------------\n")
-    fmt.Print(newState)
-    fmt.Print("\n-------------\n")
-    poid := calcValue(newState, 1) // CALCULE LE POID DE CE COUP
-    fmt.Print("\n-------------\n")
-    fmt.Print(poid)
-    fmt.Print("\n-------------\n")
+
+    state[coup.x][coup.y] = PLAYER1
+    poid := calcValue(state, 1) // CALCULE LE POID DE CE COUP
+    state[coup.x][coup.y] = 0
 
     if (bestCoup == nil || poid > max) {
       max = poid
@@ -41,27 +37,6 @@ func getBestState(state [][]int) [][]int {
     }
   }
   return getNewState(state, *bestCoup, PLAYER2) // RETURN LA GRILLE ASSOCIEE A CE COUP
-}
-
-func getNewState(state [][]int, coup move, player int) [][]int {
-  newState := make([][]int, SIZE)
-
-  var i = 0
-  for i < SIZE {
-    newLine := make([]int, SIZE)
-    var j = 0
-    for j < SIZE {
-      if (i == coup.x && j == coup.y) {
-        newLine[j] = player
-      } else {
-        newLine[j] = state[i][j]
-      }
-      j++
-    }
-    newState[i] = newLine
-    i++
-  }
-  return newState
 }
 
 func calcValue(state [][]int, depth int) int {
@@ -107,12 +82,16 @@ func calcValue(state [][]int, depth int) int {
 }
 
 func endGame(state [][]int) (bool, int) {
-  for i, line := range state {
-    for j, pion := range line {
-      if (isUnbreakableLine(i, j, state)) {
+  var x = 0
+  for x < SIZE {
+    var y = 0
+    for y < SIZE {
+      if (isUnbreakableLine(x, y, state)) {
         return true, pion
       }
+      y++
     }
+    x++
   }
   return false, 0
 }
