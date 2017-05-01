@@ -3,6 +3,7 @@ SRC =  server.go\
 			 resolution.go\
 			 expander.go\
 			 helper.go\
+			 graphicsInterphace.go
 			#heuristique.go\
 
 all: $(NAME)
