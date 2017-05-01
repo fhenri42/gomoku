@@ -57,7 +57,7 @@ func parse(w http.ResponseWriter, req *http.Request) {
 	}
 
 	func main() {
-		intGraphics()
+		initSdl()
 	//	http.HandleFunc("/aiturn", parse)
 	//	http.ListenAndServe(":5000", nil)
 	}

@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	//"github.com/banthar/Go-SDL/sdl"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/sdl_image"
 )
 
 const pushBack = 17
 const pushBackB = 28
+const avregeRepair = 6
 var turn = true
+
 
 func getXY(src *sdl.Surface, dst *sdl.Surface, x int32, y int32) error {
 	var centerRect sdl.Rect
@@ -83,7 +84,7 @@ func  finDot(t *sdl.MouseButtonEvent, surface *sdl.Surface, win *sdl.Window)  {
 		var nbrY int32 = 166
 
 		for y < 19 {
-			if (t.X - 4 <= nbrX && t.Y - 4 <= nbrY && t.Y + 4 >= nbrY && t.X + 4 >= nbrX) {
+			if (t.X - avregeRepair <= nbrX && t.Y - avregeRepair <= nbrY && t.Y + avregeRepair >= nbrY && t.X + avregeRepair >= nbrX) {
 				putAdot(nbrX, nbrY, surface, win)
 				turn = !turn
 				break
@@ -95,6 +96,7 @@ func  finDot(t *sdl.MouseButtonEvent, surface *sdl.Surface, win *sdl.Window)  {
 		x++
 	}
 }
+
 func putAdot(x int32, y int32, surface *sdl.Surface,win *sdl.Window) {
 
 	if turn {
@@ -112,12 +114,12 @@ func putAdot(x int32, y int32, surface *sdl.Surface,win *sdl.Window) {
 
 	}
 
-	func intGraphics() {
+	func initSdl() {
 		fmt.Print("DEEEEEE")
 		win, err := sdl.CreateWindow("Gomokou", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, 800, 800, sdl.WINDOW_SHOWN)
 
 		if err != nil {
-			panic("Video mode set failed: ")
+		fmt.Println("err CreateWindow", err)
 			sdl.Quit()
 		}
 
@@ -128,7 +130,7 @@ func putAdot(x int32, y int32, surface *sdl.Surface,win *sdl.Window) {
 		if errCenter != nil {
 			fmt.Println("err imageCenter", errCenter)
 		}
-		
+
 		win.UpdateSurface()
 		eventHandel(surface, win)
 		sdl.Quit();
