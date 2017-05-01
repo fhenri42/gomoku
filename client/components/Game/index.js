@@ -73,50 +73,50 @@ class Game extends Component {
   putADotMulti = (x, y) => {
     console.log('Multi')
     // const { board, turn } = this.state
-    // board[x][y] = 2
-    // this.setState({ board })
-    // this.setState({turn: !turn})
-    //   const { turn, player1, player2, winLine } = this.state
-    //   let copy = this.props.board
-    //   const { boardSet, SetisEatable, isEatable } = this.props
-    //   if(player1 != 10 && player2 != 10 && !winLine)  {
-    //   if (turn === true) {
-    //
-    //     if (!forbidenMove(copy, x, y, 1)) { return }
-    //     copy[x][y] = 1
-    //
-    //     if (findLine(copy, 1, SetisEatable, isEatable)) {
-    //       console.log("LA");
-    //       this.setState({winLine: 'player 2'})
-    //       return;
-    //     }
-    //     const cord = findCapture(copy,x, y, 1, 2)
-    //     if (cord) {
-    //       copy[cord.x1][cord.y1] =  0
-    //       copy[cord.x2][cord.y2] =  0
-    //       this.setState({ player2: player2 + 1 })
-    //     }
-    //     this.setState({turn: !turn})
-    //     boardSet(copy)
-    //   } else {
-    //     if (!forbidenMove(copy, x, y, 2)) { return }
-    //     copy[x][y] = 2
-    //
-    //     if (findLine(copy, 2, SetisEatable, isEatable)) {
-    //       this.setState({winLine: 'player 1'})
-    //       return;
-    //     }
-    //     const cord = findCapture(copy,x, y, 2, 1)
-    //     if (cord) {
-    //       copy[cord.x1][cord.y1] =  0
-    //       copy[cord.x2][cord.y2] =  0
-    //       this.setState({ player1: player1 + 1 })
-    //
-    //     }
-    //     this.setState({turn: !turn})
-    //     boardSet(copy)
-    //   }
-    // }
+    // // board[x][y] = 2
+    // // this.setState({ board })
+    // // this.setState({turn: !turn})
+      const { turn, player1, player2, winLine } = this.state
+      let copy = this.state.board
+      const { boardSet, SetisEatable, isEatable } = this.props
+      if(player1 != 10 && player2 != 10 && !winLine)  {
+      if (turn === true) {
+
+        if (!forbidenMove(copy, x, y, 1)) { return }
+        copy[x][y] = 1
+
+        if (findLine(copy, 1, SetisEatable, isEatable)) {
+          console.log("LA");
+          this.setState({winLine: 'player 2'})
+          return;
+        }
+        const cord = findCapture(copy,x, y, 1, 2)
+        if (cord) {
+          copy[cord.x1][cord.y1] =  0
+          copy[cord.x2][cord.y2] =  0
+          this.setState({ player2: player2 + 1 })
+        }
+        this.setState({turn: !turn})
+        boardSet(copy)
+      } else {
+        if (!forbidenMove(copy, x, y, 2)) { return }
+        copy[x][y] = 2
+
+        if (findLine(copy, 2, SetisEatable, isEatable)) {
+          this.setState({winLine: 'player 1'})
+          return;
+        }
+        const cord = findCapture(copy,x, y, 2, 1)
+        if (cord) {
+          copy[cord.x1][cord.y1] =  0
+          copy[cord.x2][cord.y2] =  0
+          this.setState({ player1: player1 + 1 })
+
+        }
+        this.setState({turn: !turn})
+        boardSet(copy)
+      }
+     }
 
   }
 
