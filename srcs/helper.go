@@ -1,38 +1,38 @@
 package main
 
-func minCoup(coups []move) *move {
-  var min = MIN_BASE
-  var minCoup *move
+func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, playerScore *int) [SIZE][SIZE]int {
+  newBoard := copyBoard(board)
+  otherPlayer := player % 2 + 1
+  var i = -1
+  var j = -1
 
-  for _,coup := range coups {
-    if (coup.poid < min) {
-      min = coup.poid
-      minCoup = &coup
+  for i <= 1 {
+    j = -1
+    for j <= 1 {
+      if (i != 0 && j != 0 && x + i * 3 > 0 && x + i * 3 < SIZE - 1 && y + j * 3 > 0 && y + j * 3 < SIZE - 1 && newBoard[x + i][y + j] == otherPlayer && newBoard[x + i * 2][y + j * 2] == otherPlayer && newBoard[x + i * 3][y + j * 3] == player) {
+        newBoard[x + i][y + j] = 0
+        newBoard[x + i * 2][y + j * 2] = 0
+        if (player == 1) {
+          *playerScore += 2
+        } else {
+          *aiScore += 2
+        }
+      }
+      j++
     }
+    i++
   }
-  return minCoup
+  newBoard[x][y] = player
+  return newBoard
 }
 
-func maxCoup(coups []move) *move {
-  var max = MAX_BASE
-  var maxCoup *move
-
-  for index,coup := range coups {
-    if (coup.poid > max) {
-      max = coups[index].poid
-      maxCoup = &coups[index]
-    }
-  }
-  return maxCoup
-}
-
-func endGame(state [][]int) (bool, int) {
+func endGame(board [SIZE][SIZE]int) (bool, int) {
   var x = 0
   for x < SIZE {
     var y = 0
     for y < SIZE {
-      if (isUnbreakableLine(x, y, state)) {
-        return true, state[x][y]
+      if (isUnbreakableLine(x, y, board)) {
+        return true, board[x][y]
       }
       y++
     }
@@ -41,61 +41,48 @@ func endGame(state [][]int) (bool, int) {
   return false, 0
 }
 
-func isUnbreakableLine(i int, j int, state [][]int) bool {
-  var pion = state[i][j]
+func isUnbreakableLine(i int, j int, board [SIZE][SIZE]int) bool {
+  var pion = board[i][j]
 
   if (pion == 0) {
     return false
   }
 
-  if i + 4 <= SIZE && state[i][j] == pion && state[i + 1][j] == pion && state[i + 2][j] == pion && state[i + 3][j] == pion && state[i + 4][j] == pion {
-    // && !eatable(state, i, j)
-    // && !eatable(state, i + 1, j)
-    // && !eatable(state, i + 2, j)
-    // && !eatable(state, i + 3, j)
-    // && !eatable(state, i + 4, j)) {
+  if i + 4 <= SIZE && board[i][j] == pion && board[i + 1][j] == pion && board[i + 2][j] == pion && board[i + 3][j] == pion && board[i + 4][j] == pion {
+    // && !eatable(board, i, j)
+    // && !eatable(board, i + 1, j)
+    // && !eatable(board, i + 2, j)
+    // && !eatable(board, i + 3, j)
+    // && !eatable(board, i + 4, j)) {
     return true
 
-  } else if j + 4 <= SIZE && state[i][j] == pion && state[i][j + 1] == pion && state[i][j + 2] == pion && state[i][j + 3] == pion && state[i][j + 4] == pion {
-    // && !eatable(state, i, j + 1)
-    // && !eatable(state, i, j + 2)
-    // && !eatable(state, i, j + 3)
-    // && !eatable(state, i, j + 4)
-    // && !eatable(state, i, j + 5)) {
+  } else if j + 4 <= SIZE && board[i][j] == pion && board[i][j + 1] == pion && board[i][j + 2] == pion && board[i][j + 3] == pion && board[i][j + 4] == pion {
+    // && !eatable(board, i, j + 1)
+    // && !eatable(board, i, j + 2)
+    // && !eatable(board, i, j + 3)
+    // && !eatable(board, i, j + 4)
+    // && !eatable(board, i, j + 5)) {
     return true
 
-  } else if j + 4 <= SIZE && i + 4 <= SIZE && state[i][j] == pion && state[i + 1][j + 1] == pion && state[i + 2][j + 2] == pion && state[i + 3][j + 3] == pion && state[i + 4][j + 4] == pion {
-    // && !eatable(state, i, j)
-    // && !eatable(state, i + 1, j + 1)
-    // && !eatable(state, i + 2, j + 2)
-    // && !eatable(state, i + 3, j + 3)
-    // && !eatable(state, i + 4, j + 4)) {
+  } else if j + 4 <= SIZE && i + 4 <= SIZE && board[i][j] == pion && board[i + 1][j + 1] == pion && board[i + 2][j + 2] == pion && board[i + 3][j + 3] == pion && board[i + 4][j + 4] == pion {
+    // && !eatable(board, i, j)
+    // && !eatable(board, i + 1, j + 1)
+    // && !eatable(board, i + 2, j + 2)
+    // && !eatable(board, i + 3, j + 3)
+    // && !eatable(board, i + 4, j + 4)) {
     return true
 
-  } else if j - 4 >= 0 && i + 4 <= SIZE && state[i][j] == pion && state[i + 1][j - 1] == pion && state[i + 2][j - 2] == pion && state[i + 3][j - 3] == pion && state[i + 4][j - 4] == pion {
-    // && !eatable(state, i, j)
-    // && !eatable(state, i + 1, j - 1)
-    // && !eatable(state, i + 2, j - 2)
-    // && !eatable(state, i + 3, j - 3)
-    // && !eatable(state, i + 4, j - 4)) {
+  } else if j - 4 >= 0 && i + 4 <= SIZE && board[i][j] == pion && board[i + 1][j - 1] == pion && board[i + 2][j - 2] == pion && board[i + 3][j - 3] == pion && board[i + 4][j - 4] == pion {
+    // && !eatable(board, i, j)
+    // && !eatable(board, i + 1, j - 1)
+    // && !eatable(board, i + 2, j - 2)
+    // && !eatable(board, i + 3, j - 3)
+    // && !eatable(board, i + 4, j - 4)) {
     return true
   }
   return false
 }
 
-func newBoard() [19][19]int {
-	var board [19][19]int
-	var x = 0
-	for x < 19 {
-		var y = 0
-		for y < 19 {
-			board[x][y] = 0
-			y++
-		}
-		x++
-	}
-	return board
-}
 // func eatable() bool {
 //
 // }
