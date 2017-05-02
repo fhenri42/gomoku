@@ -1,6 +1,6 @@
 package main
 
-func isPlayable(x int, y int, board[SIZE][SIZE]int) bool {
+func isClose(x int, y int, board[SIZE][SIZE]int) bool {
   if (board[x][y] != 0) {
     return false
   }
@@ -25,7 +25,7 @@ func findMoves(board[SIZE][SIZE]int) ([]move) {
   for x < SIZE - 1 {
     var y = 0
     for y < SIZE - 1 {
-      if (isPlayable(x, y, board)) {
+      if (isClose(x, y, board)) {
         var tmp move
         tmp.x = x
         tmp.y = y
