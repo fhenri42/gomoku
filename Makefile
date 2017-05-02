@@ -4,11 +4,12 @@ SRC =  srcs/main.go\
 			 srcs/resolution.go\
 			 srcs/expander.go\
 			 srcs/helper.go\
-			 srcs/interface.go\
-			 srcs/display.go\
+			 srcs/event.go\
 			 srcs/array_helper.go\
 			 srcs/minmax_helper.go\
 			 srcs/heuristique.go\
+			 srcs/heuristique_helper.go\
+			 srcs/interface_helper.go
 
 all: $(NAME)
 

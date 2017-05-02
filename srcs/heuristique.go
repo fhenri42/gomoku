@@ -1,46 +1,8 @@
 package main
 
 import (
-
 	"math"
 )
-const nbAligne = 5
-//Trouver si est possible de win sur horiZontal
-func findHor(board[SIZE][SIZE]int,couleur int, x int, y int) (float64, float64, float64){
-
-	var pass bool = false; //permet de voir si on a passé la case étudiée
-	var compteur float64 = 0; //compte le nombre de possibilités pour une direction
-	var bonus float64 = 0; //point bonus liée aux jetons alliés dans cette même direction
-	var centre float64 = 0; //regarde si le jeton a de l'espace de chaque côté
-	var i int = 0
-
-	for i < SIZE {
-		if i == x {
-			centre = compteur + 1
-			pass = true
-			//continue
-		}
-		switch board[i][y] {
-			case 0: //case vide
-			compteur++
-			break
-			case couleur: //jeton allié
-			compteur++
-			bonus++
-			break
-			default: //jeton adverse
-			if pass {
-				i = SIZE //il n'y aura plus de liberté supplémentaire, on arrête la recherche ici
-				} else {
-					//on réinitialise la recherche
-					compteur = 0
-					bonus = 0
-				}
-			}
-			i++
-		}
-		return centre, compteur, bonus
-	}
 
 	func iaAnalyse(board [SIZE][SIZE]int, x int, y int) int {
 		var estimation float64 = 0;
@@ -51,9 +13,21 @@ func findHor(board[SIZE][SIZE]int,couleur int, x int, y int) (float64, float64, 
 
 		tmpCenter, compteur, bonus := findHor(board, board[x][y], x, y)
 		centre += tmpCenter
-		if compteur>=nbAligne {
-			estimation += compteur * pLiberte + bonus * pBonus + (1 - math.Abs(centre / (compteur - 1) - 0.5)) * compteur * pCentre;
-		}
+		estimation += compteur * pLiberte + bonus * pBonus + (1 - math.Abs(centre / (compteur - 1) - 0.5)) * compteur * pCentre;
+
+
+		tmpCenter1, compteur1, bonus1 := findVer(board, board[x][y], x, y)
+		centre += tmpCenter1
+		estimation += compteur1 * pLiberte + bonus1 * pBonus + (1 - math.Abs(centre / (compteur1 - 1) - 0.5)) * compteur1 * pCentre;
+
+		tmpCenter2, compteur2, bonus2 := findDigo1(board, board[x][y], x, y)
+		centre += tmpCenter2
+		estimation += compteur2 * pLiberte + bonus2 * pBonus + (1 - math.Abs(centre / (compteur2 - 1) - 0.5)) * compteur2 * pCentre;
+		
+
+		tmpCenter3, compteur3, bonus3 := findDigo2(board, board[x][y], x, y)
+		centre += tmpCenter3
+		estimation += compteur3 * pLiberte + bonus3 * pBonus + (1 - math.Abs(centre / (compteur3 - 1) - 0.5)) * compteur3 * pCentre;
 		return int(estimation)
 	}
 
