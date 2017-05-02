@@ -12,9 +12,7 @@ func getBestMove(board [SIZE][SIZE]int, aiScore int, playerScore int) move {
   for index,coup := range coups { // PARCOURS LES COUPS
     tmpAiScore = aiScore
     tmpPlayerScore = playerScore
-    tmpBoard = copyBoard(board)
-    eatIfNeeded(tmpBoard, coup.x, coup.y, PLAYER2, &tmpAiScore, &tmpPlayerScore)
-    tmpBoard[coup.x][coup.y] = PLAYER2
+    tmpBoard = moveAndEat(board, coup.x, coup.y, PLAYER2, &tmpAiScore, &tmpPlayerScore)
     coups[index].poid = calcValue(tmpBoard, 1, tmpAiScore, tmpPlayerScore)
   }
   bestCoup := maxCoup(coups)
@@ -50,9 +48,7 @@ func calcValue(board [SIZE][SIZE]int, depth int, aiScore int, playerScore int) i
     for _,coup := range coups {
       tmpAiScore = aiScore
       tmpPlayerScore = playerScore
-      tmpBoard = copyBoard(board)
-      eatIfNeeded(tmpBoard, coup.x, coup.y, player, &tmpAiScore, &tmpPlayerScore)
-      tmpBoard[coup.x][coup.y] = player
+      tmpBoard = moveAndEat(board, coup.x, coup.y, player, &tmpAiScore, &tmpPlayerScore)
       coup.poid = calcValue(tmpBoard, depth + 1, tmpAiScore, tmpPlayerScore)
     }
 
