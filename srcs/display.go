@@ -40,7 +40,7 @@ func putImageCenter(file string, dst *sdl.Surface) error {
 }
 
 
-func  finDot(t *sdl.MouseButtonEvent, surface *sdl.Surface, win *sdl.Window, board*[19][19]int)  {
+func  finDot(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var nbrX int32 = 21
 	var x = 0
 	var y = 0
@@ -50,15 +50,15 @@ func  finDot(t *sdl.MouseButtonEvent, surface *sdl.Surface, win *sdl.Window, boa
 		var nbrY int32 = 22
 
 		for y < 19 {
-			if ((t.X - AVREGEREPAIR <= nbrX && t.Y - AVREGEREPAIR <= nbrY && t.Y + AVREGEREPAIR >= nbrY && t.X + AVREGEREPAIR >= nbrX) && board[x][y] == 0) {
+			if ((t.X - AVREGEREPAIR <= nbrX && t.Y - AVREGEREPAIR <= nbrY && t.Y + AVREGEREPAIR >= nbrY && t.X + AVREGEREPAIR >= nbrX) && tools.board[x][y] == 0) {
 
-        putAdot(nbrX, nbrY, surface, win)
-				if TURN {
-					board[x][y] = 1
+        putAdot(nbrX, nbrY, tools)
+				if tools.turn {
+					tools.board[x][y] = 1
 				} else  {
-					board[x][y] = 2
+					tools.board[x][y] = 2
 				}
-				TURN = !TURN
+			tools.turn = !tools.turn
 				break
 			}
 			nbrY+=53
@@ -69,18 +69,18 @@ func  finDot(t *sdl.MouseButtonEvent, surface *sdl.Surface, win *sdl.Window, boa
 	}
 }
 
-func putAdot(x int32, y int32, surface *sdl.Surface,win *sdl.Window) {
+func putAdot(x int32, y int32, tools *sdlTools) {
 
-	if TURN {
-		errXY := putImageXY("ressources/red-dot.bmp",surface, x - PUSHBACK, y - PUSHBACK)
+	if tools.turn {
+		errXY := putImageXY("ressources/red-dot.bmp",tools.surface, x - PUSHBACK, y - PUSHBACK)
 		if errXY != nil {
 			fmt.Println("errXY", errXY)
 		}
 		} else  {
-			errXY := putImageXY("ressources/black-dot.bmp",surface, x - PUSHBACKB, y - PUSHBACKB)
+			errXY := putImageXY("ressources/black-dot.bmp",tools.surface, x - PUSHBACKB, y - PUSHBACKB)
 			if errXY != nil {
 				fmt.Println("errXY", errXY)
 			}
 		}
-		win.UpdateSurface()
+		tools.win.UpdateSurface()
 	}
