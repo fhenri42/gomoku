@@ -1,5 +1,12 @@
 package main
 
+func isPlayable(board [SIZE][SIZE]int, x int, y int) bool {
+  if (x >= SIZE || y >= SIZE || board[x][y] != 0) {
+    return false
+  }
+  return true
+}
+
 func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, playerScore *int) [SIZE][SIZE]int {
   newBoard := copyBoard(board)
   otherPlayer := player % 2 + 1
@@ -9,10 +16,10 @@ func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, p
   for i <= 1 {
     j = -1
     for j <= 1 {
-      if (i != 0 && j != 0 && x + i * 3 > 0 && x + i * 3 < SIZE - 1 && y + j * 3 > 0 && y + j * 3 < SIZE - 1 && newBoard[x + i][y + j] == otherPlayer && newBoard[x + i * 2][y + j * 2] == otherPlayer && newBoard[x + i * 3][y + j * 3] == player) {
+      if (x + i * 3 > 0 && x + i * 3 < SIZE && y + j * 3 > 0 && y + j * 3 < SIZE && newBoard[x + i][y + j] == otherPlayer && newBoard[x + i * 2][y + j * 2] == otherPlayer && newBoard[x + i * 3][y + j * 3] == player) {
         newBoard[x + i][y + j] = 0
         newBoard[x + i * 2][y + j * 2] = 0
-        if (player == 1) {
+        if (player == PLAYER1) {
           *playerScore += 2
         } else {
           *aiScore += 2

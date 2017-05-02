@@ -8,7 +8,7 @@ func isClose(x int, y int, board[SIZE][SIZE]int) bool {
   for i <= AMP {
     var j = -AMP
     for j <= AMP {
-      if (x + i > 0 && x + i < SIZE - 1 && y + j > 0 && y + j < SIZE - 1 && board[x + i][y + j] != 0) {
+      if (x + i > 0 && x + i < SIZE && y + j > 0 && y + j < SIZE && board[x + i][y + j] != 0) {
         return true
       }
       j++
@@ -22,9 +22,9 @@ func findMoves(board[SIZE][SIZE]int) ([]move) {
 
   moves := make([]move, 0)
   var x = 0
-  for x < SIZE - 1 {
+  for x < SIZE {
     var y = 0
-    for y < SIZE - 1 {
+    for y < SIZE {
       if (isClose(x, y, board)) {
         var tmp move
         tmp.x = x
