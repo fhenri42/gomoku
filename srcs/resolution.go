@@ -1,21 +1,30 @@
 package main
-import ("fmt")
+import (
+  "fmt"
+)
 
 func getBestMove(board [SIZE][SIZE]int, aiScore int, playerScore int) move {
   fmt.Print("in the resolution:")
-
+  fmt.Print(board)
   coups := findMoves(board) // REMPLI UN ARRAY AVEC LES COUPS POTENTIELS
   var tmpBoard [SIZE][SIZE]int
   var tmpPlayerScore int
   var tmpAiScore int
 
   for index,coup := range coups { // PARCOURS LES COUPS
+
     tmpAiScore, tmpPlayerScore = aiScore, playerScore
     tmpBoard = moveAndEat(board, coup.x, coup.y, PLAYER2, &tmpAiScore, &tmpPlayerScore)
     coups[index].poid = calcValue(tmpBoard, 1, tmpAiScore, tmpPlayerScore)
   }
-  bestCoup := maxCoup(coups)
-  return *bestCoup
+  if len(coups) != 0 {
+    bestCoup := maxCoup(coups)
+    return *bestCoup
+  }
+  var tmp move
+  tmp.x = 9
+  tmp.y = 9
+  return tmp
 }
 
 func calcValue(board [SIZE][SIZE]int, depth int, aiScore int, playerScore int) int {
@@ -59,7 +68,7 @@ func calcValue(board [SIZE][SIZE]int, depth int, aiScore int, playerScore int) i
   return 0
 }
 
-func evaluate(board [SIZE][SIZE]int, AiScore int, PlayerScore int) int {
-//  findWeight(board)
-  return 10
+func evaluate(board [SIZE][SIZE]int, aiScore int, playerScore int) int {
+  //fmt.Print("\nHELLO\n")
+  return findWeight(board, aiScore, playerScore)
 }

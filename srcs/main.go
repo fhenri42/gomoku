@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/veandco/go-sdl2/sdl"
+	"fmt"
 )
 
 type move struct {
@@ -18,7 +19,7 @@ const H = 1000
 
 const PLAYER1 = 1
 const PLAYER2 = 2
-const DEPTH_MAX = 3
+const DEPTH_MAX = 2
 const EQUAL = 0
 const MIN_BASE = 1000000
 const MAX_BASE = -1000000
@@ -51,7 +52,13 @@ func intSdlTools() *sdlTools  {
 	return tools
 
 }
+
+
+
 func main() {
-	initSdl(intSdlTools())
+//	initSdl(intSdlTools())
+	tmp := newBoard()
+	tmp[10][7] = 1
+	fmt.Print(getBestMove(tmp, 10,10))
 	return
 }
