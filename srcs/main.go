@@ -2,6 +2,12 @@ package main
 
 import ()
 
+type move struct {
+  x int
+  y int
+  poid int
+}
+
 const PUSHBACK = 17
 const PUSHBACKB = 28
 const AVREGEREPAIR = 6

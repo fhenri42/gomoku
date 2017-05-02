@@ -5,7 +5,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-func eventHandel(surface *sdl.Surface, win *sdl.Window, board*[19][19]int) {
+func eventHandel(surface *sdl.Surface, win *sdl.Window, board*[SIZE][SIZE]int) {
 
 	var exit = false
 
@@ -35,7 +35,7 @@ func eventHandel(surface *sdl.Surface, win *sdl.Window, board*[19][19]int) {
 	}
 }
 
-	func initSdl(board*[19][19]int) {
+	func initSdl(board*[SIZE][SIZE]int) {
 		win, err := sdl.CreateWindow("Gomokou", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, W, H, sdl.WINDOW_SHOWN)
 
 		if err != nil {

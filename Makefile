@@ -5,7 +5,9 @@ SRC =  srcs/main.go\
 			 srcs/expander.go\
 			 srcs/helper.go\
 			 srcs/initInterphace.go\
-			 srcs/display.go
+			 srcs/display.go\
+			 srcs/array_helper.go\
+			 srcs/minmax_helper.go
 			#heuristique.go\
 
 all: $(NAME)

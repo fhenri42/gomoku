@@ -1,14 +1,14 @@
 package main
 
-func isPlayable(x int, y int, state[][]int) bool {
-  if (state[x][y] != 0) {
+func isPlayable(x int, y int, board[SIZE][SIZE]int) bool {
+  if (board[x][y] != 0) {
     return false
   }
   var i = -AMP
   for i <= AMP {
     var j = -AMP
     for j <= AMP {
-      if (x + i > 0 && x + i < SIZE - 1 && y + j > 0 && y + j < SIZE - 1 && state[x + i][y + j] != 0) {
+      if (x + i > 0 && x + i < SIZE - 1 && y + j > 0 && y + j < SIZE - 1 && board[x + i][y + j] != 0) {
         return true
       }
       j++
@@ -18,14 +18,14 @@ func isPlayable(x int, y int, state[][]int) bool {
   return false
 }
 
-func findMoves(state[][]int) ([]move) {
+func findMoves(board[SIZE][SIZE]int) ([]move) {
 
   moves := make([]move, 0)
   var x = 0
   for x < SIZE - 1 {
     var y = 0
     for y < SIZE - 1 {
-      if (isPlayable(x, y, state)) {
+      if (isPlayable(x, y, board)) {
         var tmp move
         tmp.x = x
         tmp.y = y
