@@ -1,15 +1,16 @@
 NAME= gomoku
 
 SRC =  srcs/main.go\
-			 srcs/resolution.go\
-			 srcs/expander.go\
+			 srcs/algo_resolution.go\
+			 srcs/algo_expander.go\
 			 srcs/helper.go\
 			 srcs/event.go\
-			 srcs/array_helper.go\
-			 srcs/minmax_helper.go\
-			 srcs/heuristique.go\
 			 srcs/heuristique_helper.go\
-			 srcs/interface_helper.go
+			 srcs/helper_array.go\
+			 srcs/helper_minmax.go\
+			 srcs/helper_interface.go\
+			 srcs/algo_heuristique.go
+
 
 all: $(NAME)
 
