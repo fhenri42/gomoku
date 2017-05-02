@@ -21,11 +21,13 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 
 	if (isPlayable(tools.board, i, j)) {
     play(tools, i, j)
+		if (tools.gameType == SOLO) {
+			tools.wait = true
+			bestMove := getBestMove(tools.board, tools.scorePlayer1, tools.scorePlayer2)
+			play(tools, bestMove.x, bestMove.y)
+			tools.wait = false
+		}
 	}
-  if (tools.gameType == SOLO) {
-    bestMove := getBestMove(tools.board, tools.scorePlayer1, tools.scorePlayer2)
-    play(tools, bestMove.x, bestMove.y)
-  }
 }
 
 func handleEvent(tools *sdlTools) {
@@ -46,7 +48,7 @@ func handleEvent(tools *sdlTools) {
 				}
 				break
 			case *sdl.MouseButtonEvent:
-				if t.Type == 1025 && tools.gameState {
+				if t.Type == 1025 && tools.gameState && !tools.wait {
 					onClic(t, tools)
 					break
 				} else if (t.Type == 1025 && t.X  <= 680 && t.Y  <= 460 && t.Y  >= 240 && t.X >= 380 && !tools.gameState) {

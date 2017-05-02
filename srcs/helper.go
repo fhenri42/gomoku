@@ -8,7 +8,6 @@ func isPlayable(board [SIZE][SIZE]int, x int, y int) bool {
 }
 
 func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, playerScore *int) [SIZE][SIZE]int {
-  newBoard := copyBoard(board)
   otherPlayer := player % 2 + 1
   var i = -1
   var j = -1
@@ -16,9 +15,9 @@ func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, p
   for i <= 1 {
     j = -1
     for j <= 1 {
-      if (x + i * 3 > 0 && x + i * 3 < SIZE && y + j * 3 > 0 && y + j * 3 < SIZE && newBoard[x + i][y + j] == otherPlayer && newBoard[x + i * 2][y + j * 2] == otherPlayer && newBoard[x + i * 3][y + j * 3] == player) {
-        newBoard[x + i][y + j] = 0
-        newBoard[x + i * 2][y + j * 2] = 0
+      if (x + i * 3 > 0 && x + i * 3 < SIZE && y + j * 3 > 0 && y + j * 3 < SIZE && board[x + i][y + j] == otherPlayer && board[x + i * 2][y + j * 2] == otherPlayer && board[x + i * 3][y + j * 3] == player) {
+        board[x + i][y + j] = 0
+        board[x + i * 2][y + j * 2] = 0
         if (player == PLAYER1) {
           *playerScore += 2
         } else {
@@ -29,8 +28,8 @@ func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, p
     }
     i++
   }
-  newBoard[x][y] = player
-  return newBoard
+  board[x][y] = player
+  return board
 }
 
 func endGame(board [SIZE][SIZE]int) (bool, int) {

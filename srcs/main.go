@@ -36,6 +36,7 @@ type sdlTools struct {
 	exit bool
 	gameState bool
 	gameType int
+	wait bool
 }
 
 func intSdlTools() *sdlTools  {
@@ -49,6 +50,7 @@ func intSdlTools() *sdlTools  {
 	tools.exit = false
 	tools.gameState = false
 	tools.gameType = 0
+	tools.wait = false
 	return tools
 }
 
