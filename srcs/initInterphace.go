@@ -16,7 +16,7 @@ func eventHandel(surface *sdl.Surface, win *sdl.Window, board*[19][19]int) {
 				exit = true
 				break
 			case *sdl.MouseMotionEvent:
-				//	fmt.Println(t.X, " ", t.Y)
+					//fmt.Println(t.X, " ", t.Y)
 				break
 			case *sdl.KeyDownEvent:
 				if t.Keysym.Sym == 27 {
@@ -46,7 +46,7 @@ func eventHandel(surface *sdl.Surface, win *sdl.Window, board*[19][19]int) {
 		surface, err1 := win.GetSurface()
 		fmt.Println(err1)
 
-		errCenter := putImageCenter("ressources/board.bmp", surface)
+		errCenter := putImageCenter("ressources/boardgo.bmp", surface)
 		if errCenter != nil {
 			fmt.Println("err imageCenter", errCenter)
 		}

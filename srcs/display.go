@@ -41,13 +41,13 @@ func putImageCenter(file string, dst *sdl.Surface) error {
 
 
 func  finDot(t *sdl.MouseButtonEvent, surface *sdl.Surface, win *sdl.Window, board*[19][19]int)  {
-	var nbrX int32 = 166
+	var nbrX int32 = 21
 	var x = 0
 	var y = 0
 
 	for x < 19 {
 		y = 0
-		var nbrY int32 = 166
+		var nbrY int32 = 22
 
 		for y < 19 {
 			if ((t.X - AVREGEREPAIR <= nbrX && t.Y - AVREGEREPAIR <= nbrY && t.Y + AVREGEREPAIR >= nbrY && t.X + AVREGEREPAIR >= nbrX) && board[x][y] == 0) {
@@ -61,10 +61,10 @@ func  finDot(t *sdl.MouseButtonEvent, surface *sdl.Surface, win *sdl.Window, boa
 				TURN = !TURN
 				break
 			}
-			nbrY+=40
+			nbrY+=53
 			y++
 		}
-		nbrX+= 40
+		nbrX+= 53
 		x++
 	}
 }

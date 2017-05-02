@@ -5,8 +5,8 @@ import ()
 const PUSHBACK = 17
 const PUSHBACKB = 28
 const AVREGEREPAIR = 6
-const W = 800
-const H = 800
+const W = 1000
+const H = 1000
 var TURN = true
 
 const PLAYER1 = 1
