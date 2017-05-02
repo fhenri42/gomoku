@@ -33,6 +33,8 @@ type sdlTools struct {
 	winPlayer2 bool
 	board [SIZE][SIZE]int
 	exit bool
+	gameState bool
+	gameType int
 }
 
 func intSdlTools() *sdlTools  {
@@ -44,6 +46,8 @@ func intSdlTools() *sdlTools  {
 	tools.winPlayer2 = false
 	tools.board = newBoard()
 	tools.exit = false
+	tools.gameState = false
+	tools.gameType = 0
 	return tools
 
 }
