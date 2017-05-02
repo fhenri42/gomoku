@@ -4,6 +4,7 @@ import (
   "fmt"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/sdl_image"
+  "os"
 )
 
 func getXY(src *sdl.Surface, dst *sdl.Surface, x int32, y int32) error {
@@ -59,6 +60,10 @@ func  finDot(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 				} else  {
 					tools.board[x][y] = 2
 				}
+        end, _ := endGame(tools.board)
+        if (end) {
+          os.Exit(3)
+        }
 			tools.turn = !tools.turn
 				break
 			}
