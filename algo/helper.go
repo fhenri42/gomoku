@@ -83,6 +83,19 @@ func isUnbreakableLine(i int, j int, state [][]int) bool {
   return false
 }
 
+func newBoard() [19][19]int {
+	var board [19][19]int
+	var x = 0
+	for x < 19 {
+		var y = 0
+		for y < 19 {
+			board[x][y] = 0
+			y++
+		}
+		x++
+	}
+	return board
+}
 // func eatable() bool {
 //
 // }

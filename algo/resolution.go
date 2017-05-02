@@ -1,14 +1,7 @@
 package main
 import ("fmt")
 
-const PLAYER1 = 1
-const PLAYER2 = 2
-const DEPTH_MAX = 3
-const EQUAL = 0
-const MIN_BASE = 1000000
-const MAX_BASE = -1000000
-const AMP = 2
-const SIZE = 19
+
 
 type move struct {
   x int

@@ -1,9 +1,10 @@
 NAME= algoGomokou
-SRC =  server.go\
+SRC =  main.go\
 			 resolution.go\
 			 expander.go\
 			 helper.go\
-			 graphicsInterphace.go
+			 initInterphace.go\
+			 display.go
 			#heuristique.go\
 
 all: $(NAME)
