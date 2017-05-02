@@ -39,14 +39,9 @@ func putImageCenter(file string, dst *sdl.Surface) error {
 	return getCenter(imgSurface, dst)
 }
 
-
-<<<<<<< HEAD
 func  finDot(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var nbrX int32 = 21
-=======
-func  finDot(t *sdl.MouseButtonEvent, surface *sdl.Surface, win *sdl.Window, board*[SIZE][SIZE]int)  {
-  var nbrX int32 = 21
->>>>>>> 1262a0e11aa90960ad10e68f541246644d3ea678
+
 	var x = 0
 	var y = 0
 
@@ -54,13 +49,9 @@ func  finDot(t *sdl.MouseButtonEvent, surface *sdl.Surface, win *sdl.Window, boa
 		y = 0
 		var nbrY int32 = 22
 
-<<<<<<< HEAD
-		for y < 19 {
-			if ((t.X - AVREGEREPAIR <= nbrX && t.Y - AVREGEREPAIR <= nbrY && t.Y + AVREGEREPAIR >= nbrY && t.X + AVREGEREPAIR >= nbrX) && tools.board[x][y] == 0) {
-=======
+
 		for y < SIZE {
-			if ((t.X - AVREGEREPAIR <= nbrX && t.Y - AVREGEREPAIR <= nbrY && t.Y + AVREGEREPAIR >= nbrY && t.X + AVREGEREPAIR >= nbrX) && board[x][y] == 0) {
->>>>>>> 1262a0e11aa90960ad10e68f541246644d3ea678
+			if ((t.X - AVREGEREPAIR <= nbrX && t.Y - AVREGEREPAIR <= nbrY && t.Y + AVREGEREPAIR >= nbrY && t.X + AVREGEREPAIR >= nbrX) && tools.board[x][y] == 0) {
 
         putAdot(nbrX, nbrY, tools)
 				if tools.turn {
