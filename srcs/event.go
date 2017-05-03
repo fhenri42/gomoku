@@ -71,7 +71,7 @@ func playAgain(tools *sdlTools, winner int) {
 
 func play(tools *sdlTools, i int, j int) {
   tools.board = moveAndEat(tools.board, i, j, tools.player, &(tools.scorePlayer2), &(tools.scorePlayer1))
-  isEnd, winner := endGame(tools.board)
+  isEnd, winner := endGame(tools.board, tools.scorePlayer1, tools.scorePlayer2)
   if (isEnd) {
 		tools.gameState = false
 		printBoard(tools)
@@ -88,7 +88,7 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var j int = (int(t.X) + SQUARE / 2 - OFFSET_X) / (SQUARE + SPACING)
 	var moduloj = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
 	var i int = (int(t.Y) + SQUARE / 2 - OFFSET_Y) / (SQUARE + SPACING)
-	var moduloi = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
+	var moduloi = (int(t.Y) + SQUARE / 2 - OFFSET_Y) % (SQUARE + SPACING)
 
 	if (moduloj > 0 && moduloi > 0 && isPlayable(tools, i, j)) {
     play(tools, i, j)

@@ -27,7 +27,7 @@ func getBestMove(board [SIZE][SIZE]int, aiScore int, playerScore int) move {
 }
 
 func calcValue(board [SIZE][SIZE]int, depth int, aiScore int, playerScore int) int {
-  end, winner := endGame(board) // OBSERVE LA GRILLE POUR SAVOIR SI C'EST LA FIN
+  end, winner := endGame(board, playerScore, aiScore) // OBSERVE LA GRILLE POUR SAVOIR SI C'EST LA FIN
   var tmpBoard [SIZE][SIZE]int
   var tmpPlayerScore int
   var tmpAiScore int
