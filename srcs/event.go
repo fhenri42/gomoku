@@ -19,7 +19,7 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var j int = (int(t.X) + SQUARE / 2 - OFFSET) / SQUARE
 	var i int = (int(t.Y) + SQUARE / 2 - OFFSET) / SQUARE
 
-	if (isPlayable(tools.board, i, j)) {
+	if (isPlayable(tools, i, j)) {
     play(tools, i, j)
 		if (tools.gameType == SOLO) {
 			tools.wait = true
