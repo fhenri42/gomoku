@@ -25,7 +25,12 @@ func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, p
   return board
 }
 
-func endGame(board [SIZE][SIZE]int) (bool, int) {
+func endGame(board [SIZE][SIZE]int, scorePlayer1 int, scorePlayer2 int) (bool, int) {
+  if (scorePlayer1 == 10) {
+    return true, PLAYER1
+  } else if (scorePlayer2 == 10) {
+    return true, PLAYER2
+  }
   var x = 0
   for x < SIZE {
     var y = 0
@@ -47,16 +52,16 @@ func isUnbreakableLine(i int, j int, board [SIZE][SIZE]int) bool {
     return false
   }
 
-  if i + 4 <= SIZE && board[i][j] == pion && board[i + 1][j] == pion && board[i + 2][j] == pion && board[i + 3][j] == pion && board[i + 4][j] == pion {
+  if i + 4 < SIZE && board[i][j] == pion && board[i + 1][j] == pion && board[i + 2][j] == pion && board[i + 3][j] == pion && board[i + 4][j] == pion {
     return true
 
-  } else if j + 4 <= SIZE && board[i][j] == pion && board[i][j + 1] == pion && board[i][j + 2] == pion && board[i][j + 3] == pion && board[i][j + 4] == pion {
+  } else if j + 4 < SIZE && board[i][j] == pion && board[i][j + 1] == pion && board[i][j + 2] == pion && board[i][j + 3] == pion && board[i][j + 4] == pion {
     return true
 
-  } else if j + 4 <= SIZE && i + 4 <= SIZE && board[i][j] == pion && board[i + 1][j + 1] == pion && board[i + 2][j + 2] == pion && board[i + 3][j + 3] == pion && board[i + 4][j + 4] == pion {
+  } else if j + 4 < SIZE && i + 4 < SIZE && board[i][j] == pion && board[i + 1][j + 1] == pion && board[i + 2][j + 2] == pion && board[i + 3][j + 3] == pion && board[i + 4][j + 4] == pion {
     return true
 
-  } else if j - 4 >= 0 && i + 4 <= SIZE && board[i][j] == pion && board[i + 1][j - 1] == pion && board[i + 2][j - 2] == pion && board[i + 3][j - 3] == pion && board[i + 4][j - 4] == pion {
+  } else if j - 4 >= 0 && i + 4 < SIZE && board[i][j] == pion && board[i + 1][j - 1] == pion && board[i + 2][j - 2] == pion && board[i + 3][j - 3] == pion && board[i + 4][j - 4] == pion {
     return true
   }
   return false

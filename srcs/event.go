@@ -14,7 +14,7 @@ func initMessage(tools *sdlTools) sdl.MessageBoxData  {
 	buttonArray[0].Text = "Replay"
 	buttonArray[1].Flags = sdl.MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
 	buttonArray[1].ButtonId = 2
-	buttonArray[1].Text = "Quite"
+	buttonArray[1].Text = "Quit"
 	var colorBox *sdl.MessageBoxColorScheme = new(sdl.MessageBoxColorScheme)
 
 	colorBox.Colors[0].R = 255
@@ -70,7 +70,7 @@ func playAgain(tools *sdlTools, winner int) {
 
 func play(tools *sdlTools, i int, j int) {
   tools.board = moveAndEat(tools.board, i, j, tools.player, &(tools.scorePlayer2), &(tools.scorePlayer1))
-  isEnd, winner := endGame(tools.board)
+  isEnd, winner := endGame(tools.board, tools.scorePlayer1, tools.scorePlayer2)
   if (isEnd) {
 		tools.gameState = false
 		printBoard(tools)
@@ -87,13 +87,15 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var j int = (int(t.X) + SQUARE / 2 - OFFSET_X) / (SQUARE + SPACING)
 	var moduloj = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
 	var i int = (int(t.Y) + SQUARE / 2 - OFFSET_Y) / (SQUARE + SPACING)
-	var moduloi = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
+	var moduloi = (int(t.Y) + SQUARE / 2 - OFFSET_Y) % (SQUARE + SPACING)
+	fmt.Println(j, i)
 
 	if (moduloj > 0 && moduloi > 0 && isPlayable(tools, i, j)) {
     play(tools, i, j)
 		if (tools.gameType == SOLO) {
 			tools.wait = true
 			bestMove := getBestMove(tools.board, tools.scorePlayer1, tools.scorePlayer2)
+			fmt.Println("oooo")
 			if (tools.gameState) {
 				play(tools, bestMove.x, bestMove.y)
 			}
@@ -131,13 +133,17 @@ func handleEvent(tools *sdlTools) {
 					tools.gameState = true
 					tools.gameType = 1
 					loadMap(tools, "ressources/board.bmp")
+					if tools.iaStart {
+						fmt.Println("!ooo")
+						play(tools, 9, 9)
+					}
 				} else if (t.Type == 1025 && t.X  <= 519 && t.Y  <= 717 && t.Y  >= 699 && t.X >= 504 && !tools.gameState) {
-					  tools.player = tools.player % 2 + 1
-						if (tools.player == 2) {
-							loadMap(tools, "ressources/menu2.bmp")
-						} else {
+						if (tools.iaStart) {
 							loadMap(tools, "ressources/menu.bmp")
+						} else {
+							loadMap(tools, "ressources/menu2.bmp")
 						}
+						tools.iaStart = !tools.iaStart
 			 }
 			break
 			}
