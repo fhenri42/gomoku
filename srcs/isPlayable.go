@@ -1,16 +1,20 @@
 package main
 
+import (
+	"fmt"
+)
+
 func isPlayable(tools *sdlTools, x int, y int) bool {
   if (x >= SIZE || y >= SIZE || tools.board[x][y] != 0) {
     return false
   }
-  if (!forbidenMove(tools, x, y)) {
+  if (isForbidenMove(tools, x, y)) {
     return false
   }
   return true
 }
 
-func forbidenMove(tools *sdlTools, x int, y int) bool {
+func isForbidenMove(tools *sdlTools, x int, y int) bool {
   var pion2 int
   var pion int
 
@@ -22,101 +26,31 @@ func forbidenMove(tools *sdlTools, x int, y int) bool {
     pion2 = 1
   }
 
-  if (y - 3 >= 0 && x + 3 <= 19 && x - 3 >= 0 && y + 1 <= 19 && tools.board[x + 1][y] == pion &&  tools.board[x + 2][y] == pion && tools.board[x - 1][y - 1] == pion && tools.board[x - 2][y - 2] == pion) {
-      if (tools.board[x - 3][y - 3] == pion2 || tools.board[x - 1][y] == pion2 || tools.board[x + 1][y + 1] == pion2 || tools.board[x + 3][y] == pion2) {
-        return true
-      } else {
-        return false
+  var count = 0
+  var count2 = 0
+  var i = -1
+  var j = -1
+
+  for i <= 1 {
+    j = -1
+    for j <= 1 {
+      if (x + i * 3 > 0 && x + i * 3 < SIZE && y + j * 3 > 0 && y + j * 3 < SIZE && tools.board[x + i * -1][y + j * -1] != pion2 && tools.board[x + i][y + j] == pion && tools.board[x + i * 2][y + j * 2] == pion && tools.board[x + i * 3][y + j * 3] != pion2) {
+        if (tools.board[x + i * -2][y + j * -2] == pion && tools.board[x + i * -1][y + j * -1] == pion) {
+          count--
+        }
+        count++
       }
-  }
-
-  if (y - 3 >= 0 && x + 3 <= 19 && x - 3  >= 0 && y + 1 <= 19 && tools.board[x - 1][y] == pion &&  tools.board[x - 2][y] == pion && tools.board[x + 1][y - 1] == pion && tools.board[x + 2][y - 2] == pion) {
-      if (tools.board[x + 1][y] == pion2 || tools.board[x - 3][y] == pion2 || tools.board[x - 1][y + 1] == pion2 || tools.board[x + 3][y - 3] == pion2) {
-        return true
-      } else {
-        return false
+      if (x + i * 4 > 0 && x + i * 4 < SIZE && y + j * 4 > 0 && y + j * 4 < SIZE && tools.board[x + i * -1][y + j * -1] != pion2 && tools.board[x + i][y + j] == 0 && tools.board[x + i * 2][y + j * 2] == pion && tools.board[x + i * 3][y + j * 3] == pion && tools.board[x + i * 4][y + j * 4] != pion2) {
+        count2++
       }
-  }
-
-  if ( x + 3 <= 19 && y + 3 <= 19 && y - 2  >= 0 && x - 1 >= 0 && tools.board[x][y + 1] == pion &&  tools.board[x][y + 2] == pion && tools.board[x + 1][y - 1] == pion && tools.board[x + 2][y - 2] == pion) {
-    if (tools.board[x][y - 1] == pion2 || tools.board[x + 3][y - 3] == pion2 || tools.board[x - 1][y + 1] == pion2 || tools.board[x][y + 3] == pion2) {
-      return true
-    } else {
-      return false
+      j++
     }
+    i++
   }
-
-  if ( y + 3 <= 19 && x + 3 <= 19 && x - 3 >= 0 && y - 1 >= 0 && tools.board[x - 1][y] == pion &&  tools.board[x - 2][y] == pion && tools.board[x + 1][y + 1] == pion && tools.board[x + 2][y + 2] == pion) {
-    if (tools.board[x - 3][y] == pion2 || tools.board[x + 1][y] == pion2 || tools.board[x + 1][y - 1] == pion2 || tools.board[x + 3][y + 3] == pion2) {
-      return true
-    } else {
-      return false
-    }
+  if (count >= 2) {
+    return true
+  } else if (count >= 1 && count2 >= 1) {
+    return true
   }
-
-  if (y + 3 <= 19 && y - 3 >= 0 && x - 3 >= 0 && x + 1 <= 19 && tools.board[x][y - 1] == pion &&  tools.board[x][y - 2] == pion && tools.board[x - 1][y + 1] == pion && tools.board[x - 2][y + 2] == pion) {
-    if (tools.board[x][y + 1] == pion2 || tools.board[x + 1][y - 1] == pion2 || tools.board[x][y - 3] == pion2 || tools.board[x - 3][y + 3] == pion2) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  if (y - 3 >= 0 && y + 3 <= 19 && x + 3 <= 19 && x - 1 >= 0 && tools.board[x][y - 1] == pion &&  tools.board[x][y - 2] == pion && tools.board[x + 1][y + 1] == pion && tools.board[x + 2][y + 2] == pion) {
-    if (tools.board[x - 1][y - 1] == pion2 || tools.board[x][y - 3] == pion2 || tools.board[x][y + 1] == pion2 || tools.board[x + 3][y + 3] == pion2) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  if (y + 3 <= 19 && y - 3 >= 0 && x + 3 <= 19 && x - 1 >= 0 && tools.board[x][y + 1] == pion &&  tools.board[x][y + 2] == pion && tools.board[x + 1][y - 1] == pion && tools.board[x + 2][y - 2] == pion) {
-    if (tools.board[x][y - 1] == pion2 || tools.board[x - 1][y + 1] == pion2 || tools.board[x][y + 3] == pion2 || tools.board[x + 3][y - 3] == pion2) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  if (y + 3 <= 19 && y - 3 >= 0 && x - 3 >= 0 && x + 1 <= 19 && tools.board[x][y + 1] == pion &&  tools.board[x][y + 2] == pion && tools.board[x - 1][y - 1] == pion && tools.board[x - 2][y - 2] == pion) {
-    if (tools.board[x][y - 1] == pion2 || tools.board[x][y + 3] == pion2 || tools.board[x + 1][y + 1] == pion2 || tools.board[x - 3][y - 3] == pion2) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  if (y + 3 <= 19 && y - 1 >= 0 && x + 3 <= 19 && x - 3 >= 0 && tools.board[x + 1][y + 1] == pion &&  tools.board[x + 2][y + 2] == pion && tools.board[x - 1][y + 1] == pion && tools.board[x - 2][y + 2] == pion) {
-    if (tools.board[x - 1][y - 1] == pion2 || tools.board[x + 1][y - 1] == pion2 || tools.board[x - 3][y + 3] == pion2 || tools.board[x + 3][y + 3] == pion2) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  if (y + 3 <= 19 && y - 3 >= 0 && x + 1 <= 19 && x - 3 >= 0 && tools.board[x - 1][y + 1] == pion &&  tools.board[x - 2][y + 2] == pion && tools.board[x - 1][y - 1] == pion && tools.board[x - 2][y - 2] == pion) {
-    if (tools.board[x + 1][y - 1] == pion2 || tools.board[x + 1][y + 1] == pion2 || tools.board[x - 3][y + 3] == pion2 || tools.board[x - 3][y - 3] == pion2) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  if (y + 1 <= 19 && y - 3 >= 0 && x + 3 <= 19 && x - 3 >= 0 && tools.board[x - 1][y - 1] == pion &&  tools.board[x - 2][y - 2] == pion && tools.board[x + 1][y - 1] == pion && tools.board[x + 2][y - 2] == pion) {
-    if (tools.board[x + 1][y + 1] == pion2 || tools.board[x - 1][y + 1] == pion2 || tools.board[x - 3][y - 3] == pion2 || tools.board[x + 3][y - 3] == pion2) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  if (y + 3 <= 19 && y - 3 >= 0 && x + 3 <= 19 && x - 1 >= 0 && tools.board[x + 1][y + 1] == pion &&  tools.board[x + 2][y + 2] == pion && tools.board[x + 1][y - 1] == pion && tools.board[x + 2][y - 2] == pion) {
-    if (tools.board[x - 1][y - 1] == pion2 || tools.board[x - 1][y + 1] == pion2 || tools.board[x + 3][y + 3] == pion2 || tools.board[x + 3][y - 3] == pion2) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  return true
+  return false
 }
