@@ -68,7 +68,7 @@ func initSdl(tools *sdlTools) {
 
 	tools.win,_ = sdl.CreateWindow("Gomokou", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, W, H, sdl.WINDOW_SHOWN)
 	tools.surface, _ = tools.win.GetSurface()
-	loadMap(tools, "ressources/menu.bmp")
+	loadMenu(tools, "ressources/menu.bmp")
 	handleEvent(tools)
 	sdl.Quit();
 

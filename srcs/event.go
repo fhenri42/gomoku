@@ -139,9 +139,9 @@ func handleEvent(tools *sdlTools) {
 					}
 				} else if (t.Type == 1025 && t.X  <= 519 && t.Y  <= 717 && t.Y  >= 699 && t.X >= 504 && !tools.gameState) {
 						if (tools.iaStart) {
-							loadMap(tools, "ressources/menu.bmp")
+							loadMenu(tools, "ressources/menu.bmp")
 						} else {
-							loadMap(tools, "ressources/menu2.bmp")
+							loadMenu(tools, "ressources/menu2.bmp")
 						}
 						tools.iaStart = !tools.iaStart
 			 }
