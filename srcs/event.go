@@ -77,10 +77,10 @@ func play(tools *sdlTools, i int, j int) {
 		printBoard(tools)
 		playAgain(tools, winner)
 		tools.board = newBoard()
-  } else {
+		return
+  }
   tools.player = tools.player % 2 + 1
   printBoard(tools)
-}
 
 }
 
@@ -93,7 +93,9 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 		if (tools.gameType == SOLO) {
 			tools.wait = true
 			bestMove := getBestMove(tools.board, tools.scorePlayer1, tools.scorePlayer2)
-			play(tools, bestMove.x, bestMove.y)
+			if (tools.gameState) {
+				play(tools, bestMove.x, bestMove.y)
+			}
 			tools.wait = false
 		}
 	}
