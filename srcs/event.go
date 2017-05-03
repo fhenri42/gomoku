@@ -3,16 +3,86 @@ package main
 import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
+	//"github.com/veandco/go-sdl2/sdl_ttf"
 )
+func initMessage(tools *sdlTools) sdl.MessageBoxData  {
+
+	var msg sdl.MessageBoxData
+	var buttonArray = make([]sdl.MessageBoxButtonData, 2)
+	buttonArray[0].Flags = sdl.MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT
+	buttonArray[0].ButtonId = 1
+	buttonArray[0].Text = "Replay"
+	buttonArray[1].Flags = sdl.MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
+	buttonArray[1].ButtonId = 2
+	buttonArray[1].Text = "Quite"
+	var colorBox *sdl.MessageBoxColorScheme = new(sdl.MessageBoxColorScheme)
+
+	colorBox.Colors[0].R = 255
+	colorBox.Colors[0].G = 0
+	colorBox.Colors[0].B = 0
+
+	colorBox.Colors[1].R = 255
+	colorBox.Colors[1].G = 0
+	colorBox.Colors[1].B = 0
+
+	colorBox.Colors[2].R = 255
+	colorBox.Colors[2].G = 0
+	colorBox.Colors[2].B = 0
+
+	colorBox.Colors[3].R = 255
+	colorBox.Colors[3].G = 0
+	colorBox.Colors[3].B = 0
+
+	colorBox.Colors[4].R = 255
+	colorBox.Colors[4].G = 0
+	colorBox.Colors[4].B = 0
+
+	msg.Flags = sdl.MESSAGEBOX_INFORMATION
+	msg.Window = tools.win
+	msg.Title = "End of game"
+	msg.NumButtons = 2
+	msg.Buttons = buttonArray
+	msg.ColorScheme = colorBox
+	return msg
+
+}
+
+func playAgain(tools *sdlTools, winner int) {
+
+		msg := initMessage(tools)
+	if winner == 1 {
+		msg.Message = "PLAYER 1 as win"
+	} else {
+		msg.Message = "PLAYER 2 as win"
+	}
+
+	_, key := sdl.ShowMessageBox(&msg)
+	if (key == 2) {
+		tools.exit = true
+		return
+	}
+	
+	errCenter := putImageCenter("ressources/menu.bmp", tools.surface)
+	if errCenter != nil {
+		fmt.Println("err imageCenter", errCenter)
+	}
+	tools.win.UpdateSurface()
+}
 
 func play(tools *sdlTools, i int, j int) {
   tools.board = moveAndEat(tools.board, i, j, tools.player, &(tools.scorePlayer2), &(tools.scorePlayer1))
-  isEnd, _ := endGame(tools.board)
+  isEnd, winner := endGame(tools.board)
   if (isEnd) {
-    fmt.Println("THE END")
-  }
+		tools.gameState = false
+		printBoard(tools)
+		playAgain(tools, winner)
+	  fmt.Println("THE END")
+		tools.board = newBoard()
+  } else {
+
   tools.player = tools.player % 2 + 1
   printBoard(tools)
+}
 }
 
 func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
@@ -52,10 +122,13 @@ func handleEvent(tools *sdlTools) {
 					onClic(t, tools)
 					break
 				} else if (t.Type == 1025 && t.X  <= 680 && t.Y  <= 460 && t.Y  >= 240 && t.X >= 380 && !tools.gameState) {
+					fmt.Println(tools.gameState)
+
 					tools.gameState = true
 					tools.gameType = 2
 					loadMap(tools)
 				} else if (t.Type == 1025 && t.X  <= 680 && t.Y  <= 719 && t.Y  >= 501 && t.X >= 380 && !tools.gameState) {
+					fmt.Println(tools.gameState)
 					tools.gameState = true
 					tools.gameType = 1
 					loadMap(tools)
