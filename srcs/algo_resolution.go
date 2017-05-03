@@ -3,8 +3,7 @@ import (
   "fmt"
 )
 
-func getBestMove(board [SIZE][SIZE]int, aiScore int, playerScore int) move {
-  fmt.Print("in the resolution:")
+func getBestMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int) move {
   coups := findMoves(board) // REMPLI UN ARRAY AVEC LES COUPS POTENTIELS
   var tmpBoard [SIZE][SIZE]int
   var tmpPlayerScore int
@@ -13,8 +12,9 @@ func getBestMove(board [SIZE][SIZE]int, aiScore int, playerScore int) move {
   for index,coup := range coups { // PARCOURS LES COUPS
 
     tmpAiScore, tmpPlayerScore = aiScore, playerScore
-    tmpBoard = moveAndEat(board, coup.x, coup.y, PLAYER2, &tmpAiScore, &tmpPlayerScore)
-    coups[index].poid = calcValue(tmpBoard, 1, tmpAiScore, tmpPlayerScore)
+    tmpBoard = moveAndEat(board, coup.x, coup.y, player, &tmpAiScore, &tmpPlayerScore)
+    coups[index].poid = calcValue(tmpBoard, 1, tmpAiScore, tmpPlayerScore, player)
+    fmt.Println(coup)
   }
   if len(coups) != 0 {
     bestCoup := maxCoup(coups)
@@ -26,12 +26,13 @@ func getBestMove(board [SIZE][SIZE]int, aiScore int, playerScore int) move {
   return tmp
 }
 
-func calcValue(board [SIZE][SIZE]int, depth int, aiScore int, playerScore int) int {
+func calcValue(board [SIZE][SIZE]int, depth int, aiScore int, playerScore int, player int) int {
   end, winner := endGame(board, playerScore, aiScore) // OBSERVE LA GRILLE POUR SAVOIR SI C'EST LA FIN
   var tmpBoard [SIZE][SIZE]int
   var tmpPlayerScore int
   var tmpAiScore int
-  var player int
+
+  player = player % 2 + 1
 
   if (end) { // SI FIN DU GAME
     if (winner == EQUAL) { // SI MATCH NUL
@@ -45,17 +46,11 @@ func calcValue(board [SIZE][SIZE]int, depth int, aiScore int, playerScore int) i
     return evaluate(board, aiScore, playerScore) // ON EVALUE LES NOEUDS FINAUX GRACE A UNE HEURISTIQUE
   } else { // SINON ON CALCULE EN ALTERNANCE MIN/MAX PAR RAPPORT AUX EVALUATIONS DES NOEUD FINAUX EN REMONTANT JUSQUA PROFONDEUR 0
 
-    if (depth % 2 == 1) {
-      player = PLAYER1
-    } else {
-      player = PLAYER2
-    }
-
     coups := findMoves(board)
     for index,coup := range coups {
       tmpAiScore, tmpPlayerScore = aiScore, playerScore
       tmpBoard = moveAndEat(board, coup.x, coup.y, player, &tmpAiScore, &tmpPlayerScore)
-      coups[index].poid = calcValue(tmpBoard, depth + 1, tmpAiScore, tmpPlayerScore)
+      coups[index].poid = calcValue(tmpBoard, depth + 1, tmpAiScore, tmpPlayerScore, player)
     }
 
     if (depth % 2 == 1) {
@@ -69,5 +64,6 @@ func calcValue(board [SIZE][SIZE]int, depth int, aiScore int, playerScore int) i
 
 func evaluate(board [SIZE][SIZE]int, aiScore int, playerScore int) int {
   //fmt.Print("\nHELLO\n")
-  return findWeight(board, aiScore, playerScore)
+  return 10
+  //return findWeight(board, aiScore, playerScore)
 }

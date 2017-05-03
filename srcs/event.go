@@ -94,8 +94,7 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
     play(tools, i, j)
 		if (tools.gameType == SOLO) {
 			tools.wait = true
-			bestMove := getBestMove(tools.board, tools.scorePlayer1, tools.scorePlayer2)
-			fmt.Println("oooo")
+			bestMove := getBestMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player)
 			if (tools.gameState) {
 				play(tools, bestMove.x, bestMove.y)
 			}
