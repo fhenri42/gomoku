@@ -5,7 +5,6 @@ import (
 
 func getBestMove(board [SIZE][SIZE]int, aiScore int, playerScore int) move {
   fmt.Print("in the resolution:")
-  fmt.Print(board)
   coups := findMoves(board) // REMPLI UN ARRAY AVEC LES COUPS POTENTIELS
   var tmpBoard [SIZE][SIZE]int
   var tmpPlayerScore int
