@@ -11,18 +11,20 @@ type move struct {
   poid int
 }
 
-const W = 1000
-const H = 1000
-const OFFSET = 22
+const W = 1205
+const H = 1205
+const OFFSET_Y = 160
+const OFFSET_X = 110
+const SPACING = 5
 const PLAYER1 = 1
 const PLAYER2 = 2
-const DEPTH_MAX = 2
+const DEPTH_MAX = 3
 const EQUAL = 0
 const MIN_BASE = 1000000
 const MAX_BASE = -1000000
 const AMP = 2
 const SIZE = 19
-const SQUARE = 53
+const SQUARE = 50
 const MULTI = 2
 const SOLO = 1
 

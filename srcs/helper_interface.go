@@ -7,7 +7,7 @@ import (
 )
 
 func printBoard(tools *sdlTools) {
-  tools.surface.Free()
+	tools.surface.Free()
   loadMap(tools)
   var i int32 = 0
   var j int32 = 0
@@ -22,12 +22,11 @@ func printBoard(tools *sdlTools) {
     }
     i++
   }
-
   tools.win.UpdateSurface()
 }
 
 func loadMap(tools *sdlTools)  {
-	errCenter := putImageCenter("ressources/boardgo.bmp", tools.surface)
+	errCenter := putImageCenter("ressources/board.bmp", tools.surface)
 	if errCenter != nil {
 		fmt.Println("err imageCenter", errCenter)
 	}
@@ -38,11 +37,11 @@ func putAdot(i int32, j int32, tools *sdlTools, player int) {
   var file string
 
 	if player == PLAYER1 {
-    file = "ressources/red-dot.bmp"
+    file = "ressources/pion_blanc.bmp"
   } else {
-    file = "ressources/black-dot.bmp"
+    file = "ressources/pion_noir.bmp"
   }
-	errXY := putImageXY(file, tools.surface, j * SQUARE + OFFSET - SQUARE / 4, i * SQUARE + OFFSET - SQUARE / 4)
+	errXY := putImageXY(file, tools.surface, j * SQUARE + j * SPACING + OFFSET_X - SQUARE / 2, i * SQUARE + i * SPACING + OFFSET_Y - SQUARE / 2)
   if errXY != nil {
     fmt.Println("errXY", errXY)
   }

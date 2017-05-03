@@ -1,12 +1,12 @@
 package main
 
 func isPlayable(tools *sdlTools, x int, y int) bool {
-  if (x >= SIZE || y >= SIZE || tools.board[x][y] != 0) {
+  if (x >= SIZE || y >= SIZE || x < 0 || y < 0 || tools.board[x][y] != 0) {
     return false
   }
-  if (!forbidenMove(tools, x, y)) {
-    return false
-  }
+  // if (!forbidenMove(tools, x, y)) {
+  //   return false
+  // }
   return true
 }
 

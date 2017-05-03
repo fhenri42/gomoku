@@ -8,7 +8,7 @@ func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, p
   for i <= 1 {
     j = -1
     for j <= 1 {
-      if (x + i * 3 > 0 && x + i * 3 < SIZE && y + j * 3 > 0 && y + j * 3 < SIZE && board[x + i][y + j] == otherPlayer && board[x + i * 2][y + j * 2] == otherPlayer && board[x + i * 3][y + j * 3] == player) {
+      if (x + i * 3 >= 0 && x + i * 3 < SIZE && y + j * 3 >= 0 && y + j * 3 < SIZE && board[x + i][y + j] == otherPlayer && board[x + i * 2][y + j * 2] == otherPlayer && board[x + i * 3][y + j * 3] == player) {
         board[x + i][y + j] = 0
         board[x + i * 2][y + j * 2] = 0
         if (player == PLAYER1) {

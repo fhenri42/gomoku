@@ -85,10 +85,12 @@ func play(tools *sdlTools, i int, j int) {
 }
 
 func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
-	var j int = (int(t.X) + SQUARE / 2 - OFFSET) / SQUARE
-	var i int = (int(t.Y) + SQUARE / 2 - OFFSET) / SQUARE
+	var j int = (int(t.X) + SQUARE / 2 - OFFSET_X) / (SQUARE + SPACING)
+	var moduloj = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
+	var i int = (int(t.Y) + SQUARE / 2 - OFFSET_Y) / (SQUARE + SPACING)
+	var moduloi = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
 
-	if (isPlayable(tools, i, j)) {
+	if (moduloj > 0 && moduloi > 0 && isPlayable(tools, i, j)) {
     play(tools, i, j)
 		if (tools.gameType == SOLO) {
 			tools.wait = true
