@@ -75,7 +75,7 @@ func play(tools *sdlTools, i int, j int) {
 		tools.gameState = false
 		printBoard(tools)
 		playAgain(tools, winner)
-		tools.board = newBoard()
+		initSdlTools(tools)
 		return
   }
   tools.player = tools.player % 2 + 1

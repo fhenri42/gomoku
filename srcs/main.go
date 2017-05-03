@@ -50,11 +50,10 @@ type sdlTools struct {
 	wait bool
 }
 
-func intSdlTools() *sdlTools  {
-	var tools *sdlTools = new(sdlTools)
+
+func initSdlTools(tools *sdlTools) {
+
 	tools.iaStart = false
-	tools.win = nil
-	tools.surface = nil
 	tools.player = PLAYER1
 	tools.scorePlayer1 = 0
 	tools.scorePlayer2 = 0
@@ -63,7 +62,6 @@ func intSdlTools() *sdlTools  {
 	tools.gameState = false
 	tools.gameType = 0
 	tools.wait = false
-	return tools
 }
 
 func initSdl(tools *sdlTools) {
@@ -78,6 +76,8 @@ func initSdl(tools *sdlTools) {
 }
 
 func main() {
-initSdl(intSdlTools())
+	var tools *sdlTools = new(sdlTools)
+	initSdlTools(tools)
+	initSdl(tools)
 	return
 }
