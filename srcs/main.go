@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/veandco/go-sdl2/sdl"
-	"fmt"
 )
 
 type move struct {
@@ -60,13 +59,7 @@ func initSdl(tools *sdlTools) {
 
 	tools.win,_ = sdl.CreateWindow("Gomokou", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, W, H, sdl.WINDOW_SHOWN)
 	tools.surface, _ = tools.win.GetSurface()
-
-	errCenter := putImageCenter("ressources/menu.bmp", tools.surface)
-	if errCenter != nil {
-		fmt.Println("err imageCenter", errCenter)
-	}
-
-	tools.win.UpdateSurface()
+	loadMap(tools, "ressources/menu.bmp")
 	handleEvent(tools)
 	sdl.Quit();
 

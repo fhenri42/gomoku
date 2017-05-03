@@ -8,7 +8,7 @@ import (
 
 func printBoard(tools *sdlTools) {
 	tools.surface.Free()
-  loadMap(tools)
+  loadMap(tools,"ressources/board.bmp")
   var i int32 = 0
   var j int32 = 0
 
@@ -25,8 +25,8 @@ func printBoard(tools *sdlTools) {
   tools.win.UpdateSurface()
 }
 
-func loadMap(tools *sdlTools)  {
-	errCenter := putImageCenter("ressources/board.bmp", tools.surface)
+func loadMap(tools *sdlTools, file string)  {
+	errCenter := putImageCenter(file, tools.surface)
 	if errCenter != nil {
 		fmt.Println("err imageCenter", errCenter)
 	}

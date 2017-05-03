@@ -44,7 +44,6 @@ func initMessage(tools *sdlTools) sdl.MessageBoxData  {
 	msg.Buttons = buttonArray
 	msg.ColorScheme = colorBox
 	return msg
-
 }
 
 func playAgain(tools *sdlTools, winner int) {
@@ -124,18 +123,22 @@ func handleEvent(tools *sdlTools) {
 				if t.Type == 1025 && tools.gameState && !tools.wait {
 					onClic(t, tools)
 					break
-				} else if (t.Type == 1025 && t.X  <= 680 && t.Y  <= 460 && t.Y  >= 240 && t.X >= 380 && !tools.gameState) {
-					fmt.Println(tools.gameState)
-
+				} else if (t.Type == 1025 && t.X  <= 718 && t.Y  <= 482 && t.Y  >= 380 && t.X >= 490 && !tools.gameState) {
 					tools.gameState = true
 					tools.gameType = 2
-					loadMap(tools)
-				} else if (t.Type == 1025 && t.X  <= 680 && t.Y  <= 719 && t.Y  >= 501 && t.X >= 380 && !tools.gameState) {
-					fmt.Println(tools.gameState)
+					loadMap(tools, "ressources/board.bmp")
+				} else if (t.Type == 1025 && t.X  <= 718 && t.Y  <= 653 && t.Y  >= 551 && t.X >= 490 && !tools.gameState) {
 					tools.gameState = true
 					tools.gameType = 1
-					loadMap(tools)
-				}
+					loadMap(tools, "ressources/board.bmp")
+				} else if (t.Type == 1025 && t.X  <= 519 && t.Y  <= 717 && t.Y  >= 699 && t.X >= 504 && !tools.gameState) {
+					  tools.player = tools.player % 2 + 1
+						if (tools.player == 2) {
+							loadMap(tools, "ressources/menu2.bmp")
+						} else {
+							loadMap(tools, "ressources/menu.bmp")
+						}
+			 }
 			break
 			}
 		}
