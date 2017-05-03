@@ -124,11 +124,11 @@ func handleEvent(tools *sdlTools) {
 				if t.Type == 1025 && tools.gameState && !tools.wait {
 					onClic(t, tools)
 					break
-				} else if (t.Type == 1025 && t.X  <= 718 && t.Y  <= 482 && t.Y  >= 380 && t.X >= 490 && !tools.gameState) {
+				} else if (t.Type == 1025 && t.X  <= 740 && t.Y  <= 625 && t.Y  >= 492 && t.X >= 466 && !tools.gameState) {
 					tools.gameState = true
 					tools.gameType = 2
 					loadMap(tools, "ressources/board.bmp")
-				} else if (t.Type == 1025 && t.X  <= 718 && t.Y  <= 653 && t.Y  >= 551 && t.X >= 490 && !tools.gameState) {
+				} else if (t.Type == 1025 && t.X  <= 740 && t.Y  <= 822 && t.Y  >= 688 && t.X >= 466 && !tools.gameState) {
 					tools.gameState = true
 					tools.gameType = 1
 					loadMap(tools, "ressources/board.bmp")
@@ -136,11 +136,11 @@ func handleEvent(tools *sdlTools) {
 						fmt.Println("!ooo")
 						play(tools, 9, 9)
 					}
-				} else if (t.Type == 1025 && t.X  <= 519 && t.Y  <= 717 && t.Y  >= 699 && t.X >= 504 && !tools.gameState) {
+				} else if (t.Type == 1025 && t.X  <= 510 && t.Y  <= 921 && t.Y  >= 898 && t.X >= 485 && !tools.gameState) {
 						if (tools.iaStart) {
 							loadMenu(tools, "ressources/menu.bmp")
 						} else {
-							loadMenu(tools, "ressources/menu2.bmp")
+							loadMenu(tools, "ressources/menu1.bmp")
 						}
 						tools.iaStart = !tools.iaStart
 			 }
