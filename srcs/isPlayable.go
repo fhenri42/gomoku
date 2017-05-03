@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 func isPlayable(tools *sdlTools, x int, y int) bool {
   if (x >= SIZE || y >= SIZE || x < 0 || y < 0 || tools.board[x][y] != 0) {
     return false
