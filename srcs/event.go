@@ -61,7 +61,7 @@ func playAgain(tools *sdlTools, winner int) {
 		tools.exit = true
 		return
 	}
-	
+
 	errCenter := putImageCenter("ressources/menu.bmp", tools.surface)
 	if errCenter != nil {
 		fmt.Println("err imageCenter", errCenter)
@@ -76,20 +76,19 @@ func play(tools *sdlTools, i int, j int) {
 		tools.gameState = false
 		printBoard(tools)
 		playAgain(tools, winner)
-	  fmt.Println("THE END")
 		tools.board = newBoard()
   } else {
-
   tools.player = tools.player % 2 + 1
   printBoard(tools)
 }
+
 }
 
 func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var j int = (int(t.X) + SQUARE / 2 - OFFSET) / SQUARE
 	var i int = (int(t.Y) + SQUARE / 2 - OFFSET) / SQUARE
 
-	if (isPlayable(tools.board, i, j)) {
+	if (isPlayable(tools, i, j)) {
     play(tools, i, j)
 		if (tools.gameType == SOLO) {
 			tools.wait = true

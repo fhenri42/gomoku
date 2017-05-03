@@ -1,12 +1,5 @@
 package main
 
-func isPlayable(board [SIZE][SIZE]int, x int, y int) bool {
-  if (x >= SIZE || y >= SIZE || board[x][y] != 0) {
-    return false
-  }
-  return true
-}
-
 func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, playerScore *int) [SIZE][SIZE]int {
   otherPlayer := player % 2 + 1
   var i = -1
