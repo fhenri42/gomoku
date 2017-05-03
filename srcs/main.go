@@ -22,6 +22,9 @@ const SQUARE = 50
 const PION = 40
 const OFFSET_LAST_SCORE_X = 574
 const OFFSET_LAST_SCORE_Y = 34
+const OFFSET_ARRAY_Y = 32
+const OFFSET_ARRAY_LEFT_X = 275
+const OFFSET_ARRAY_RIGHT_X = 860
 
 const PLAYER1 = 1
 const PLAYER2 = 2

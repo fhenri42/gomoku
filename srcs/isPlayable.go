@@ -30,13 +30,13 @@ func isForbidenMove(tools *sdlTools, x int, y int) bool {
   for i <= 1 {
     j = -1
     for j <= 1 {
-      if (x + i * 3 > 0 && x + i * 3 < SIZE && y + j * 3 > 0 && y + j * 3 < SIZE && tools.board[x + i * -1][y + j * -1] != pion2 && tools.board[x + i][y + j] == pion && tools.board[x + i * 2][y + j * 2] == pion && tools.board[x + i * 3][y + j * 3] != pion2) {
-        if (tools.board[x + i * -2][y + j * -2] == pion && tools.board[x + i * -1][y + j * -1] == pion) {
+      if (x + i * -1 >= 0 && x + i * -1 < SIZE && y + j * -1 < SIZE && y + j * -1 >= 0 && x + i * 3 >= 0 && x + i * 3 < SIZE && y + j * 3 >= 0 && y + j * 3 < SIZE && tools.board[x + i * -1][y + j * -1] != pion2 && tools.board[x + i][y + j] == pion && tools.board[x + i * 2][y + j * 2] == pion && tools.board[x + i * 3][y + j * 3] != pion2) {
+        if (x + i * -2 >= 0 && x + i * -2 < SIZE && y + j * -2 < SIZE && y + j * -2 >= 0 && tools.board[x + i * -2][y + j * -2] == pion && tools.board[x + i * -1][y + j * -1] == pion) {
           count--
         }
         count++
       }
-      if (x + i * 4 > 0 && x + i * 4 < SIZE && y + j * 4 > 0 && y + j * 4 < SIZE && tools.board[x + i * -1][y + j * -1] != pion2 && tools.board[x + i][y + j] == 0 && tools.board[x + i * 2][y + j * 2] == pion && tools.board[x + i * 3][y + j * 3] == pion && tools.board[x + i * 4][y + j * 4] != pion2) {
+      if (x + i * -1 >= 0 && x + i * -1 < SIZE && y + j * -1 < SIZE && y + j * -1 >= 0 && x + i * 4 >= 0 && x + i * 4 < SIZE && y + j * 4 >= 0 && y + j * 4 < SIZE && tools.board[x + i * -1][y + j * -1] != pion2 && tools.board[x + i][y + j] == 0 && tools.board[x + i * 2][y + j * 2] == pion && tools.board[x + i * 3][y + j * 3] == pion && tools.board[x + i * 4][y + j * 4] != pion2) {
         count2++
       }
       j++

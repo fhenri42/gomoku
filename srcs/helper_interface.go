@@ -40,7 +40,25 @@ func loadMap(tools *sdlTools)  {
 	if errCenter != nil {
 		fmt.Println("err imageCenter", errCenter)
 	}
+	loadTurn(tools)
 	tools.win.UpdateSurface()
+}
+
+func loadTurn(tools *sdlTools)  {
+	var file string
+	var offsetX int32
+
+	if tools.player == PLAYER1 {
+		offsetX = OFFSET_ARRAY_LEFT_X
+	   file = "ressources/left.bmp"
+	 } else {
+		 offsetX = OFFSET_ARRAY_RIGHT_X
+	   file = "ressources/right.bmp"
+	 }
+	errCenter := putImageXY(file, tools.surface, offsetX, OFFSET_ARRAY_Y)
+	if errCenter != nil {
+		fmt.Println("err imageCenter", errCenter)
+	}
 }
 
 func putAdot(i int32, j int32, tools *sdlTools, player int) {

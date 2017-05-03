@@ -14,7 +14,7 @@ func initMessage(tools *sdlTools) sdl.MessageBoxData  {
 	buttonArray[0].Text = "Replay"
 	buttonArray[1].Flags = sdl.MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
 	buttonArray[1].ButtonId = 2
-	buttonArray[1].Text = "Quite"
+	buttonArray[1].Text = "Quit"
 	var colorBox *sdl.MessageBoxColorScheme = new(sdl.MessageBoxColorScheme)
 
 	colorBox.Colors[0].R = 255
@@ -89,6 +89,7 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var moduloj = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
 	var i int = (int(t.Y) + SQUARE / 2 - OFFSET_Y) / (SQUARE + SPACING)
 	var moduloi = (int(t.Y) + SQUARE / 2 - OFFSET_Y) % (SQUARE + SPACING)
+	fmt.Println(j, i)
 
 	if (moduloj > 0 && moduloi > 0 && isPlayable(tools, i, j)) {
     play(tools, i, j)
