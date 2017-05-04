@@ -78,7 +78,7 @@ func calcValue(board [SIZE][SIZE]int, depth int, aiScore int, playerScore int, p
  for index,coup := range coups {
    tmpAiScore, tmpPlayerScore = aiScore, playerScore
    tmpBoard = moveAndEat(board, coup.x, coup.y, player, &tmpAiScore, &tmpPlayerScore)
-   coups[index].poid = calcValue(tmpBoard, depth + 1, tmpAiScore, tmpPlayerScore, player).
+   coups[index].poid = calcValue(tmpBoard, depth + 1, tmpAiScore, tmpPlayerScore, player)
  }
 
     if (depth % 2 == 1) {
