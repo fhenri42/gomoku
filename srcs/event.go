@@ -109,6 +109,9 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var moduloi = (int(t.Y) + SQUARE / 2 - OFFSET_Y) % (SQUARE + SPACING)
 
 	if (moduloj > 0 && moduloi > 0 && isPlayable(tools, i, j)) {
+		if (tools.hint != nil) {
+			tools.board[tools.hint.x][tools.hint.y] = 0
+		}
     play(tools, i, j)
 		if (tools.gameType == SOLO) {
 			tools.wait = true
@@ -118,6 +121,10 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 			tools.time = timeAfter.Sub(timeBfore)
 			play(tools, bestMove.x, bestMove.y)
 			displayTime(tools)
+			bestMove = getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
+			tools.hint = &bestMove
+			tools.board[tools.hint.x][tools.hint.y] = HINT
+			printBoard(tools)
 			tools.wait = false
 		}
 	}
@@ -152,6 +159,11 @@ func handleEvent(tools *sdlTools) {
 					tools.gameState = true
 					tools.gameType = 1
 					loadMap(tools, "ressources/board.bmp")
+					if (tools.iaStart) {
+						bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
+						play(tools, bestMove.x, bestMove.y)
+					}
+
 				} else if (t.Type == 1025 && t.X  <= 510 && t.Y  <= 921 && t.Y  >= 898 && t.X >= 485 && !tools.gameState) {
 					if (tools.iaStart) {
 						loadMenu(tools, "ressources/menu.bmp")

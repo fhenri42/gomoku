@@ -32,8 +32,5 @@ func findMoves(board[SIZE][SIZE]int) ([]move) {
     }
     x++
   }
-  if (len(moves) == 0) {
-    moves = append(moves, newMove(9, 9, 0))
-  }
   return moves
 }

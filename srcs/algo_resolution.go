@@ -26,6 +26,9 @@ func getNextMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int
 
   depth++
   coups := findMoves(board)
+  if (len(coups) == 0) {
+    return newMove(9, 9, 0)
+  }
 
   var wg sync.WaitGroup
   wg.Add(len(coups))
@@ -43,6 +46,6 @@ func getNextMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int
 }
 
 func evaluate(board [SIZE][SIZE]int, aiScore int, playerScore int) move {
-  return newMove(0, 0, 10)
-  //return findWeight(board, aiScore, playerScore)
+  return (newMove(0, 0, 10))
+  //return newMove(0, 0, findWeight(board, aiScore, playerScore))
 }

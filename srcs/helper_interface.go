@@ -73,9 +73,11 @@ func putAdot(i int32, j int32, tools *sdlTools, player int) {
 
 	if player == PLAYER1 {
     file = "ressources/pion_blanc.bmp"
-  } else {
+  } else if player == PLAYER2 {
     file = "ressources/pion_noir.bmp"
-  }
+  } else if player == HINT {
+		file = "ressources/pion_vert.bmp"
+	}
 	errXY := putImageXY(file, tools.surface, j * SQUARE + j * SPACING + OFFSET_X - SQUARE / 2, i * SQUARE + i * SPACING + OFFSET_Y - SQUARE / 2)
   if errXY != nil {
     fmt.Println("errXY", errXY)
