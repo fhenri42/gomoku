@@ -27,7 +27,7 @@ const OFFSET_ARRAY_RIGHT_X = 860
 
 const PLAYER1 = 1
 const PLAYER2 = 2
-const DEPTH_MAX = 2
+const DEPTH_MAX = 3
 const EQUAL = 0
 const MIN_BASE = 1000000
 const MAX_BASE = -1000000
