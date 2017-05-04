@@ -8,7 +8,7 @@ func isClose(x int, y int, board[SIZE][SIZE]int) bool {
   for i <= AMP {
     var j = -AMP
     for j <= AMP {
-      if (x + i > 0 && x + i < SIZE && y + j > 0 && y + j < SIZE && board[x + i][y + j] != 0) {
+      if (x + i >= 0 && x + i < SIZE && y + j >= 0 && y + j < SIZE && board[x + i][y + j] != 0) {
         return true
       }
       j++

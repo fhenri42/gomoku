@@ -76,11 +76,11 @@ func play(tools *sdlTools, i int, j int) {
 	var isEnd bool
 
   tools.board, isEnd = moveAndEat(tools.board, i, j, tools.player, &(tools.scorePlayer2), &(tools.scorePlayer1))
+	tools.player = tools.player % 2 + 1
   printBoard(tools)
 	if (isEnd) {
-		playAgain(tools, tools.player)
+		playAgain(tools, tools.player % 2 + 1)
 	}
-	tools.player = tools.player % 2 + 1
 }
 
 func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
@@ -88,13 +88,13 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var moduloj = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
 	var i int = (int(t.Y) + SQUARE / 2 - OFFSET_Y) / (SQUARE + SPACING)
 	var moduloi = (int(t.Y) + SQUARE / 2 - OFFSET_Y) % (SQUARE + SPACING)
-	fmt.Println(j, i)
 
 	if (moduloj > 0 && moduloi > 0 && isPlayable(tools, i, j)) {
     play(tools, i, j)
 		if (tools.gameType == SOLO) {
 			tools.wait = true
-			bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
+			bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 1)
+			fmt.Println("\n\n")
 			play(tools, bestMove.x, bestMove.y)
 			tools.wait = false
 		}
