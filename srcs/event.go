@@ -15,11 +15,8 @@ func  displayTime(tools *sdlTools)  {
 	clr.B = 0
 
 	var rect  sdl.Rect
-	font, err:= ttf.OpenFont("ressources/Zalight.ttf", 42)
-	fmt.Println(err)
-	fmt.Println(tools.time)
-	text, err1:= font.RenderUTF8_Solid(tools.time.String(),clr)
-	fmt.Println(err1)
+	font, _:= ttf.OpenFont("ressources/Zalight.ttf", 42)
+	text, _:= font.RenderUTF8_Solid(tools.time.String(),clr)
 	defer text.Free()
 
 	rect.X = 100
@@ -98,11 +95,11 @@ func play(tools *sdlTools, i int, j int) {
 	var isEnd bool
 
   tools.board, isEnd = moveAndEat(tools.board, i, j, tools.player, &(tools.scorePlayer2), &(tools.scorePlayer1))
+	tools.player = tools.player % 2 + 1
   printBoard(tools)
 	if (isEnd) {
-		playAgain(tools, tools.player)
+		playAgain(tools, tools.player % 2 + 1)
 	}
-	tools.player = tools.player % 2 + 1
 }
 
 func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
@@ -110,7 +107,6 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var moduloj = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
 	var i int = (int(t.Y) + SQUARE / 2 - OFFSET_Y) / (SQUARE + SPACING)
 	var moduloi = (int(t.Y) + SQUARE / 2 - OFFSET_Y) % (SQUARE + SPACING)
-	fmt.Println(j, i)
 
 	if (moduloj > 0 && moduloi > 0 && isPlayable(tools, i, j)) {
     play(tools, i, j)

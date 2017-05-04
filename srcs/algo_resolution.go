@@ -1,16 +1,17 @@
 package main
 import (
   "sync"
-  "fmt"
 )
-
-var k = 0
 
 func  simulateAndGetValue(coup *move, aiScore int, playerScore int, board *[SIZE][SIZE]int, player int, depth int, wg *sync.WaitGroup)  {
   defer (*wg).Done()
    tmpBoard, isEnd := moveAndEat(*board, coup.x, coup.y, player, &aiScore, &playerScore)
    if isEnd {
-     (*coup).poid = getNextMove(tmpBoard, aiScore, playerScore, player, DEPTH_MAX).poid
+     if (depth % 2 == 0) {
+       (*coup).poid = MAX_BASE + depth
+     } else {
+       (*coup).poid = MIN_BASE - depth
+     }
    } else {
      (*coup).poid = getNextMove(tmpBoard, aiScore, playerScore, player, depth + 1).poid
    }
@@ -18,13 +19,8 @@ func  simulateAndGetValue(coup *move, aiScore int, playerScore int, board *[SIZE
 
 func getNextMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int, depth int) move {
   var t int = 0
-  if (depth == 0) {
-    k = 0
-  }
 
-  if (depth == DEPTH_MAX) {
-    fmt.Println(k)
-    k++
+  if (depth - 1 == DEPTH_MAX) {
     return evaluate(board, aiScore, playerScore)
   }
 
@@ -39,7 +35,7 @@ func getNextMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int
   wg.Wait()
 
 
-  if (depth % 2 == 1) {
+  if (depth % 2 == 0) {
     return minCoup(coups)
   } else {
     return maxCoup(coups)

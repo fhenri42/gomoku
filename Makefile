@@ -9,8 +9,7 @@ SRC =  srcs/main.go\
 			 srcs/helper_array.go\
 			 srcs/helper_minmax.go\
 			 srcs/helper_interface.go\
-			 srcs/algo_heuristique.go\
-			 srcs/isPlayable.go
+			 srcs/algo_heuristique.go
 
 
 all: $(NAME)
