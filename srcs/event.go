@@ -112,7 +112,6 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
     play(tools, i, j)
 		if (tools.gameType == SOLO) {
 			tools.wait = true
-
 			timeBfore := time.Now()
 			bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
 			timeAfter := time.Now()

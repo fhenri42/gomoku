@@ -20,20 +20,20 @@ func  simulateAndGetValue(coup *move, aiScore int, playerScore int, board *[SIZE
 func getNextMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int, depth int) move {
   var t int = 0
 
-  if (depth - 1 == DEPTH_MAX) {
+  if (depth == DEPTH_MAX) {
     return evaluate(board, aiScore, playerScore)
   }
 
+  depth++
   coups := findMoves(board)
-  var wg sync.WaitGroup
 
+  var wg sync.WaitGroup
   wg.Add(len(coups))
   for t < len(coups) {
     simulateAndGetValue(&coups[t], aiScore, playerScore, &board, player, depth, &wg)
     t++
   }
   wg.Wait()
-
 
   if (depth % 2 == 0) {
     return minCoup(coups)
