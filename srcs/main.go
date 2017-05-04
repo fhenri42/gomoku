@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/veandco/go-sdl2/sdl"
+	"time"
 )
 
 type move struct {
@@ -48,6 +49,7 @@ type sdlTools struct {
 	gameState bool
 	gameType int
 	wait bool
+	time time.Duration
 }
 
 

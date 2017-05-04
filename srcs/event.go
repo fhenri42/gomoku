@@ -2,10 +2,32 @@ package main
 
 import (
 	"fmt"
-	"github.com/veandco/go-sdl2/sdl"
 	"os"
-	//"github.com/veandco/go-sdl2/sdl_ttf"
+	"time"
+	"github.com/veandco/go-sdl2/sdl"
+	"github.com/veandco/go-sdl2/sdl_ttf"
 )
+func  displayTime(tools *sdlTools)  {
+	ttf.Init()
+	var clr sdl.Color
+	clr.R = 0
+	clr.G = 0
+	clr.B = 0
+
+	var rect  sdl.Rect
+	font, err:= ttf.OpenFont("ressources/Zalight.ttf", 42)
+	fmt.Println(err)
+	fmt.Println(tools.time)
+	text, err1:= font.RenderUTF8_Solid(tools.time.String(),clr)
+	fmt.Println(err1)
+	defer text.Free()
+
+	rect.X = 100
+	rect.Y = 120
+	text.Blit(nil, tools.surface, &rect);
+	tools.win.UpdateSurface()
+}
+
 func initMessage(tools *sdlTools) sdl.MessageBoxData  {
 
 	var msg sdl.MessageBoxData
@@ -97,10 +119,15 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
     play(tools, i, j)
 		if (tools.gameType == SOLO) {
 			tools.wait = true
+
+			timeBfore := time.Now()
 			bestMove := getBestMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player)
+			timeAfter := time.Now()
+			tools.time = timeAfter.Sub(timeBfore)
 			if (tools.gameState) {
 				play(tools, bestMove.x, bestMove.y)
 			}
+			displayTime(tools)
 			tools.wait = false
 		}
 	}

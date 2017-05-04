@@ -1,12 +1,10 @@
 package main
 import (
-  "fmt"
+//  "fmt"
   "sync"
 )
 var FIND_COUP_ROUTINE sync.WaitGroup
 var CALCULE_VALUE_ROUTINE sync.WaitGroup
-
-
 
 func  findCoup(index int, coups[]move,coup *move, aiScore int, playerScore int, board*[SIZE][SIZE]int, player int)  {
 
@@ -18,7 +16,7 @@ func  findCoup(index int, coups[]move,coup *move, aiScore int, playerScore int, 
   tmpBoard = moveAndEat(*board, coup.x, coup.y, player, &tmpAiScore, &tmpPlayerScore)
   coups[index].poid = calcValue(tmpBoard, 1, tmpAiScore, tmpPlayerScore, player)
 
-  fmt.Println("this is takin time like hell lot of time",coup)
+  //fmt.Println("this is takin time like hell lot of time",coup)
   defer FIND_COUP_ROUTINE.Done()
 
 }
@@ -31,10 +29,10 @@ func getBestMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int
   for t < len(coups) {
     go findCoup(t, coups ,&coups[t], aiScore, playerScore, &board, player)
     t++
-    fmt.Println("go lunch a routine in BESTMOVE")
+//    fmt.Println("go lunch a routine in BESTMOVE")
   }
   FIND_COUP_ROUTINE.Wait()
-  fmt.Println("All routine are done the code continue")
+//fmt.Println("All routine are done the code continue")
   if len(coups) != 0 {
     bestCoup := maxCoup(coups)
     return *bestCoup
