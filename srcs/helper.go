@@ -1,6 +1,6 @@
 package main
 
-func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, playerScore *int) [SIZE][SIZE]int {
+func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, playerScore *int) ([SIZE][SIZE]int, bool) {
   otherPlayer := player % 2 + 1
   var i = -1
   var j = -1
@@ -22,7 +22,7 @@ func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, p
     i++
   }
   board[x][y] = player
-  return board
+  return board, false
 }
 
 func endGame(board [SIZE][SIZE]int, scorePlayer1 int, scorePlayer2 int) (bool, int) {

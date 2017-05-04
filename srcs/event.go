@@ -50,9 +50,9 @@ func playAgain(tools *sdlTools, winner int) {
 
 		msg := initMessage(tools)
 	if winner == 1 {
-		msg.Message = "PLAYER 1 as win"
+		msg.Message = "PLAYER 1 win"
 	} else {
-		msg.Message = "PLAYER 2 as win"
+		msg.Message = "PLAYER 2 win"
 	}
 
 	_, key := sdl.ShowMessageBox(&msg)
@@ -61,26 +61,23 @@ func playAgain(tools *sdlTools, winner int) {
 		return
 	}
 
-	errCenter := putImageCenter("ressources/menu.bmp", tools.surface)
-	if errCenter != nil {
-		fmt.Println("err imageCenter", errCenter)
+	err := putImageCenter("ressources/menu.bmp", tools.surface)
+	if err != nil {
+		fmt.Println("err", err)
 	}
 	tools.win.UpdateSurface()
+	initSdlTools(tools)
 }
 
 func play(tools *sdlTools, i int, j int) {
-  tools.board = moveAndEat(tools.board, i, j, tools.player, &(tools.scorePlayer2), &(tools.scorePlayer1))
-  isEnd, winner := endGame(tools.board, tools.scorePlayer1, tools.scorePlayer2)
-  if (isEnd) {
-		tools.gameState = false
-		printBoard(tools)
-		playAgain(tools, winner)
-		initSdlTools(tools)
-		return
-  }
-  tools.player = tools.player % 2 + 1
-  printBoard(tools)
+	var isEnd bool
 
+  tools.board, isEnd = moveAndEat(tools.board, i, j, tools.player, &(tools.scorePlayer2), &(tools.scorePlayer1))
+  printBoard(tools)
+	if (isEnd) {
+		playAgain(tools, tools.player)
+	}
+	tools.player = tools.player % 2 + 1
 }
 
 func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
@@ -94,10 +91,8 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
     play(tools, i, j)
 		if (tools.gameType == SOLO) {
 			tools.wait = true
-			bestMove := getBestMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player)
-			if (tools.gameState) {
-				play(tools, bestMove.x, bestMove.y)
-			}
+			bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
+			play(tools, bestMove.x, bestMove.y)
 			tools.wait = false
 		}
 	}
@@ -132,17 +127,13 @@ func handleEvent(tools *sdlTools) {
 					tools.gameState = true
 					tools.gameType = 1
 					loadMap(tools, "ressources/board.bmp")
-					if tools.iaStart {
-						fmt.Println("!ooo")
-						play(tools, 9, 9)
-					}
 				} else if (t.Type == 1025 && t.X  <= 510 && t.Y  <= 921 && t.Y  >= 898 && t.X >= 485 && !tools.gameState) {
-						if (tools.iaStart) {
-							loadMenu(tools, "ressources/menu.bmp")
-						} else {
-							loadMenu(tools, "ressources/menu1.bmp")
-						}
-						tools.iaStart = !tools.iaStart
+					if (tools.iaStart) {
+						loadMenu(tools, "ressources/menu.bmp")
+					} else {
+						loadMenu(tools, "ressources/menu1.bmp")
+					}
+					tools.iaStart = !tools.iaStart
 			 }
 			break
 			}

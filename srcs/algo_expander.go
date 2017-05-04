@@ -26,14 +26,14 @@ func findMoves(board[SIZE][SIZE]int) ([]move) {
     var y = 0
     for y < SIZE {
       if (isClose(x, y, board)) {
-        var tmp move
-        tmp.x = x
-        tmp.y = y
-        moves = append(moves, tmp)
+        moves = append(moves, newMove(x, y, 0))
       }
       y++
     }
     x++
+  }
+  if (len(moves) == 0) {
+    moves = append(moves, newMove(9, 9, 0))
   }
   return moves
 }
