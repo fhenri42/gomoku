@@ -1,95 +1,52 @@
 package main
 import (
-//  "fmt"
   "sync"
+  "fmt"
 )
-var FIND_COUP_ROUTINE sync.WaitGroup
-var CALCULE_VALUE_ROUTINE sync.WaitGroup
 
-func  findCoup(index int, coups[]move,coup *move, aiScore int, playerScore int, board*[SIZE][SIZE]int, player int)  {
+var k = 0
 
-  var tmpBoard [SIZE][SIZE]int
-  var tmpPlayerScore int
-  var tmpAiScore int
-
-  tmpAiScore, tmpPlayerScore = aiScore, playerScore
-  tmpBoard = moveAndEat(*board, coup.x, coup.y, player, &tmpAiScore, &tmpPlayerScore)
-  coups[index].poid = calcValue(tmpBoard, 1, tmpAiScore, tmpPlayerScore, player)
-
-  //fmt.Println("this is takin time like hell lot of time",coup)
-  defer FIND_COUP_ROUTINE.Done()
-
+func  simulateAndGetValue(coup *move, aiScore int, playerScore int, board *[SIZE][SIZE]int, player int, depth int, wg *sync.WaitGroup)  {
+  defer (*wg).Done()
+   tmpBoard, isEnd := moveAndEat(*board, coup.x, coup.y, player, &aiScore, &playerScore)
+   if isEnd {
+     (*coup).poid = getNextMove(tmpBoard, aiScore, playerScore, player, DEPTH_MAX).poid
+   } else {
+     (*coup).poid = getNextMove(tmpBoard, aiScore, playerScore, player, depth + 1).poid
+   }
 }
 
-func getBestMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int) move {
-  coups := findMoves(board) // REMPLI UN ARRAY AVEC LES COUPS POTENTIELS
-
-  FIND_COUP_ROUTINE.Add(len(coups))
+func getNextMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int, depth int) move {
   var t int = 0
+  if (depth == 0) {
+    k = 0
+  }
+
+  if (depth == DEPTH_MAX) {
+    fmt.Println(k)
+    k++
+    return evaluate(board, aiScore, playerScore)
+  }
+
+  coups := findMoves(board)
+  var wg sync.WaitGroup
+
+  wg.Add(len(coups))
   for t < len(coups) {
-    go findCoup(t, coups ,&coups[t], aiScore, playerScore, &board, player)
+    simulateAndGetValue(&coups[t], aiScore, playerScore, &board, player, depth, &wg)
     t++
-//    fmt.Println("go lunch a routine in BESTMOVE")
   }
-  FIND_COUP_ROUTINE.Wait()
-//fmt.Println("All routine are done the code continue")
-  if len(coups) != 0 {
-    bestCoup := maxCoup(coups)
-    return *bestCoup
+  wg.Wait()
+
+
+  if (depth % 2 == 1) {
+    return minCoup(coups)
+  } else {
+    return maxCoup(coups)
   }
-  var tmp move
-  tmp.x = 9
-  tmp.y = 9
-  return tmp
 }
 
-func calcValue(board [SIZE][SIZE]int, depth int, aiScore int, playerScore int, player int) int {
-  end, winner := endGame(board, playerScore, aiScore) // OBSERVE LA GRILLE POUR SAVOIR SI C'EST LA FIN
-  var tmpBoard [SIZE][SIZE]int
-  var tmpPlayerScore int
-  var tmpAiScore int
-
-  player = player % 2 + 1
-
-  if (end) { // SI FIN DU GAME
-    if (winner == EQUAL) { // SI MATCH NUL
-      return 0
-    } else if (winner == PLAYER2) { // SI P2 GAGNANT
-      return MIN_BASE - depth
-    } else if (winner == PLAYER1) { // SI P1 GAGNANT
-      return MAX_BASE + depth
-    }
-  } else if (depth == DEPTH_MAX) { // SINON SI ON EST ARRIVEE A LA PROFONDEUR MAX
-    return evaluate(board, aiScore, playerScore) // ON EVALUE LES NOEUDS FINAUX GRACE A UNE HEURISTIQUE
-  } else { // SINON ON CALCULE EN ALTERNANCE MIN/MAX PAR RAPPORT AUX EVALUATIONS DES NOEUD FINAUX EN REMONTANT JUSQUA PROFONDEUR 0
-
-    // coups := findMoves(board)
-    // CALCULE_VALUE_ROUTINE.Add(len(coups))
-    // var t int = 0
-    // for t < len(coups) {
-    //    findCoup1(t, coups ,&coups[t], aiScore, playerScore, &board, player)
-    //   t++
-    //   fmt.Println("go lunch a routine in CALCULE")
-    // }
-    // CALCULE_VALUE_ROUTINE.Wait()
-    coups := findMoves(board)
- for index,coup := range coups {
-   tmpAiScore, tmpPlayerScore = aiScore, playerScore
-   tmpBoard = moveAndEat(board, coup.x, coup.y, player, &tmpAiScore, &tmpPlayerScore)
-   coups[index].poid = calcValue(tmpBoard, depth + 1, tmpAiScore, tmpPlayerScore, player)
- }
-
-    if (depth % 2 == 1) {
-      return minCoup(coups).poid
-    } else {
-      return maxCoup(coups).poid
-    }
-  }
-  return 0
-}
-
-func evaluate(board [SIZE][SIZE]int, aiScore int, playerScore int) int {
-  //fmt.Print("\nHELLO\n")
-  return 10
+func evaluate(board [SIZE][SIZE]int, aiScore int, playerScore int) move {
+  return newMove(0, 0, 10)
   //return findWeight(board, aiScore, playerScore)
 }

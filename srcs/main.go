@@ -28,11 +28,11 @@ const OFFSET_ARRAY_RIGHT_X = 860
 
 const PLAYER1 = 1
 const PLAYER2 = 2
-const DEPTH_MAX = 3
+const DEPTH_MAX = 2
 const EQUAL = 0
 const MIN_BASE = 1000000
 const MAX_BASE = -1000000
-const AMP = 2
+const AMP = 1
 const SIZE = 19
 const MULTI = 2
 const SOLO = 1

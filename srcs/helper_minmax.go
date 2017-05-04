@@ -1,27 +1,40 @@
 package main
 
-func minCoup(coups []move) *move {
+func minCoup(coups []move) move {
   var min = MIN_BASE
   var minCoup *move
+  var t = 0
 
-  for _,coup := range coups {
-    if (coup.poid < min) {
-      min = coup.poid
-      minCoup = &coup
+  for t < len(coups) {
+    if (coups[t].poid < min) {
+      min = coups[t].poid
+      minCoup = &coups[t]
     }
+    t++
   }
-  return minCoup
+  return *minCoup
 }
 
-func maxCoup(coups []move) *move {
+func maxCoup(coups []move) move {
   var max = MAX_BASE
   var maxCoup *move
+  var t = 0
 
-  for index,coup := range coups {
-    if (coup.poid > max) {
-      max = coups[index].poid
-      maxCoup = &coups[index]
+  for t < len(coups) {
+    if (coups[t].poid > max) {
+      max = coups[t].poid
+      maxCoup = &coups[t]
     }
+    t++
   }
-  return maxCoup
+  return *maxCoup
+}
+
+func newMove(x int, y int, poid int) move {
+  var tmp move
+
+  tmp.x = x
+  tmp.y = y
+  tmp.poid = poid
+  return tmp
 }

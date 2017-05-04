@@ -37,10 +37,8 @@ func printBoard(tools *sdlTools) {
 }
 
 func loadMenu(tools *sdlTools, file string)  {
-	errCenter := putImageCenter(file, tools.surface)
-	if errCenter != nil {
-		fmt.Println("err imageCenter", errCenter)
-	}
+	putImageCenter(file, tools.surface)
+
 	tools.win.UpdateSurface()
 }
 
