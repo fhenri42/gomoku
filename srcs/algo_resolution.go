@@ -38,6 +38,7 @@ func getNextMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int
   }
   wg.Wait()
 
+
   if (depth % 2 == 1) {
     return minCoup(coups)
   } else {

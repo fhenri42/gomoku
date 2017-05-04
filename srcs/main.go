@@ -70,9 +70,8 @@ func initSdl(tools *sdlTools) {
 	tools.surface, _ = tools.win.GetSurface()
 	loadMenu(tools, "ressources/menu.bmp")
 	handleEvent(tools)
-	sdl.Quit();
-
-	return;
+	sdl.Quit()
+	return
 }
 
 func main() {

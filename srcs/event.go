@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
+	"os"
 	//"github.com/veandco/go-sdl2/sdl_ttf"
 )
 func initMessage(tools *sdlTools) sdl.MessageBoxData  {
@@ -56,9 +57,11 @@ func playAgain(tools *sdlTools, winner int) {
 	}
 
 	_, key := sdl.ShowMessageBox(&msg)
+
+
 	if (key == 2) {
-		tools.exit = true
-		return
+		sdl.Quit()
+		os.Exit(1)
 	}
 
 	err := putImageCenter("ressources/menu.bmp", tools.surface)
