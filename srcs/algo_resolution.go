@@ -13,7 +13,7 @@ func  simulateAndGetValue(coup *move, aiScore int, playerScore int, board *[SIZE
        (*coup).poid = MIN_BASE - depth
      }
    } else {
-     (*coup).poid = getNextMove(tmpBoard, aiScore, playerScore, player, depth + 1).poid
+     (*coup).poid = getNextMove(tmpBoard, aiScore, playerScore, player, depth).poid
    }
 }
 
