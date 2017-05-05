@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/sdl_image"
+	"github.com/veandco/go-sdl2/sdl_ttf"
+	"regexp"
+	"os"
 )
 
 func printBoard(tools *sdlTools) {
@@ -141,4 +144,95 @@ func putImageCenter(file string, dst *sdl.Surface) error {
 	}
 	defer imgSurface.Free()
 	return getCenter(imgSurface, dst)
+}
+
+func initMessage(tools *sdlTools) sdl.MessageBoxData  {
+
+	var msg sdl.MessageBoxData
+	var buttonArray = make([]sdl.MessageBoxButtonData, 2)
+	buttonArray[0].Flags = sdl.MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT
+	buttonArray[0].ButtonId = 1
+	buttonArray[0].Text = "Replay"
+	buttonArray[1].Flags = sdl.MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
+	buttonArray[1].ButtonId = 2
+	buttonArray[1].Text = "Quit"
+	var colorBox *sdl.MessageBoxColorScheme = new(sdl.MessageBoxColorScheme)
+
+	colorBox.Colors[0].R = 255
+	colorBox.Colors[0].G = 0
+	colorBox.Colors[0].B = 0
+
+	colorBox.Colors[1].R = 255
+	colorBox.Colors[1].G = 0
+	colorBox.Colors[1].B = 0
+
+	colorBox.Colors[2].R = 255
+	colorBox.Colors[2].G = 0
+	colorBox.Colors[2].B = 0
+
+	colorBox.Colors[3].R = 255
+	colorBox.Colors[3].G = 0
+	colorBox.Colors[3].B = 0
+
+	colorBox.Colors[4].R = 255
+	colorBox.Colors[4].G = 0
+	colorBox.Colors[4].B = 0
+
+	msg.Flags = sdl.MESSAGEBOX_INFORMATION
+	msg.Window = tools.win
+	msg.Title = "End of game"
+	msg.NumButtons = 2
+	msg.Buttons = buttonArray
+	msg.ColorScheme = colorBox
+	return msg
+}
+
+func  displayTime(tools *sdlTools)  {
+	ttf.Init()
+	var clr sdl.Color
+	clr.R = 0
+	clr.G = 0
+	clr.B = 0
+
+	match, _ := regexp.MatchString("µs", tools.time.String())
+	var rect  sdl.Rect
+	font, _:= ttf.OpenFont("ressources/Zalight.ttf", 42)
+	var str string
+
+	if match {
+		str = "less than 1ms"
+	} else {
+		str = tools.time.String()
+	}
+	text, _:= font.RenderUTF8_Solid(str,clr)
+	defer text.Free()
+
+	rect.X = 100
+	rect.Y = 120
+	text.Blit(nil, tools.surface, &rect);
+	tools.win.UpdateSurface()
+}
+
+func playAgain(tools *sdlTools, winner int) {
+
+		msg := initMessage(tools)
+	if winner == 1 {
+		msg.Message = "PLAYER 1 win"
+	} else {
+		msg.Message = "PLAYER 2 win"
+	}
+
+	_, key := sdl.ShowMessageBox(&msg)
+
+
+	if (key == 2) {
+		sdl.Quit()
+		os.Exit(1)
+	}
+
+	err := putImageCenter("ressources/menu.bmp", tools.surface)
+	if err != nil {
+		fmt.Println("err", err)
+	}
+	tools.win.UpdateSurface()
 }
