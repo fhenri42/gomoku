@@ -85,3 +85,17 @@ func main() {
 	initSdl(tools)
 	return
 }
+
+func newBoard() [SIZE][SIZE]int {
+	var board [SIZE][SIZE]int
+	var x = 0
+	for x < SIZE {
+		var y = 0
+		for y < SIZE {
+			board[x][y] = 0
+			y++
+		}
+		x++
+	}
+	return board
+}
