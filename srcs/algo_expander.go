@@ -23,7 +23,7 @@ func isClose(x int, y int, board[SIZE][SIZE]int, movesOfone*[]move, movesOfTwo *
   return
 }
 
-func findMoves(board[SIZE][SIZE]int) ([]move) {
+func findMoves(tools *sdlTools) ([]move) {
 
   movesOfone := make([]move, 0)
   movesOfTwo := make([]move, 0)
@@ -32,7 +32,9 @@ func findMoves(board[SIZE][SIZE]int) ([]move) {
   for x < SIZE {
     var y int = 0
     for y < SIZE {
-      isClose(x,y, board,&movesOfone, &movesOfTwo)
+      if isPlayable(tools,x,y) {
+        isClose(x,y, tools.board, &movesOfone, &movesOfTwo)
+      }
       y++
     }
     x++

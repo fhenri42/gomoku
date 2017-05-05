@@ -3,7 +3,7 @@ import (
   "sync"
 )
 
-func  simulateAndGetValue(coup *move, aiScore int, playerScore int, board *[SIZE][SIZE]int, player int, depth int, wg *sync.WaitGroup)  {
+func  simulateAndGetValue(tools *sdlTools,coup *move, aiScore int, playerScore int, board *[SIZE][SIZE]int, player int, depth int, wg *sync.WaitGroup)  {
   defer (*wg).Done()
    tmpBoard, isEnd := moveAndEat(*board, coup.x, coup.y, player, &aiScore, &playerScore)
    if isEnd {
@@ -13,11 +13,11 @@ func  simulateAndGetValue(coup *move, aiScore int, playerScore int, board *[SIZE
        (*coup).poid = MIN_BASE - depth
      }
    } else {
-     (*coup).poid = getNextMove(tmpBoard, aiScore, playerScore, player, depth).poid
+     (*coup).poid = getNextMove(tools,tmpBoard, aiScore, playerScore, player, depth).poid
    }
 }
 
-func getNextMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int, depth int) move {
+func getNextMove(tools *sdlTools,board [SIZE][SIZE]int, aiScore int, playerScore int, player int, depth int) move {
   var t int = 0
 
   if (depth == DEPTH_MAX) {
@@ -25,7 +25,7 @@ func getNextMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int
   }
 
   depth++
-  coups := findMoves(board)
+  coups := findMoves(tools)
   if (len(coups) == 0) {
     return newMove(9, 9, 0)
   }
@@ -33,7 +33,7 @@ func getNextMove(board [SIZE][SIZE]int, aiScore int, playerScore int, player int
   var wg sync.WaitGroup
   wg.Add(len(coups))
   for t < len(coups) {
-    simulateAndGetValue(&coups[t], aiScore, playerScore, &board, player, depth, &wg)
+    simulateAndGetValue(tools,&coups[t], aiScore, playerScore, &board, player, depth, &wg)
     t++
   }
   wg.Wait()

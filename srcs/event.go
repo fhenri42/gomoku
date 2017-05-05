@@ -20,20 +20,20 @@ func play(tools *sdlTools, i int, j int) {
 func iaTurn(tools *sdlTools) {
 	tools.wait = true
 	timeBfore := time.Now()
-	bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
+	bestMove := getNextMove(tools,tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
 	timeAfter := time.Now()
 	tools.time = timeAfter.Sub(timeBfore)
 	play(tools, bestMove.x, bestMove.y)
-	displayTime(tools)
 	tools.wait = false
 }
 
 func displayHint(tools *sdlTools) {
 	tools.wait = true
-	bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
+	bestMove := getNextMove(tools,tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
 	tools.board[bestMove.x][bestMove.y] = HINT
 	printBoard(tools)
 	tools.board[bestMove.x][bestMove.y] = 0
+	displayTime(tools)
 	tools.wait = false
 }
 
@@ -82,7 +82,7 @@ func handleEvent(tools *sdlTools) {
 					tools.gameType = 1
 					loadMap(tools, "ressources/board.bmp")
 					if (tools.iaStart) {
-						bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
+						bestMove := getNextMove(tools,tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
 						play(tools, bestMove.x, bestMove.y)
 					}
 
