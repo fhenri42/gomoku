@@ -1,36 +1,45 @@
 package main
 
-func isClose(x int, y int, board[SIZE][SIZE]int) bool {
+func isClose(x int, y int, board[SIZE][SIZE]int, movesOfone*[]move, movesOfTwo *[]move) {
   if (board[x][y] != 0) {
-    return false
+    return
   }
-  var i = -AMP
+  var i int = -AMP
   for i <= AMP {
-    var j = -AMP
+    var j int = -AMP
     for j <= AMP {
-      if (x + i >= 0 && x + i < SIZE && y + j >= 0 && y + j < SIZE && board[x + i][y + j] != 0) {
-        return true
+        if ((x + i) + i >= 0 && (x + i) + i < SIZE && (y + j) + j >= 0 && (y + j) + j < SIZE && board[x + i][y + j] != 0 && board[(x + i) + i][( y + j) + j] != 0) {
+          *movesOfTwo = append(*movesOfTwo, newMove(x, y, 0))
+          return
+        }
+        if (x + i >= 0 && x + i < SIZE && y + j >= 0 && y + j < SIZE && board[x + i][y + j] != 0) {
+          *movesOfone = append(*movesOfone, newMove(x, y, 0))
+        return
       }
       j++
     }
     i++
   }
-  return false
+  return
 }
 
 func findMoves(board[SIZE][SIZE]int) ([]move) {
 
-  moves := make([]move, 0)
-  var x = 0
+  movesOfone := make([]move, 0)
+  movesOfTwo := make([]move, 0)
+
+  var x int = 0
   for x < SIZE {
-    var y = 0
+    var y int = 0
     for y < SIZE {
-      if (isClose(x, y, board)) {
-        moves = append(moves, newMove(x, y, 0))
-      }
+      isClose(x,y, board,&movesOfone, &movesOfTwo)
       y++
     }
     x++
   }
-  return moves
+
+if len(movesOfTwo) > 0  {
+  return movesOfTwo
+}
+  return movesOfone
 }
