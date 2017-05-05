@@ -24,7 +24,6 @@ func iaTurn(tools *sdlTools) {
 	timeAfter := time.Now()
 	tools.time = timeAfter.Sub(timeBfore)
 	play(tools, bestMove.x, bestMove.y)
-	displayTime(tools)
 	tools.wait = false
 }
 
@@ -34,6 +33,7 @@ func displayHint(tools *sdlTools) {
 	tools.board[bestMove.x][bestMove.y] = HINT
 	printBoard(tools)
 	tools.board[bestMove.x][bestMove.y] = 0
+	displayTime(tools)
 	tools.wait = false
 }
 
