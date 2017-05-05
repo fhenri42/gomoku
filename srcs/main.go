@@ -39,6 +39,16 @@ const MULTI = 2
 const SOLO = 1
 const MENU = 0
 
+const UP = 1
+const DOWN = -1
+const LEFT = 2
+const RIGHT = -2
+const UP_LEFT = 3
+const UP_RIGHT = 4
+const DOWN_LEFT = -4
+const DOWN_RIGHT = -3
+
+
 type sdlTools struct {
 	win *sdl.Window
 	surface *sdl.Surface
