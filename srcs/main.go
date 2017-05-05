@@ -29,7 +29,7 @@ const OFFSET_ARRAY_RIGHT_X = 860
 const PLAYER1 = 1
 const PLAYER2 = 2
 const HINT = 3
-const DEPTH_MAX = 1
+const DEPTH_MAX = 3
 const EQUAL = 0
 const MIN_BASE = 1000000
 const MAX_BASE = -1000000
@@ -51,7 +51,7 @@ type sdlTools struct {
 	gameType int
 	wait bool
 	time time.Duration
-	hint *move
+	hasPlayed bool
 }
 
 
@@ -66,7 +66,7 @@ func initSdlTools(tools *sdlTools) {
 	tools.gameState = false
 	tools.gameType = 0
 	tools.wait = false
-	tools.hint = nil
+	tools.hasPlayed = false
 }
 
 func initSdl(tools *sdlTools) {

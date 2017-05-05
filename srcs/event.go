@@ -111,6 +111,27 @@ func play(tools *sdlTools, i int, j int) {
 	}
 }
 
+func iaTurn(tools *sdlTools) {
+	tools.wait = true
+
+	timeBfore := time.Now()
+	bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
+	timeAfter := time.Now()
+	tools.time = timeAfter.Sub(timeBfore)
+	play(tools, bestMove.x, bestMove.y)
+	displayTime(tools)
+	tools.wait = false
+}
+
+func displayHint(tools *sdlTools) {
+	bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
+	if (!tools.hasPlayed) {
+		tools.board[bestMove.x][bestMove.y] = HINT
+		printBoard(tools)
+		tools.board[bestMove.x][bestMove.y] = 0
+	}
+}
+
 func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var j int = (int(t.X) + SQUARE / 2 - OFFSET_X) / (SQUARE + SPACING)
 	var moduloj = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
@@ -118,26 +139,12 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
 	var moduloi = (int(t.Y) + SQUARE / 2 - OFFSET_Y) % (SQUARE + SPACING)
 
 	if (moduloj > 0 && moduloi > 0 && isPlayable(tools, i, j)) {
-		if (tools.hint != nil) {
-			tools.board[tools.hint.x][tools.hint.y] = 0
-		}
     play(tools, i, j)
+		tools.hasPlayed = true
 		if (tools.gameType == SOLO) {
-			tools.wait = true
-
-			timeBfore := time.Now()
-			bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
-			timeAfter := time.Now()
-			tools.time = timeAfter.Sub(timeBfore)
-			fmt.Println(timeBfore)
-			fmt.Println(timeAfter)
-			play(tools, bestMove.x, bestMove.y)
-			// bestMove = getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
-			// tools.hint = &bestMove
-			// tools.board[tools.hint.x][tools.hint.y] = HINT
-			// printBoard(tools)
-			displayTime(tools)
-			tools.wait = false
+			iaTurn(tools)
+			tools.hasPlayed = false
+			displayHint(tools)
 		}
 	}
 }
