@@ -6,6 +6,7 @@ import (
 	"time"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/sdl_ttf"
+	"regexp"
 )
 func  displayTime(tools *sdlTools)  {
 	ttf.Init()
@@ -14,9 +15,17 @@ func  displayTime(tools *sdlTools)  {
 	clr.G = 0
 	clr.B = 0
 
+	match, _ := regexp.MatchString("µs", tools.time.String())
 	var rect  sdl.Rect
 	font, _:= ttf.OpenFont("ressources/Zalight.ttf", 42)
-	text, _:= font.RenderUTF8_Solid(tools.time.String(),clr)
+	var str string
+
+	if match {
+		str = "less than 1ms"
+	} else {
+		str = tools.time.String()
+	}
+	text, _:= font.RenderUTF8_Solid(str,clr)
 	defer text.Free()
 
 	rect.X = 100
@@ -115,16 +124,19 @@ func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
     play(tools, i, j)
 		if (tools.gameType == SOLO) {
 			tools.wait = true
+
 			timeBfore := time.Now()
 			bestMove := getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
 			timeAfter := time.Now()
 			tools.time = timeAfter.Sub(timeBfore)
+			fmt.Println(timeBfore)
+			fmt.Println(timeAfter)
 			play(tools, bestMove.x, bestMove.y)
+			// bestMove = getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
+			// tools.hint = &bestMove
+			// tools.board[tools.hint.x][tools.hint.y] = HINT
+			// printBoard(tools)
 			displayTime(tools)
-			bestMove = getNextMove(tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
-			tools.hint = &bestMove
-			tools.board[tools.hint.x][tools.hint.y] = HINT
-			printBoard(tools)
 			tools.wait = false
 		}
 	}
