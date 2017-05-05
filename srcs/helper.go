@@ -72,30 +72,40 @@ func endGame(board [SIZE][SIZE]int, scorePlayer1 int, scorePlayer2 int) (bool, i
 }
 
 func isUnbreakableLine(i int, j int, board [SIZE][SIZE]int) bool {
+
+}
+
+func isEatable(i int, j int, board [SIZE][SIZE]int) bool {
   var pion = board[i][j]
+  var pion2 = 0
 
   if (pion == 0) {
     return false
+  } else if (pion == 1) {
+    pion2 = 2
+  } else {
+    pion2 = 1
   }
 
-  if i + 4 < SIZE && board[i][j] == pion && board[i + 1][j] == pion && board[i + 2][j] == pion && board[i + 3][j] == pion && board[i + 4][j] == pion {
-    return true
+  var i = -1
+  var j = -1
 
-  } else if j + 4 < SIZE && board[i][j] == pion && board[i][j + 1] == pion && board[i][j + 2] == pion && board[i][j + 3] == pion && board[i][j + 4] == pion {
-    return true
-
-  } else if j + 4 < SIZE && i + 4 < SIZE && board[i][j] == pion && board[i + 1][j + 1] == pion && board[i + 2][j + 2] == pion && board[i + 3][j + 3] == pion && board[i + 4][j + 4] == pion {
-    return true
-
-  } else if j - 4 >= 0 && i + 4 < SIZE && board[i][j] == pion && board[i + 1][j - 1] == pion && board[i + 2][j - 2] == pion && board[i + 3][j - 3] == pion && board[i + 4][j - 4] == pion {
-    return true
+  for i <= 1 {
+    j = -1
+    for j <= 1 {
+      if (x + i * -1 >= 0 && x + i * -1 < SIZE && y + j * -1 < SIZE && y + j * -1 >= 0 && x + i * 2 >= 0 && x + i * 2 < SIZE && y + j * 2 >= 0 && y + j * 2 < SIZE && tools.board[x + i * -1][y + j * -1] == 0 && tools.board[x + i][y + j] == pion && tools.board[x + i * 2][y + j * 2] == pion2) {
+        return true
+      }
+      if (x + i * -2 >= 0 && x + i * -2 < SIZE && y + j * -2 < SIZE && y + j * -2 >= 0 && x + i * 1 >= 0 && x + i * 1 < SIZE && y + j * 1 >= 0 && y + j * 1 < SIZE
+        && tools.board[x + i * -1][y + j * -1] == pion && tools.board[x + i][y + j] == pion2 && tools.board[x + i * -2][y + j * -2] == 0) {
+        return true
+      }
+      j++
+    }
+    i++
   }
   return false
 }
-
-// func eatable() bool {
-//
-// }
 
 func isPlayable(tools *sdlTools, x int, y int) bool {
   if (x >= SIZE || y >= SIZE || x < 0 || y < 0 || tools.board[x][y] != 0) {

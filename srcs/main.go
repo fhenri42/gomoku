@@ -38,6 +38,16 @@ const SIZE = 19
 const MULTI = 2
 const SOLO = 1
 
+const UP = 0
+const DOWN = 0
+const LEFT = 0
+const RIGHT = 0
+const UP_LEFT = 0
+const UP_RIGHT = 0
+const DOWN_LEFT = 0
+const DOWN_RIGHT = 0
+
+
 type sdlTools struct {
 	win *sdl.Window
 	surface *sdl.Surface
