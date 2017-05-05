@@ -71,16 +71,8 @@ func endGame(board [SIZE][SIZE]int, scorePlayer1 int, scorePlayer2 int) (bool, i
   return false, 0
 }
 
-func isUnbreakableLine(x int, j int, x int, y int, board [SIZE][SIZE]int) bool {
-  var count = 0
+func isUnbreakableLine(i int, j int, board [SIZE][SIZE]int) bool {
 
-  for count <= 5 {
-    if (isEatable(x + count * i, y + count * j, board)) {
-      return false
-    }
-    count++
-  }
-  return true
 }
 
 func isEatable(i int, j int, board [SIZE][SIZE]int) bool {

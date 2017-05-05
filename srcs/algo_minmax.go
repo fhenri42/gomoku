@@ -1,7 +1,7 @@
 package main
 
 import (
-  "fmt"
+  //"fmt"
 )
 
 func minCoup(coups []move) move {
@@ -9,7 +9,7 @@ func minCoup(coups []move) move {
   var minCoup *move
   var t = 0
 
-  fmt.Println(coups)
+  //fmt.Println(coups)
   for t < len(coups) {
     if (coups[t].poid < min) {
       min = coups[t].poid
@@ -25,7 +25,7 @@ func maxCoup(coups []move) move {
   var maxCoup *move
   var t = 0
 
-  fmt.Println(coups)
+  //fmt.Println(coups)
   for t < len(coups) {
     if (coups[t].poid > max) {
       max = coups[t].poid

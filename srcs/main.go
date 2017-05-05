@@ -29,7 +29,7 @@ const OFFSET_ARRAY_RIGHT_X = 860
 const PLAYER1 = 1
 const PLAYER2 = 2
 const HINT = 3
-const DEPTH_MAX = 1
+const DEPTH_MAX = 5
 const EQUAL = 0
 const MIN_BASE = 1000000
 const MAX_BASE = -1000000
@@ -37,15 +37,16 @@ const AMP = 1
 const SIZE = 19
 const MULTI = 2
 const SOLO = 1
+const MENU = 0
 
-const UP = 0
-const DOWN = 0
-const LEFT = 0
-const RIGHT = 0
-const UP_LEFT = 0
-const UP_RIGHT = 0
-const DOWN_LEFT = 0
-const DOWN_RIGHT = 0
+const UP = 1
+const DOWN = -1
+const LEFT = 2
+const RIGHT = -2
+const UP_LEFT = 3
+const UP_RIGHT = 4
+const DOWN_LEFT = -4
+const DOWN_RIGHT = -3
 
 
 type sdlTools struct {
@@ -61,7 +62,7 @@ type sdlTools struct {
 	gameType int
 	wait bool
 	time time.Duration
-	hint *move
+	hasPlayed bool
 }
 
 
@@ -73,10 +74,9 @@ func initSdlTools(tools *sdlTools) {
 	tools.scorePlayer2 = 0
 	tools.board = newBoard()
 	tools.exit = false
-	tools.gameState = false
-	tools.gameType = 0
+	tools.gameType = MENU
 	tools.wait = false
-	tools.hint = nil
+	tools.hasPlayed = false
 }
 
 func initSdl(tools *sdlTools) {
@@ -94,4 +94,18 @@ func main() {
 	initSdlTools(tools)
 	initSdl(tools)
 	return
+}
+
+func newBoard() [SIZE][SIZE]int {
+	var board [SIZE][SIZE]int
+	var x = 0
+	for x < SIZE {
+		var y = 0
+		for y < SIZE {
+			board[x][y] = 0
+			y++
+		}
+		x++
+	}
+	return board
 }
