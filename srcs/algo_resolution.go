@@ -5,8 +5,8 @@ import (
 
 func  simulateAndGetValue(tools *sdlTools,coup *move, aiScore int, playerScore int, board *[SIZE][SIZE]int, player int, depth int, wg *sync.WaitGroup)  {
   defer (*wg).Done()
-   tmpBoard, isEnd := moveAndEat(*board, coup.x, coup.y, player, &aiScore, &playerScore)
-   if isEnd {
+   tmpBoard, isEnd, breakable := moveAndEat(*board, coup.x, coup.y, player, &aiScore, &playerScore)
+   if isEnd && !breakable {
      if (depth % 2 == 0) {
        (*coup).poid = MAX_BASE + depth
      } else {

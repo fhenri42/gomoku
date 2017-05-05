@@ -1,13 +1,16 @@
 package main
 
-func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, playerScore *int) ([SIZE][SIZE]int, bool) {
+func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, playerScore *int) ([SIZE][SIZE]int, bool, bool) {
   var res bool = false
+  var breakable bool = false
   otherPlayer := player % 2 + 1
   var i = -1
   var j = -1
   var k = -4
   var count = 0
   var countMax = 0
+  var posi = -1
+  var posj = -1
 
   for i <= 1 {
     j = -1
@@ -16,11 +19,12 @@ func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, p
       count = 0
       countMax = 0
       for k <= 4 {
-        if (k == 0) {
+        if (k == 0 || (x + i * k >= 0 && x + i * k < SIZE && y + j * k >= 0 && y + j * k < SIZE && board[x + i * k][y + j * k] == player)) {
           count++
-          countMax = count
-        } else if (x + i * k >= 0 && x + i * k < SIZE && y + j * k >= 0 && y + j * k < SIZE && board[x + i * k][y + j * k] == player) {
-          count++
+          if (count == 5) {
+            posi = x + i * k
+            posj = y + j * k
+          }
           countMax = count
         } else {
           count = 0
@@ -28,7 +32,11 @@ func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, p
         k++
       }
       if (countMax >= 5) {
-        res = true
+        if (isUnbreakableLine(posi, posj, i, j, board)) {
+          res = true
+        } else {
+          breakable = true
+        }
       }
       if (x + i * 3 >= 0 && x + i * 3 < SIZE && y + j * 3 >= 0 && y + j * 3 < SIZE && board[x + i][y + j] == otherPlayer && board[x + i * 2][y + j * 2] == otherPlayer && board[x + i * 3][y + j * 3] == player) {
         board[x + i][y + j] = 0
@@ -48,35 +56,23 @@ func moveAndEat(board [SIZE][SIZE]int, x int, y int, player int, aiScore *int, p
     res = true
   }
 
-  return board, res
+  return board, res, breakable
 }
 
-func endGame(board [SIZE][SIZE]int, scorePlayer1 int, scorePlayer2 int) (bool, int) {
-  if (scorePlayer1 == 10) {
-    return true, PLAYER1
-  } else if (scorePlayer2 == 10) {
-    return true, PLAYER2
-  }
-  var x = 0
-  for x < SIZE {
-    var y = 0
-    for y < SIZE {
-      if (isUnbreakableLine(x, y, board)) {
-        return true, board[x][y]
-      }
-      y++
+func isUnbreakableLine(i int, j int, x int, y int, board [SIZE][SIZE]int) bool {
+  var count = 0
+
+  for count <= 5 {
+    if (isEatable(x + count * i, y + count * j, board)) {
+      return false
     }
-    x++
+    count++
   }
-  return false, 0
+  return true
 }
 
-func isUnbreakableLine(i int, j int, board [SIZE][SIZE]int) bool {
-
-}
-
-func isEatable(i int, j int, board [SIZE][SIZE]int) bool {
-  var pion = board[i][j]
+func isEatable(x int, y int, board [SIZE][SIZE]int) bool {
+  var pion = board[x][y]
   var pion2 = 0
 
   if (pion == 0) {
@@ -93,11 +89,10 @@ func isEatable(i int, j int, board [SIZE][SIZE]int) bool {
   for i <= 1 {
     j = -1
     for j <= 1 {
-      if (x + i * -1 >= 0 && x + i * -1 < SIZE && y + j * -1 < SIZE && y + j * -1 >= 0 && x + i * 2 >= 0 && x + i * 2 < SIZE && y + j * 2 >= 0 && y + j * 2 < SIZE && tools.board[x + i * -1][y + j * -1] == 0 && tools.board[x + i][y + j] == pion && tools.board[x + i * 2][y + j * 2] == pion2) {
+      if (x + i * -1 >= 0 && x + i * -1 < SIZE && y + j * -1 < SIZE && y + j * -1 >= 0 && x + i * 2 >= 0 && x + i * 2 < SIZE && y + j * 2 >= 0 && y + j * 2 < SIZE && board[x + i * -1][y + j * -1] == 0 && board[x + i][y + j] == pion && board[x + i * 2][y + j * 2] == pion2) {
         return true
       }
-      if (x + i * -2 >= 0 && x + i * -2 < SIZE && y + j * -2 < SIZE && y + j * -2 >= 0 && x + i * 1 >= 0 && x + i * 1 < SIZE && y + j * 1 >= 0 && y + j * 1 < SIZE
-        && tools.board[x + i * -1][y + j * -1] == pion && tools.board[x + i][y + j] == pion2 && tools.board[x + i * -2][y + j * -2] == 0) {
+      if (x + i * -2 >= 0 && x + i * -2 < SIZE && y + j * -2 < SIZE && y + j * -2 >= 0 && x + i * 1 >= 0 && x + i * 1 < SIZE && y + j * 1 >= 0 && y + j * 1 < SIZE && board[x + i * -1][y + j * -1] == pion && board[x + i][y + j] == pion2 && board[x + i * -2][y + j * -2] == 0) {
         return true
       }
       j++

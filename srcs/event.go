@@ -7,11 +7,12 @@ import (
 
 func play(tools *sdlTools, i int, j int) {
 	var isEnd bool
+	var breakable bool
 
-  tools.board, isEnd = moveAndEat(tools.board, i, j, tools.player, &(tools.scorePlayer2), &(tools.scorePlayer1))
+  tools.board, isEnd, breakable = moveAndEat(tools.board, i, j, tools.player, &(tools.scorePlayer2), &(tools.scorePlayer1))
 	tools.player = tools.player % 2 + 1
   printBoard(tools)
-	if (isEnd) {
+	if (isEnd && !breakable) {
 		playAgain(tools, tools.player % 2 + 1)
 		initSdlTools(tools)
 	}
