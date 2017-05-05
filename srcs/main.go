@@ -37,6 +37,7 @@ const AMP = 1
 const SIZE = 19
 const MULTI = 2
 const SOLO = 1
+const MENU = 0
 
 type sdlTools struct {
 	win *sdl.Window
@@ -63,8 +64,7 @@ func initSdlTools(tools *sdlTools) {
 	tools.scorePlayer2 = 0
 	tools.board = newBoard()
 	tools.exit = false
-	tools.gameState = false
-	tools.gameType = 0
+	tools.gameType = MENU
 	tools.wait = false
 	tools.hasPlayed = false
 }
