@@ -8,8 +8,10 @@ import (
 func  simulateAndGetValue(game *Game, move *Move, wg *sync.WaitGroup)  {
   defer wg.Done()
   newGame := copyGame(game)
+  //fmt.Print(game)
   moveAndEat(newGame, move.x, move.y)
   if newGame.winner != NONE {
+    fmt.Print(newGame)
     if (newGame.winner == newGame.friend) {
       move.poid = MIN_BASE - newGame.depth
     } else {
@@ -31,7 +33,7 @@ func getNextMove(game *Game) Move {
   if (len(moves) == 0) {
     return newMove(9, 9, 0)
   }
-
+  fmt.Println(moves)
   var wg sync.WaitGroup
   wg.Add(len(moves))
   for t < len(moves) {
@@ -52,7 +54,6 @@ func evaluate(game *Game) Move {
   var i int = 0
   var j int = 0
 
-  fmt.Println(game.friend)
   for i < game.score[game.friend - 1] {
     res += i + 1 * 10
     i++
