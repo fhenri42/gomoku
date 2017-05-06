@@ -1,77 +1,70 @@
 package main
 
 import (
-	"fmt"
+	//"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/sdl_image"
 	"github.com/veandco/go-sdl2/sdl_ttf"
 	"regexp"
 	"os"
+	"time"
 )
 
-func printBoard(tools *sdlTools) {
+func displayBoard(tools *Tools, game *Game) {
 	tools.surface.Free()
 
-  loadMap(tools,"ressources/board.bmp")
+  putImageCenter("ressources/board.bmp", tools.surface)
   var i int = 0
   var j int = 0
 
   for i < SIZE {
     j = 0
     for j < SIZE {
-      if (tools.board[i][j] != 0) {
-        putAdot(int32(i), int32(j), tools, tools.board[i][j])
+      if (game.board[i][j] != 0) {
+        displayDot(int32(i), int32(j), tools, game.board[i][j])
       }
       j++
     }
     i++
   }
 	i = 0
-	for i < tools.scorePlayer1 {
-		putScoreDot(int32(i), tools, PLAYER2)
+	for i < game.score[PLAYER1 - 1] {
+		displayScoreDot(int32(i), tools, PLAYER2)
 		i++
 	}
 	i = 0
-	for i < tools.scorePlayer2 {
-		putScoreDot(int32(i), tools, PLAYER1)
+	for i < game.score[PLAYER2 - 1] {
+		displayScoreDot(int32(i), tools, PLAYER1)
 		i++
 	}
+	displayTurn(tools, game.curPlayer)
   tools.win.UpdateSurface()
 }
 
-func loadMenu(tools *sdlTools, file string)  {
-	putImageCenter(file, tools.surface)
-
-	tools.win.UpdateSurface()
-}
-
-func loadMap(tools *sdlTools, file string)  {
-	errCenter := putImageCenter(file, tools.surface)
-	if errCenter != nil {
-		fmt.Println("err imageCenter", errCenter)
+func displayMenu(tools *Tools)  {
+	if (tools.iaStart) {
+		putImageCenter("ressources/menu1.bmp", tools.surface)
+	} else {
+		putImageCenter("ressources/menu.bmp", tools.surface)
 	}
-	loadTurn(tools)
 	tools.win.UpdateSurface()
 }
 
-func loadTurn(tools *sdlTools)  {
+func displayTurn(tools *Tools, curPlayer int)  {
 	var file string
 	var offsetX int32
 
-	if tools.player == PLAYER1 {
+	if curPlayer == PLAYER1 {
 		offsetX = OFFSET_ARRAY_LEFT_X
 	   file = "ressources/left.bmp"
 	 } else {
 		 offsetX = OFFSET_ARRAY_RIGHT_X
 	   file = "ressources/right.bmp"
 	 }
-	errCenter := putImageXY(file, tools.surface, offsetX, OFFSET_ARRAY_Y)
-	if errCenter != nil {
-		fmt.Println("err imageCenter", errCenter)
-	}
+	putImageXY(file, tools.surface, offsetX, OFFSET_ARRAY_Y)
 }
 
-func putAdot(i int32, j int32, tools *sdlTools, player int) {
+func displayDot(i int32, j int32, tools *Tools, player int) {
   var file string
 
 	if player == PLAYER1 {
@@ -81,13 +74,10 @@ func putAdot(i int32, j int32, tools *sdlTools, player int) {
   } else if player == HINT {
 		file = "ressources/pion_vert.bmp"
 	}
-	errXY := putImageXY(file, tools.surface, j * SQUARE + j * SPACING + OFFSET_X - SQUARE / 2, i * SQUARE + i * SPACING + OFFSET_Y - SQUARE / 2)
-  if errXY != nil {
-    fmt.Println("errXY", errXY)
-  }
+	putImageXY(file, tools.surface, j * SQUARE + j * SPACING + OFFSET_X - SQUARE / 2, i * SQUARE + i * SPACING + OFFSET_Y - SQUARE / 2)
 }
 
-func putScoreDot(nb int32, tools *sdlTools, player int) {
+func displayScoreDot(nb int32, tools *Tools, player int) {
 	var file string
 
 	if player == PLAYER1 {
@@ -96,20 +86,11 @@ func putScoreDot(nb int32, tools *sdlTools, player int) {
 		file = "ressources/pion_noir.bmp"
 	}
 	if (nb == 9) {
-		errXY := putImageXY(file, tools.surface, OFFSET_LAST_SCORE_X + (SQUARE - PION) / 2, OFFSET_LAST_SCORE_Y + (SQUARE - PION) / 2)
-		if errXY != nil {
-			fmt.Println("errXY", errXY)
-		}
+		putImageXY(file, tools.surface, OFFSET_LAST_SCORE_X + (SQUARE - PION) / 2, OFFSET_LAST_SCORE_Y + (SQUARE - PION) / 2)
 	} else if (player == PLAYER1) {
-		errXY := putImageXY(file, tools.surface, W - OFFSET_X + (SQUARE - PION) / 2 - (SQUARE + SPACING_SCORE) * (nb + 1) - SPACING_SCORE, OFFSET_SCORE_Y + (SQUARE - PION) / 2)
-		if errXY != nil {
-			fmt.Println("errXY", errXY)
-		}
+		putImageXY(file, tools.surface, W - OFFSET_X + (SQUARE - PION) / 2 - (SQUARE + SPACING_SCORE) * (nb + 1) - SPACING_SCORE, OFFSET_SCORE_Y + (SQUARE - PION) / 2)
 	} else {
-		errXY := putImageXY(file, tools.surface, OFFSET_X + (SQUARE - PION) / 2 + (SQUARE + SPACING_SCORE) * nb, OFFSET_SCORE_Y + (SQUARE - PION) / 2)
-		if errXY != nil {
-			fmt.Println("errXY", errXY)
-		}
+		putImageXY(file, tools.surface, OFFSET_X + (SQUARE - PION) / 2 + (SQUARE + SPACING_SCORE) * nb, OFFSET_SCORE_Y + (SQUARE - PION) / 2)
 	}
 }
 
@@ -122,10 +103,7 @@ func getXY(src *sdl.Surface, dst *sdl.Surface, x int32, y int32) error {
 
 
 func putImageXY(file string, dst *sdl.Surface, x int32, y int32) error {
-	imgSurface, err := img.Load(file)
-	if err != nil {
-		return err
-	}
+	imgSurface, _ := img.Load(file)
 	defer imgSurface.Free()
 	return getXY(imgSurface, dst, x, y)
 }
@@ -138,15 +116,12 @@ func getCenter(src *sdl.Surface, dst *sdl.Surface) error {
 }
 
 func putImageCenter(file string, dst *sdl.Surface) error {
-	imgSurface, err := img.Load(file)
-	if err != nil {
-		return err
-	}
+	imgSurface, _ := img.Load(file)
 	defer imgSurface.Free()
 	return getCenter(imgSurface, dst)
 }
 
-func initMessage(tools *sdlTools) sdl.MessageBoxData  {
+func initMessage(tools *Tools) sdl.MessageBoxData  {
 
 	var msg sdl.MessageBoxData
 	var buttonArray = make([]sdl.MessageBoxButtonData, 2)
@@ -187,14 +162,14 @@ func initMessage(tools *sdlTools) sdl.MessageBoxData  {
 	return msg
 }
 
-func  displayTime(tools *sdlTools)  {
+func  displayTime(tools *Tools, time time.Duration)  {
 	ttf.Init()
 	var clr sdl.Color
 	clr.R = 0
 	clr.G = 0
 	clr.B = 0
 
-	match, _ := regexp.MatchString("µs", tools.time.String())
+	match, _ := regexp.MatchString("µs", time.String())
 	var rect  sdl.Rect
 	font, _:= ttf.OpenFont("ressources/Zalight.ttf", 42)
 	var str string
@@ -202,7 +177,7 @@ func  displayTime(tools *sdlTools)  {
 	if match {
 		str = "less than 1ms"
 	} else {
-		str = tools.time.String()
+		str = time.String()
 	}
 	text, _:= font.RenderUTF8_Solid(str,clr)
 	defer text.Free()
@@ -213,10 +188,10 @@ func  displayTime(tools *sdlTools)  {
 	tools.win.UpdateSurface()
 }
 
-func playAgain(tools *sdlTools, winner int) {
+func endGame(tools *Tools, game *Game) {
 
-		msg := initMessage(tools)
-	if winner == 1 {
+	msg := initMessage(tools)
+	if game.winner == PLAYER1 {
 		msg.Message = "PLAYER 1 win"
 	} else {
 		msg.Message = "PLAYER 2 win"
@@ -230,9 +205,7 @@ func playAgain(tools *sdlTools, winner int) {
 		os.Exit(1)
 	}
 
-	err := putImageCenter("ressources/menu.bmp", tools.surface)
-	if err != nil {
-		fmt.Println("err", err)
-	}
-	tools.win.UpdateSurface()
+	tools.gameType = MENU
+	newGame(game)
+	displayMenu(tools)
 }

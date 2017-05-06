@@ -2,14 +2,7 @@ package main
 
 import (
 	"github.com/veandco/go-sdl2/sdl"
-	"time"
 )
-
-type move struct {
-  x int
-  y int
-  poid int
-}
 
 const W = 1205
 const H = 1205
@@ -28,8 +21,9 @@ const OFFSET_ARRAY_RIGHT_X = 860
 
 const PLAYER1 = 1
 const PLAYER2 = 2
+const NONE = 0
 const HINT = 3
-const DEPTH_MAX = 4
+const DEPTH_MAX = 1
 const EQUAL = 0
 const MIN_BASE = 1000000
 const MAX_BASE = -1000000
@@ -39,73 +33,46 @@ const MULTI = 2
 const SOLO = 1
 const MENU = 0
 
-const UP = 1
-const DOWN = -1
-const LEFT = 2
-const RIGHT = -2
-const UP_LEFT = 3
-const UP_RIGHT = 4
-const DOWN_LEFT = -4
-const DOWN_RIGHT = -3
+type Move struct {
+  x int
+  y int
+  poid int
+}
 
+type LastChance struct {
+	i int
+	j int
+	x int
+	y int
+	winner int
+	player int
+}
 
-type sdlTools struct {
+type Game struct {
+	lastChance *LastChance
+	score [2]int
+	curPlayer int
+	depth int
+	winner int
+	board [SIZE][SIZE]int
+	friend int
+}
+
+type Tools struct {
 	win *sdl.Window
 	surface *sdl.Surface
-	player int
-	scorePlayer1 int
-	scorePlayer2 int
-	board [SIZE][SIZE]int
 	exit bool
 	iaStart bool
-	gameState bool
 	gameType int
 	wait bool
-	time time.Duration
-	hasPlayed bool
-}
-
-
-func initSdlTools(tools *sdlTools) {
-
-	tools.iaStart = false
-	tools.player = PLAYER1
-	tools.scorePlayer1 = 0
-	tools.scorePlayer2 = 0
-	tools.board = newBoard()
-	tools.exit = false
-	tools.gameType = MENU
-	tools.wait = false
-	tools.hasPlayed = false
-}
-
-func initSdl(tools *sdlTools) {
-
-	tools.win,_ = sdl.CreateWindow("Gomokou", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, W, H, sdl.WINDOW_SHOWN)
-	tools.surface, _ = tools.win.GetSurface()
-	loadMenu(tools, "ressources/menu.bmp")
-	handleEvent(tools)
-	sdl.Quit()
-	return
 }
 
 func main() {
-	var tools *sdlTools = new(sdlTools)
-	initSdlTools(tools)
-	initSdl(tools)
-	return
-}
+	tools := initTools()
+	game := initGame()
 
-func newBoard() [SIZE][SIZE]int {
-	var board [SIZE][SIZE]int
-	var x = 0
-	for x < SIZE {
-		var y = 0
-		for y < SIZE {
-			board[x][y] = 0
-			y++
-		}
-		x++
-	}
-	return board
+	displayMenu(tools)
+	handleEvent(tools, game)
+	sdl.Quit()
+	return
 }

@@ -3,59 +3,60 @@ package main
 import (
 	"time"
 	"github.com/veandco/go-sdl2/sdl"
+	//"fmt"
 )
 
-func play(tools *sdlTools, i int, j int) {
-	var isEnd bool
-	var breakable bool
-
-  tools.board, isEnd, breakable = moveAndEat(tools.board, i, j, tools.player, &(tools.scorePlayer2), &(tools.scorePlayer1))
-	tools.player = tools.player % 2 + 1
-  printBoard(tools)
-	if (isEnd && !breakable) {
-		playAgain(tools, tools.player % 2 + 1)
-		initSdlTools(tools)
-	}
+func play(game *Game, tools *Tools, i int, j int) {
+  moveAndEat(game, i, j)
+  displayBoard(tools, game)
 }
 
-func iaTurn(tools *sdlTools) {
+func iaTurn(tools *Tools, game *Game) time.Duration {
 	tools.wait = true
 	timeBfore := time.Now()
-	bestMove := getNextMove(tools,tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
+	bestMove := getNextMove(game)
 	timeAfter := time.Now()
-	tools.time = timeAfter.Sub(timeBfore)
-	play(tools, bestMove.x, bestMove.y)
+	time := timeAfter.Sub(timeBfore)
+	play(game, tools, bestMove.x, bestMove.y)
 	tools.wait = false
+	return time
 }
 
-func displayHint(tools *sdlTools) {
+func displayHint(tools *Tools, game *Game) {
 	tools.wait = true
-	bestMove := getNextMove(tools,tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
-	tools.board[bestMove.x][bestMove.y] = HINT
-	printBoard(tools)
-	tools.board[bestMove.x][bestMove.y] = 0
-	displayTime(tools)
+	bestMove := getNextMove(game)
+
+	game.board[bestMove.x][bestMove.y] = HINT
+	displayBoard(tools, game)
+	game.board[bestMove.x][bestMove.y] = NONE
 	tools.wait = false
 }
 
-func  onClic(t *sdl.MouseButtonEvent, tools *sdlTools)  {
+func  onClic(t *sdl.MouseButtonEvent, tools *Tools, game *Game)  {
 	var j int = (int(t.X) + SQUARE / 2 - OFFSET_X) / (SQUARE + SPACING)
 	var moduloj = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
 	var i int = (int(t.Y) + SQUARE / 2 - OFFSET_Y) / (SQUARE + SPACING)
 	var moduloi = (int(t.Y) + SQUARE / 2 - OFFSET_Y) % (SQUARE + SPACING)
 
-	if (moduloj > 0 && moduloi > 0 && isPlayable(tools, i, j)) {
-    play(tools, i, j)
-		if (tools.gameType == SOLO) {
-			iaTurn(tools)
-		}
-		if (tools.gameType != MENU) {
-			displayHint(tools)
+	if (moduloj > 0 && moduloi > 0 && isPlayable(game, i, j)) {
+    play(game, tools, i, j)
+		if (game.winner != NONE) {
+			endGame(tools, game)
+		} else if (tools.gameType == SOLO) {
+			time := iaTurn(tools, game)
+			if (game.winner != NONE) {
+				endGame(tools, game)
+			} else {
+				displayHint(tools, game)
+			}
+			displayTime(tools, time)
+		} else {
+			displayHint(tools, game)
 		}
 	}
 }
 
-func handleEvent(tools *sdlTools) {
+func handleEvent(tools *Tools, game *Game) {
 
 	for !tools.exit {
 
@@ -74,28 +75,21 @@ func handleEvent(tools *sdlTools) {
 				break
 			case *sdl.MouseButtonEvent:
 				if t.Type == 1025 && tools.gameType != MENU && !tools.wait {
-					onClic(t, tools)
-					break
+					onClic(t, tools, game)
 				} else if (t.Type == 1025 && t.X  <= 740 && t.Y  <= 625 && t.Y  >= 492 && t.X >= 466 && tools.gameType == MENU) {
-					tools.gameType = 2
-					loadMap(tools, "ressources/board.bmp")
+					tools.gameType = MULTI
+					displayBoard(tools, game)
 				} else if (t.Type == 1025 && t.X  <= 740 && t.Y  <= 822 && t.Y  >= 688 && t.X >= 466 && tools.gameType == MENU) {
-					tools.gameType = 1
-					loadMap(tools, "ressources/board.bmp")
+					tools.gameType = SOLO
+					displayBoard(tools, game)
 					if (tools.iaStart) {
-						bestMove := getNextMove(tools,tools.board, tools.scorePlayer1, tools.scorePlayer2, tools.player, 0)
-						play(tools, bestMove.x, bestMove.y)
+						iaTurn(tools, game)
 					}
-
 				} else if (t.Type == 1025 && t.X  <= 510 && t.Y  <= 921 && t.Y  >= 898 && t.X >= 485 && tools.gameType == MENU) {
-					if (tools.iaStart) {
-						loadMenu(tools, "ressources/menu.bmp")
-					} else {
-						loadMenu(tools, "ressources/menu1.bmp")
-					}
 					tools.iaStart = !tools.iaStart
-			 }
-			break
+					displayMenu(tools)
+				}
+				break
 			}
 		}
 	}

@@ -1,16 +1,16 @@
 package main
 
 import (
-  "fmt"
+  //"fmt"
 )
 
   type afluence struct {
     conteur int
-    arrayMove move
+    arrayMove Move
   }
 
 
-  func isClose(x int, y int, board[SIZE][SIZE]int) afluence {
+  func isClose(x int, y int, board *[SIZE][SIZE]int) afluence {
 
 
     var conteur int
@@ -32,7 +32,7 @@ import (
     return tmp
   }
 
-  func findMoves(tools *sdlTools) ([]move) {
+  func findMoves(board *[SIZE][SIZE]int) ([]Move) {
 
     arrayAflu := make([]afluence, 0)
 
@@ -40,15 +40,15 @@ import (
     for x < SIZE {
       var y int = 0
       for y < SIZE {
-        if tools.board[x][y] == 0 {
-          arrayAflu = append(arrayAflu, isClose(x,y, tools.board))
+        if board[x][y] == 0 {
+          arrayAflu = append(arrayAflu, isClose(x,y, board))
          }
         y++
       }
       x++
     }
 
-    tmpBoard := make([]move, 0)
+    tmpBoard := make([]Move, 0)
     var tmpConter int = 0
     var t int = 0
     for t < len(arrayAflu) {
@@ -64,13 +64,12 @@ import (
         }
         t++
       }
-      fmt.Println("tmpBoard==",tmpBoard)
       return tmpBoard
     }
 
-//ancinne version
-
-// func isClose(x int, y int, board[SIZE][SIZE]int) bool {
+// ancinne version
+//
+// func isClose(x int, y int, board *[SIZE][SIZE]int) bool {
 //   if (board[x][y] != 0) {
 //     return false
 //   }
@@ -88,9 +87,9 @@ import (
 //   return false
 // }
 //
-// func findMoves(board[SIZE][SIZE]int) ([]move) {
+// func findMoves(board *[SIZE][SIZE]int) ([]Move) {
 //
-//   moves := make([]move, 0)
+//   moves := make([]Move, 0)
 //   var x = 0
 //   for x < SIZE {
 //     var y = 0

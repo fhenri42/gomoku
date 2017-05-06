@@ -1,51 +1,112 @@
 package main
 import (
   "sync"
+  "fmt"
+  "math"
 )
 
-func  simulateAndGetValue(tools *sdlTools,coup *move, aiScore int, playerScore int, board *[SIZE][SIZE]int, player int, depth int, wg *sync.WaitGroup)  {
-  defer (*wg).Done()
-   tmpBoard, isEnd, breakable := moveAndEat(*board, coup.x, coup.y, player, &aiScore, &playerScore)
-   if isEnd && !breakable {
-     if (depth % 2 == 0) {
-       (*coup).poid = MAX_BASE + depth
-     } else {
-       (*coup).poid = MIN_BASE - depth
-     }
-   } else {
-     (*coup).poid = getNextMove(tools,tmpBoard, aiScore, playerScore, player, depth).poid
-   }
+func  simulateAndGetValue(game *Game, move *Move, wg *sync.WaitGroup)  {
+  defer wg.Done()
+  newGame := copyGame(game)
+  moveAndEat(newGame, move.x, move.y)
+  if newGame.winner != NONE {
+    if (newGame.winner == newGame.friend) {
+      move.poid = MIN_BASE - newGame.depth
+    } else {
+      move.poid = MAX_BASE + newGame.depth
+    }
+  } else {
+    move.poid = getNextMove(newGame).poid
+  }
 }
 
-func getNextMove(tools *sdlTools,board [SIZE][SIZE]int, aiScore int, playerScore int, player int, depth int) move {
+func getNextMove(game *Game) Move {
   var t int = 0
 
-  if (depth == DEPTH_MAX) {
-    return evaluate(board, aiScore, playerScore)
+  if (game.depth == DEPTH_MAX) {
+    return evaluate(game)
   }
 
-  depth++
-  coups := findMoves(tools)
-  if (len(coups) == 0) {
+  moves := findMoves(&game.board)
+  if (len(moves) == 0) {
     return newMove(9, 9, 0)
   }
 
   var wg sync.WaitGroup
-  wg.Add(len(coups))
-  for t < len(coups) {
-    simulateAndGetValue(tools,&coups[t], aiScore, playerScore, &board, player, depth, &wg)
+  wg.Add(len(moves))
+  for t < len(moves) {
+    simulateAndGetValue(game, &moves[t], &wg)
     t++
   }
   wg.Wait()
 
-  if (depth % 2 == 0) {
-    return minCoup(coups)
+  if (game.curPlayer == game.friend) {
+    return maxCoup(moves)
   } else {
-    return maxCoup(coups)
+    return minCoup(moves)
   }
 }
 
-func evaluate(board [SIZE][SIZE]int, aiScore int, playerScore int) move {
-  return (newMove(0, 0, 10))
+func evaluate(game *Game) Move {
+  var res int = 0
+  var i int = 0
+  var j int = 0
+
+  fmt.Println(game.friend)
+  for i < game.score[game.friend - 1] {
+    res += i + 1 * 10
+    i++
+  }
+  i = 0
+  for i < game.score[game.friend % 2] {
+    res -= i + 1 * 10
+    i++
+  }
+  i = 0
+  for i < SIZE {
+    j = 0
+    for j < SIZE {
+      if (game.board[i][j] == game.friend) {
+        res += evaluateEach(&game.board, i, j)
+      } else if (game.board[i][j] == game.friend % 2 + 1) {
+        res -= evaluateEach(&game.board, i, j)
+      }
+      j++
+    }
+    i++
+  }
+  return (newMove(0, 0, res))
   //return newMove(0, 0, findWeight(board, aiScore, playerScore))
+}
+
+func evaluateEach(board *[SIZE][SIZE]int, x int, y int) int {
+  var i int = -1
+  var j int = -1
+  var k int = 1
+  var player = board[x][y]
+  var res int = 0
+  var count int = 0
+
+  for i <= 1 {
+    j = -1
+    for j <= 1 {
+      k = 1
+      count = 0
+      for k <= 4 {
+        if (k == 0 || (x + i * k >= 0 && x + i * k < SIZE && y + j * k >= 0 && y + j * k < SIZE && (*board)[x + i * k][y + j * k] == player)) {
+          count++
+        }
+        k++
+      }
+      j++
+    }
+    i++
+  }
+
+  i = 0
+  for i < count {
+    res += int(math.Pow(float64(i), 10))
+    i++
+  }
+  return res
 }

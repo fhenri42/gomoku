@@ -4,40 +4,40 @@ import (
   //"fmt"
 )
 
-func minCoup(coups []move) move {
+func minCoup(moves []Move) Move {
   var min = MIN_BASE
-  var minCoup *move
+  var minCoup *Move
   var t = 0
 
-  //fmt.Println(coups)
-  for t < len(coups) {
-    if (coups[t].poid < min) {
-      min = coups[t].poid
-      minCoup = &coups[t]
+  //fmt.Println(moves)
+  for t < len(moves) {
+    if (moves[t].poid < min) {
+      min = moves[t].poid
+      minCoup = &moves[t]
     }
     t++
   }
   return *minCoup
 }
 
-func maxCoup(coups []move) move {
+func maxCoup(moves []Move) Move {
   var max = MAX_BASE
-  var maxCoup *move
+  var maxCoup *Move
   var t = 0
 
-  //fmt.Println(coups)
-  for t < len(coups) {
-    if (coups[t].poid > max) {
-      max = coups[t].poid
-      maxCoup = &coups[t]
+  //fmt.Println(moves)
+  for t < len(moves) {
+    if (moves[t].poid > max) {
+      max = moves[t].poid
+      maxCoup = &moves[t]
     }
     t++
   }
   return *maxCoup
 }
 
-func newMove(x int, y int, poid int) move {
-  var tmp move
+func newMove(x int, y int, poid int) Move {
+  var tmp Move
 
   tmp.x = x
   tmp.y = y
