@@ -7,7 +7,7 @@ import (
 )
 
 func play(game *Game, tools *Tools, i int, j int) {
-  moveAndEat(game, i, j)
+  simulateMove(game, i, j)
   displayBoard(tools, game)
 }
 

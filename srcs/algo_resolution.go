@@ -51,7 +51,7 @@ func getNextMove(game *Game, alpha int, beta int) Move {
     // Else we Simulate the move for this node
     } else {
       newGame := copyGame(game)
-      moveAndEat(newGame, moves[t].x, moves[t].y)
+      simulateMove(newGame, moves[t].x, moves[t].y)
 
       // Check if it's a win node
       if newGame.winner == newGame.friend {

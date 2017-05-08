@@ -4,7 +4,7 @@ import (
 )
 
 // Move the Pion and eat (if needed), check if there is a winner, if the ligne is unbreakable and if the player did actually break it.
-func moveAndEat(game *Game, x int, y int) {
+func simulateMove(game *Game, x int, y int) {
   otherPlayer := game.curPlayer % 2 + 1
   var prevLastChance *LastChance = game.lastChance
   game.lastChance = nil
@@ -21,6 +21,7 @@ func moveAndEat(game *Game, x int, y int) {
     j = -1
     for j <= 1 {
 
+      //TODO PUT THIS INSIDE ANOTHER FUNCTION : isLine(i int, j int, board *int[][]) bool, int, int {}
       // check 4 cases around if the pion contribute to make a line
       k = -4
       count = 0
@@ -38,6 +39,7 @@ func moveAndEat(game *Game, x int, y int) {
         }
         k++
       }
+      ///////////////////////////////////////////////
 
       // If a line was made
       if (countMax >= 5) {
