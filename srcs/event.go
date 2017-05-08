@@ -11,10 +11,12 @@ func play(game *Game, tools *Tools, i int, j int) {
   displayBoard(tools, game)
 }
 
+// IA Play
 func iaTurn(tools *Tools, game *Game) time.Duration {
+	alpha, beta := -INFINI, INFINI
 	tools.wait = true
 	timeBfore := time.Now()
-	bestMove := getNextMove(game)
+	bestMove := getNextMove(game, alpha, beta)
 	timeAfter := time.Now()
 	time := timeAfter.Sub(timeBfore)
 	play(game, tools, bestMove.x, bestMove.y)
@@ -22,9 +24,11 @@ func iaTurn(tools *Tools, game *Game) time.Duration {
 	return time
 }
 
+// AI search and display the Hint (green pion)
 func displayHint(tools *Tools, game *Game) {
 	tools.wait = true
-	bestMove := getNextMove(game)
+	alpha, beta := -INFINI, INFINI
+	bestMove := getNextMove(game, alpha, beta)
 
 	game.board[bestMove.x][bestMove.y] = HINT
 	displayBoard(tools, game)
@@ -32,26 +36,33 @@ func displayHint(tools *Tools, game *Game) {
 	tools.wait = false
 }
 
+// Called when click of the screen
 func  onClic(t *sdl.MouseButtonEvent, tools *Tools, game *Game)  {
+
+	// translate x, y coordinate of the screen into grid coordinate
 	var j int = (int(t.X) + SQUARE / 2 - OFFSET_X) / (SQUARE + SPACING)
 	var moduloj = (int(t.X) + SQUARE / 2 - OFFSET_X) % (SQUARE + SPACING)
 	var i int = (int(t.Y) + SQUARE / 2 - OFFSET_Y) / (SQUARE + SPACING)
 	var moduloi = (int(t.Y) + SQUARE / 2 - OFFSET_Y) % (SQUARE + SPACING)
 
+	// If move is playable
 	if (moduloj > 0 && moduloi > 0 && isPlayable(game, i, j)) {
+		// Play
     play(game, tools, i, j)
+		// If winner, end the game
 		if (game.winner != NONE) {
 			endGame(tools, game)
+		// If game was against IA, make it play
 		} else if (tools.gameType == SOLO) {
 			time := iaTurn(tools, game)
 			if (game.winner != NONE) {
 				endGame(tools, game)
-			} else {
-				displayHint(tools, game)
+			//} else {
+				//displayHint(tools, game)
 			}
 			displayTime(tools, time)
-		} else {
-			displayHint(tools, game)
+		//} else {
+			//displayHint(tools, game)
 		}
 	}
 }

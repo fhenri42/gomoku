@@ -3,6 +3,7 @@ import (
 	//"fmt"
 )
 
+// Check if the line contains at least one eatable pion
 func isUnbreakableLine(i int, j int, x int, y int, board *[SIZE][SIZE]int) bool {
   var count = 0
 
@@ -15,6 +16,7 @@ func isUnbreakableLine(i int, j int, x int, y int, board *[SIZE][SIZE]int) bool 
   return true
 }
 
+// Check if the pion is eatable
 func isEatable(x int, y int, board *[SIZE][SIZE]int) bool {
   var pion = board[x][y]
   var pion2 = 0
@@ -46,6 +48,7 @@ func isEatable(x int, y int, board *[SIZE][SIZE]int) bool {
   return false
 }
 
+// check if the move is playable
 func isPlayable(game *Game, x int, y int) bool {
   if (x >= SIZE || y >= SIZE || x < 0 || y < 0 || game.board[x][y] != 0) {
     return false
@@ -56,6 +59,8 @@ func isPlayable(game *Game, x int, y int) bool {
   return true
 }
 
+
+// Check if the move is forbidden or not
 func isForbidenMove(game *Game, x int, y int) bool {
   var pion2 int
   var pion int

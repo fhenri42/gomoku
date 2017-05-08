@@ -4,14 +4,14 @@ import (
   //"fmt"
 )
 
+// Get the Move with the min score
 func minCoup(moves []Move) Move {
-  var min = MIN_BASE
+  var min = INFINI
   var minCoup *Move
   var t = 0
 
-  //fmt.Println(moves)
   for t < len(moves) {
-    if (moves[t].poid < min) {
+    if (moves[t].poid < min && !moves[t].pruned) {
       min = moves[t].poid
       minCoup = &moves[t]
     }
@@ -20,14 +20,14 @@ func minCoup(moves []Move) Move {
   return *minCoup
 }
 
+// Get the Move with the max score
 func maxCoup(moves []Move) Move {
-  var max = MAX_BASE
+  var max = -INFINI
   var maxCoup *Move
   var t = 0
 
-  //fmt.Println(moves)
   for t < len(moves) {
-    if (moves[t].poid > max) {
+    if (moves[t].poid > max && !moves[t].pruned) {
       max = moves[t].poid
       maxCoup = &moves[t]
     }
@@ -36,11 +36,13 @@ func maxCoup(moves []Move) Move {
   return *maxCoup
 }
 
+// create a new move obj
 func newMove(x int, y int, poid int) Move {
   var tmp Move
 
   tmp.x = x
   tmp.y = y
   tmp.poid = poid
+  tmp.pruned = false
   return tmp
 }

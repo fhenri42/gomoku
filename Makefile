@@ -9,6 +9,7 @@ SRC =  srcs/main.go\
 			 srcs/helper.go\
 			 srcs/algo_check.go\
 			 srcs/algo_simulateMove.go\
+			 srcs/algo_heuristic.go\
 
 
 all: $(NAME)

@@ -3,6 +3,16 @@ import (
   "github.com/veandco/go-sdl2/sdl"
 )
 
+func newLastChance(winner int, i int, j int, x int, y int) *LastChance {
+  lastChance := new(LastChance)
+  lastChance.winner = winner
+  lastChance.i = i
+  lastChance.j = j
+  lastChance.x = x
+  lastChance.y = y
+  return lastChance
+}
+
 func copyLastChance(lastChance *LastChance) *LastChance {
   if (lastChance == nil) {
     return nil

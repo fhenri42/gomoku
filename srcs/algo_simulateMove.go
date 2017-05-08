@@ -2,6 +2,8 @@ package main
 import (
 	//"fmt"
 )
+
+// Move the Pion and eat (if needed), check if there is a winner, if the ligne is unbreakable and if the player did actually break it.
 func moveAndEat(game *Game, x int, y int) {
   otherPlayer := game.curPlayer % 2 + 1
   var prevLastChance *LastChance = game.lastChance
@@ -14,9 +16,12 @@ func moveAndEat(game *Game, x int, y int) {
   var posi = -1
   var posj = -1
 
+  // Iterate over all directions
   for i <= 1 {
     j = -1
     for j <= 1 {
+
+      // check 4 cases around if the pion contribute to make a line
       k = -4
       count = 0
       countMax = 0
@@ -33,19 +38,20 @@ func moveAndEat(game *Game, x int, y int) {
         }
         k++
       }
+
+      // If a line was made
       if (countMax >= 5) {
+        // And unbreakable
         if (isUnbreakableLine(-i, -j, posi, posj, &game.board)) {
+          // Player win
           game.winner = game.curPlayer
         } else {
-          game.lastChance = new(LastChance)
-					game.lastChance.player = game.curPlayer % 2 + 1
-					game.lastChance.winner = game.curPlayer
-					game.lastChance.i = -i
-					game.lastChance.j = -j
-					game.lastChance.x = posi
-					game.lastChance.y = posj
+          // Else we save the position of the line to check next turn if still there
+          game.lastChance = newLastChance(game.curPlayer, -i, -j, posi, posj)
       	}
       }
+
+      // Check if there are Pions to eat in this direction, eat them and increase score
       if (x + i * 3 >= 0 && x + i * 3 < SIZE && y + j * 3 >= 0 && y + j * 3 < SIZE && game.board[x + i][y + j] == otherPlayer && game.board[x + i * 2][y + j * 2] == otherPlayer && game.board[x + i * 3][y + j * 3] == game.curPlayer) {
         game.board[x + i][y + j] = 0
         game.board[x + i * 2][y + j * 2] = 0
@@ -55,22 +61,32 @@ func moveAndEat(game *Game, x int, y int) {
     }
     i++
   }
+
+  // Put the Pion
   game.board[x][y] = game.curPlayer
+
+  // Check if someone won with scores
   if (game.score[PLAYER2 - 1] == 10) {
 		game.winner = PLAYER2
 	} else if (game.score[PLAYER1 - 1] == 10) {
     game.winner = PLAYER1
   }
 
+  // Check if the player was in "Last chance" and missed it
   if (prevLastChance != nil && stillStanding(prevLastChance, game)) {
     game.winner = prevLastChance.winner
   }
+
+  // Change player
   game.curPlayer = game.curPlayer % 2 + 1
+
+  // Change the player we need to use IA for (only if not in minimax algorythm)
   if (game.depth == 0) {
     game.friend = game.curPlayer
   }
 }
 
+// Check if the line of last chance is still on the board
 func stillStanding(lastChance *LastChance, game *Game) bool {
   var i int = 0
 

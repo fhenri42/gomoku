@@ -23,10 +23,9 @@ const PLAYER1 = 1
 const PLAYER2 = 2
 const NONE = 0
 const HINT = 3
-const DEPTH_MAX = 2
+const DEPTH_MAX = 5
 const EQUAL = 0
-const MIN_BASE = 1000000
-const MAX_BASE = -1000000
+const INFINI = 1000000
 const AMP = 1
 const SIZE = 19
 const MULTI = 2
@@ -37,6 +36,12 @@ type Move struct {
   x int
   y int
   poid int
+	pruned bool
+}
+
+type AlphaBeta struct {
+  alpha int
+  beta int
 }
 
 type LastChance struct {
