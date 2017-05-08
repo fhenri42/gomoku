@@ -3,6 +3,16 @@ import (
   "github.com/veandco/go-sdl2/sdl"
 )
 
+func newMove(x int, y int, poid int) Move {
+  var tmp Move
+
+  tmp.x = x
+  tmp.y = y
+  tmp.poid = poid
+  tmp.pruned = false
+  return tmp
+}
+
 func newLastChance(winner int, i int, j int, x int, y int) *LastChance {
   lastChance := new(LastChance)
   lastChance.winner = winner

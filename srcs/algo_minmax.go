@@ -35,14 +35,3 @@ func maxCoup(moves []Move) Move {
   }
   return *maxCoup
 }
-
-// create a new move obj
-func newMove(x int, y int, poid int) Move {
-  var tmp Move
-
-  tmp.x = x
-  tmp.y = y
-  tmp.poid = poid
-  tmp.pruned = false
-  return tmp
-}

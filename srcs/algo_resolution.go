@@ -3,6 +3,27 @@ import (
   //"fmt"
 )
 
+// Get array of all playable moves around
+func findMoves(board *[SIZE][SIZE]int) ([]Move) {
+
+  moves := make([]Move, 0)
+  var x = 0
+  for x < SIZE {
+    var y = 0
+    for y < SIZE {
+      if (isClose(x, y, board)) {
+        moves = append(moves, newMove(x, y, 0))
+      }
+      y++
+    }
+    x++
+  }
+  if (len(moves) == 0) {
+    moves = append(moves, newMove(9, 9, 0))
+  }
+  return moves
+}
+
 func getNextMove(game *Game, alpha int, beta int) Move {
   var t int = 0
   var shouldPrune bool = false
