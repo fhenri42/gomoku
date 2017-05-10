@@ -1,13 +1,13 @@
 package main
 
 import (
-	//"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/sdl_image"
 	"github.com/veandco/go-sdl2/sdl_ttf"
 	"regexp"
 	"os"
 	"time"
+	"strconv"
 )
 
 func displayBoard(tools *Tools, game *Game) {
@@ -41,12 +41,25 @@ func displayBoard(tools *Tools, game *Game) {
   tools.win.UpdateSurface()
 }
 
-func displayMenu(tools *Tools)  {
-	if (tools.iaStart) {
-		putImageCenter("ressources/menu1.bmp", tools.surface)
-	} else {
-		putImageCenter("ressources/menu.bmp", tools.surface)
+func displayMenu(tools *Tools, sum int)  {
+	if (tools.iaStart || tools.aiHelper) {
+		if tools.iaStart && tools.aiHelper { putImageCenter("ressources/menu.bmp", tools.surface)}
+
+		if tools.iaStart {
+			if (!tools.aiHelper) { putImageCenter("ressources/menu.bmp", tools.surface) }
+			putImageXY("ressources/Stick.bmp", tools.surface, 480,890)
+		}
+		if tools.aiHelper {
+			if (!tools.iaStart) { putImageCenter("ressources/menu.bmp", tools.surface) }
+			putImageXY("ressources/Stick.bmp", tools.surface, 480,943)
+		}
+		displayDepth(tools, sum)
+		tools.win.UpdateSurface()
+		return
 	}
+
+	putImageCenter("ressources/menu.bmp", tools.surface)
+	displayDepth(tools, sum)
 	tools.win.UpdateSurface()
 }
 
@@ -162,6 +175,29 @@ func initMessage(tools *Tools) sdl.MessageBoxData  {
 	return msg
 }
 
+func  displayDepth(tools *Tools, sum int)  {
+
+	if sum < 0 && DEPTH_MAX + sum == 0 { sum = 0 }
+	if sum > 0 && DEPTH_MAX + sum == 6  { sum = 0 }
+	ttf.Init()
+
+	var clr sdl.Color
+	clr.R = 0
+	clr.G = 0
+	clr.B = 0
+
+	var rect  sdl.Rect
+	font, _:= ttf.OpenFont("ressources/Zalight.ttf", 42)
+
+	DEPTH_MAX += sum
+	text, _:= font.RenderUTF8_Solid(strconv.Itoa(DEPTH_MAX), clr)
+	defer text.Free()
+
+	rect.X = 679
+	rect.Y = 1000
+	text.Blit(nil, tools.surface, &rect);
+}
+
 func  displayTime(tools *Tools, time time.Duration)  {
 	ttf.Init()
 	var clr sdl.Color
@@ -207,5 +243,5 @@ func endGame(tools *Tools, game *Game) {
 
 	tools.gameType = MENU
 	newGame(game)
-	displayMenu(tools)
+	displayMenu(tools, 0)
 }

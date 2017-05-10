@@ -87,21 +87,28 @@ func handleEvent(tools *Tools, game *Game) {
 			case *sdl.MouseButtonEvent:
 				if t.Type == 1025 && tools.gameType != MENU && !tools.wait {
 					onClic(t, tools, game)
-				} else if (t.Type == 1025 && t.X  <= 740 && t.Y  <= 625 && t.Y  >= 492 && t.X >= 466 && tools.gameType == MENU) {
+				} else if (t.Type == 1025 && t.X <= 740 && t.Y <= 625 && t.Y  >= 492 && t.X >= 466 && tools.gameType == MENU) {
 					tools.gameType = MULTI
 					displayBoard(tools, game)
-				} else if (t.Type == 1025 && t.X  <= 740 && t.Y  <= 822 && t.Y  >= 688 && t.X >= 466 && tools.gameType == MENU) {
+				} else if (t.Type == 1025 && t.X <= 740 && t.Y <= 822 && t.Y  >= 688 && t.X >= 466 && tools.gameType == MENU) {
 					tools.gameType = SOLO
 					displayBoard(tools, game)
 					if (tools.iaStart) {
 						iaTurn(tools, game)
 					}
-				} else if (t.Type == 1025 && t.X  <= 510 && t.Y  <= 921 && t.Y  >= 898 && t.X >= 485 && tools.gameType == MENU) {
+				} else if (t.Type == 1025 && t.X <= 510 && t.Y <= 921 && t.Y  >= 898 && t.X >= 485 && tools.gameType == MENU) {
 					tools.iaStart = !tools.iaStart
-					displayMenu(tools)
+					displayMenu(tools, 0)
+				} else if (t.Type == 1025 && t.X <= 510 && t.Y <= 973 && t.Y  >= 956 && t.X >= 485 && tools.gameType == MENU) {
+					tools.aiHelper = !tools.aiHelper
+					displayMenu(tools, 0)
+				} else if (t.Type == 1025 && t.X <= 494 && t.Y <= 1034 && t.Y  >= 1014 && t.X >= 473 && tools.gameType == MENU) {
+					displayMenu(tools, 1)
+				} else if (t.Type == 1025 && t.X <= 543 && t.Y <= 1030 && t.Y  >= 1026 && t.X >= 512 && tools.gameType == MENU) {
+					displayMenu(tools, -1)
 				}
 				break
-			}
 		}
 	}
+}
 }

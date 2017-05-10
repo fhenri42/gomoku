@@ -23,7 +23,7 @@ const PLAYER1 = 1
 const PLAYER2 = 2
 const NONE = 0
 const HINT = 3
-const DEPTH_MAX = 5
+var DEPTH_MAX = 1
 const EQUAL = 0
 const INFINI = 1000000
 const AMP = 1
@@ -68,6 +68,7 @@ type Tools struct {
 	surface *sdl.Surface
 	exit bool
 	iaStart bool
+	aiHelper bool
 	gameType int
 	wait bool
 }
@@ -76,7 +77,7 @@ func main() {
 	tools := initTools()
 	game := initGame()
 
-	displayMenu(tools)
+	displayMenu(tools, 0)
 	handleEvent(tools, game)
 	sdl.Quit()
 	return
