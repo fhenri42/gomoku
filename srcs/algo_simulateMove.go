@@ -85,6 +85,14 @@ func simulateMove(game *Game, x int, y int) {
   // Change the player we need to use IA for (only if not in minimax algorythm)
   if (game.depth == 0) {
     game.friend = game.curPlayer
+    moves := findMoves(game)
+    if (len(moves) == 0) {
+      if (game.winner == NONE && game.lastChance == nil) {
+        game.winner = NUL
+      } else if (game.lastChance != nil) {
+        game.winner = game.lastChance.winner
+      }
+    }
   }
 }
 

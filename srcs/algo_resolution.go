@@ -4,22 +4,19 @@ import (
 )
 
 // Get array of all playable moves around
-func findMoves(board *[SIZE][SIZE]int) ([]Move) {
+func findMoves(game *Game) ([]Move) {
 
   moves := make([]Move, 0)
   var x = 0
   for x < SIZE {
     var y = 0
     for y < SIZE {
-      if (isClose(x, y, board)) {
+      if (isClose(x, y, &game.board) && !isForbidenMove(game, x, y)) {
         moves = append(moves, newMove(x, y, 0))
       }
       y++
     }
     x++
-  }
-  if (len(moves) == 0) {
-    moves = append(moves, newMove(9, 9, 0))
   }
   return moves
 }
@@ -34,11 +31,13 @@ func getNextMove(game *Game, alpha int, beta int) Move {
   }
 
   // Finding all possible moves around
-  moves := findMoves(&game.board)
+  moves := findMoves(game)
 
   // If only one possibility, no choice, no need to calculate
   if (len(moves) == 1) {
     return moves[0]
+  } else if (len(moves) == 0) {
+    return newMove(9, 9, 0)
   }
 
   // Go through the array

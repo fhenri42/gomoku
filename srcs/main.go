@@ -21,6 +21,7 @@ const OFFSET_ARRAY_RIGHT_X = 860
 
 const PLAYER1 = 1
 const PLAYER2 = 2
+const NUL = 3
 const NONE = 0
 const HINT = 3
 var DEPTH_MAX = 1
