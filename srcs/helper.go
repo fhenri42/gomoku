@@ -96,5 +96,6 @@ func initTools() *Tools {
 	tools.iaStart = false
 	tools.gameType = MENU
 	tools.wait = false
+  tools.aiHelper = false
 	return tools
 }
