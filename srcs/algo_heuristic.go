@@ -10,12 +10,12 @@ func evaluate(game *Game) Move {
   var j int = 0
 
   for i < game.score[game.friend - 1] {
-    res += int(math.Pow(float64(i), 2))
+    res += i//int(math.Pow(float64(i), 2))
     i++
   }
   i = 0
   for i < game.score[game.friend % 2] {
-    res -= int(math.Pow(float64(i), 2))
+    res -= i//int(math.Pow(float64(i), 2))
     i++
   }
   i = 0
@@ -44,6 +44,9 @@ func evaluateEach(board *[SIZE][SIZE]int, x int, y int) int {
   var countFree int = 0
   var countFriend int = 0
 
+  if (isEatable(x, y, board)) {
+    res -= 10
+  }
 
   for i <= 1 {
     j = -1
