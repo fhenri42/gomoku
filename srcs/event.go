@@ -102,9 +102,9 @@ func handleEvent(tools *Tools, game *Game) {
 				} else if (t.Type == 1025 && t.X <= 510 && t.Y <= 973 && t.Y  >= 956 && t.X >= 485 && tools.gameType == MENU) {
 					tools.aiHelper = !tools.aiHelper
 					displayMenu(tools, 0)
-				} else if (t.Type == 1025 && t.X <= 494 && t.Y <= 1034 && t.Y  >= 1014 && t.X >= 473 && tools.gameType == MENU) {
+				} else if (t.Type == 1025 && t.X <= 494 && t.Y <= 1040 && t.Y  >= 1010 && t.X >= 473 && tools.gameType == MENU) {
 					displayMenu(tools, 1)
-				} else if (t.Type == 1025 && t.X <= 543 && t.Y <= 1030 && t.Y  >= 1026 && t.X >= 512 && tools.gameType == MENU) {
+				} else if (t.Type == 1025 && t.X <= 543 && t.Y <= 1035 && t.Y  >= 1020 && t.X >= 512 && tools.gameType == MENU) {
 					displayMenu(tools, -1)
 				}
 				break
