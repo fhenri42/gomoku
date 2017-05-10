@@ -10,12 +10,12 @@ func evaluate(game *Game) Move {
   var j int = 0
 
   for i < game.score[game.friend - 1] {
-    res += i//int(math.Pow(float64(i), 2))
+    res += int(math.Pow(float64(i), 1))
     i++
   }
   i = 0
   for i < game.score[game.friend % 2] {
-    res -= i//int(math.Pow(float64(i), 2))
+    res -= int(math.Pow(float64(i), 1))
     i++
   }
   i = 0

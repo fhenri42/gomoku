@@ -193,8 +193,10 @@ func endGame(tools *Tools, game *Game) {
 	msg := initMessage(tools)
 	if game.winner == PLAYER1 {
 		msg.Message = "PLAYER 1 win"
-	} else {
+	} else if (game.winner == PLAYER2) {
 		msg.Message = "PLAYER 2 win"
+	} else {
+		msg.Message = "Nobody win"
 	}
 
 	_, key := sdl.ShowMessageBox(&msg)

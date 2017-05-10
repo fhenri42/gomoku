@@ -18,9 +18,6 @@ func findMoves(game *Game) ([]Move) {
     }
     x++
   }
-  if (len(moves) == 0) {
-    moves = append(moves, newMove(9, 9, 0))
-  }
   return moves
 }
 
@@ -39,6 +36,8 @@ func getNextMove(game *Game, alpha int, beta int) Move {
   // If only one possibility, no choice, no need to calculate
   if (len(moves) == 1) {
     return moves[0]
+  } else if (len(moves) == 0) {
+    return newMove(9, 9, 0)
   }
 
   // Go through the array
