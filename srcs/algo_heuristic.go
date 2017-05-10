@@ -1,7 +1,14 @@
 package main
 import (
-  "math"
+  //"math"
 )
+
+const EATABLE_MALUS = 10
+const SCORE_BONUS = 1
+const SPACE_5_BONUS = 10
+const SPACE_9_BONUS = 10
+const SUP_SPACE_BONUS = 2
+const ALIGNED_BONUS = 5
 
 // Evaluate a grid
 func evaluate(game *Game) Move {
@@ -10,12 +17,12 @@ func evaluate(game *Game) Move {
   var j int = 0
 
   for i < game.score[game.friend - 1] {
-    res += int(math.Pow(float64(i), 1))
+    res += SCORE_BONUS
     i++
   }
   i = 0
   for i < game.score[game.friend % 2] {
-    res -= int(math.Pow(float64(i), 1))
+    res -= SCORE_BONUS
     i++
   }
   i = 0
@@ -45,7 +52,7 @@ func evaluateEach(board *[SIZE][SIZE]int, x int, y int) int {
   var countFriend int = 0
 
   if (isEatable(x, y, board)) {
-    res -= 10
+    res -= EATABLE_MALUS
   }
 
   for i <= 1 {
@@ -75,16 +82,20 @@ func evaluateEach(board *[SIZE][SIZE]int, x int, y int) int {
         k++
       }
 
-      if (countFree + countFriend >= 5) {
+      if (countFree + countFriend >= 4) {
+        res += SPACE_5_BONUS
+        if (countFree + countFriend >= 8) {
+          res += SPACE_9_BONUS
+        }
         k = 0
-        for k < countFree {
-          res += i
+        for k + 4 < countFree + countFriend {
+          res += SUP_SPACE_BONUS
           k++
         }
 
         k = 0
-        for k < countFree {
-          res += int(math.Pow(float64(k + 1), 2))
+        for k < countFriend {
+          res += ALIGNED_BONUS
           k++
         }
       }
