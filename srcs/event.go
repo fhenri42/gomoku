@@ -57,12 +57,12 @@ func  onClic(t *sdl.MouseButtonEvent, tools *Tools, game *Game)  {
 			time := iaTurn(tools, game)
 			if (game.winner != NONE) {
 				endGame(tools, game)
-			//} else {
-				//displayHint(tools, game)
+			} else if (tools.aiHelper) {
+				displayHint(tools, game)
 			}
 			displayTime(tools, time)
-		//} else {
-			//displayHint(tools, game)
+		} else if (tools.aiHelper) {
+			displayHint(tools, game)
 		}
 	}
 }
