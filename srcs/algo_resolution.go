@@ -3,22 +3,52 @@ import (
   //"fmt"
 )
 
+// Check if there is a pion around the move we attempt to play
+func isClose(x int, y int, board *[SIZE][SIZE]int) int {
+  var count int = 0
+  if (board[x][y] != 0) {
+    return count
+  }
+  var i = -AMP
+  for i <= AMP {
+    var j = -AMP
+    for j <= AMP {
+      if (x + i >= 0 && x + i < SIZE && y + j >= 0 && y + j < SIZE && board[x + i][y + j] != 0) {
+        count++
+      }
+      j++
+    }
+    i++
+  }
+  return count
+}
+
 // Get array of all playable moves around
 func findMoves(game *Game) ([]Move) {
 
-  moves := make([]Move, 0)
+  moves := make([][]Move, 3)
+  var res int = 0
+  moves[0] = make([]Move, 0)
+  moves[1] = make([]Move, 0)
+  moves[2] = make([]Move, 0)
   var x = 0
   for x < SIZE {
     var y = 0
     for y < SIZE {
-      if (isClose(x, y, &game.board) && !isForbidenMove(game, x, y)) {
-        moves = append(moves, newMove(x, y, 0))
+      res = isClose(x, y, &game.board)
+      if (res > 3) {
+        res = 3
+      }
+      if (res > 0 && !isForbidenMove(game, x, y)) {
+        moves[res - 1] = append(moves[res - 1], newMove(x, y, 0))
       }
       y++
     }
     x++
   }
-  return moves
+  moves[2] = append(moves[2], moves[1]...)
+  moves[2] = append(moves[2], moves[0]...)
+  return moves[2]
 }
 
 func getNextMove(game *Game, alpha int, beta int) Move {

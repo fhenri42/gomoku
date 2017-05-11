@@ -3,25 +3,6 @@ import (
 	//"fmt"
 )
 
-// Check if there is a pion around the move we attempt to play
-func isClose(x int, y int, board *[SIZE][SIZE]int) bool {
-  if (board[x][y] != 0) {
-    return false
-  }
-  var i = -AMP
-  for i <= AMP {
-    var j = -AMP
-    for j <= AMP {
-      if (x + i >= 0 && x + i < SIZE && y + j >= 0 && y + j < SIZE && board[x + i][y + j] != 0) {
-        return true
-      }
-      j++
-    }
-    i++
-  }
-  return false
-}
-
 // Check if the line contains at least one eatable pion
 func isUnbreakableLine(i int, j int, x int, y int, board *[SIZE][SIZE]int) bool {
   var count = 0

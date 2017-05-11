@@ -23,24 +23,10 @@ func newLastChance(winner int, i int, j int, x int, y int) *LastChance {
   return lastChance
 }
 
-func copyLastChance(lastChance *LastChance) *LastChance {
-  if (lastChance == nil) {
-    return nil
-  }
-  var newLastChance *LastChance = new(LastChance)
-  newLastChance.i = lastChance.i
-  newLastChance.j = lastChance.j
-  newLastChance.x = lastChance.x
-  newLastChance.y = lastChance.y
-  newLastChance.winner = lastChance.winner
-  newLastChance.player = lastChance.player
-  return newLastChance
-}
-
 func copyGame(game *Game) *Game {
   var newGame *Game = new(Game)
   newGame.score = game.score
-  newGame.lastChance = copyLastChance(game.lastChance)
+  newGame.lastChance = game.lastChance
   newGame.curPlayer = game.curPlayer
   newGame.board = game.board
   newGame.depth = game.depth + 1

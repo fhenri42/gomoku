@@ -178,7 +178,7 @@ func initMessage(tools *Tools) sdl.MessageBoxData  {
 func  displayDepth(tools *Tools, sum int)  {
 
 	if sum < 0 && DEPTH_MAX + sum == 0 { sum = 0 }
-	if sum > 0 && DEPTH_MAX + sum == 6  { sum = 0 }
+	if sum > 0 && DEPTH_MAX + sum == 11  { sum = 0 }
 	ttf.Init()
 
 	var clr sdl.Color
